@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  customer_id: 1
+  source_id: 1
+  comment: MyText
+  recommended_rank: 1.5
+  review: 1.5
+  is_valid: false
+
+two:
+  customer_id: 1
+  source_id: 1
+  comment: MyText
+  recommended_rank: 1.5
+  review: 1.5
+  is_valid: false

@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  customer_id: 1
+  genres_id: 1
+  source: MyText
+  purpose: MyString
+  performance_review: MyText
+  note: MyText
+  reveiw: 1.5
+  recommended_rank: 1.5
+  is_vaild: false
+  is_public: false
+
+two:
+  customer_id: 1
+  genres_id: 1
+  source: MyText
+  purpose: MyString
+  performance_review: MyText
+  note: MyText
+  reveiw: 1.5
+  recommended_rank: 1.5
+  is_vaild: false
+  is_public: false

@@ -1,0 +1,2 @@
+class Useful < ApplicationRecord
+end
