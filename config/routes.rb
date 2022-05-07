@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         patch :withdraw
       end
       resource :follows, only: [:create, :destroy]
+      resource :reports, only: [:create, :destroy]
       resources:recommends, only: [:index]
       resources:likes, only: [:index]
     end

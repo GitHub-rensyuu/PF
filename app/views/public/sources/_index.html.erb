@@ -23,7 +23,7 @@
           <% end %>
         </td>
 
-        <td><%= link_to source.purpose, "sources/#{source.id}" %></td>
+        <td><%= link_to source.purpose, source_path(source.id) %></td>
         <td><%= source.source %></td>
         <td><%= source.performance_review %></td>
         <td><%= source.note %></td>

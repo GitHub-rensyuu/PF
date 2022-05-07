@@ -1,4 +1,4 @@
-class Admin::ClaimsController < ApplicationController
+class Admin::ReportsController < ApplicationController
   def destroy
   end
 

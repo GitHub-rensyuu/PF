@@ -28,12 +28,21 @@
     <i class="fas fa-customer-cog"></i>
   <% end %>
 
-  <!--フォロー登録、解除ボタン-->
   <% if current_customer != customer %>
+  
+  <!--フォロー登録、解除ボタン-->
     <% if current_customer.following?(customer) %>
       <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
     <% else %>
-      <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success" %>
+      <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success" %>  
     <% end %>
+  
+  <!--通報登録、解除ボタン-->
+    <% if current_customer.reporting?(customer) %>
+      <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
+    <% else %>
+      <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn-sm btn-danger" %>
+    <% end %>
+    
   <% end %>
 </div>

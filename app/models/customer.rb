@@ -14,6 +14,11 @@ class Customer < ApplicationRecord
   has_many :followed, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
   has_many :following_customer, through: :follower, source: :followed # 自分がフォローしている人
   has_many :follower_customer, through: :followed, source: :follower # 自分をフォローしている人
+  
+  has_many :reporter, class_name: "Report", foreign_key: "reporter_id", dependent: :destroy
+  has_many :reported, class_name: "Report", foreign_key: "reported_id", dependent: :destroy
+  has_many :reporting_customer, through: :reporter, source: :reported # 自分がフォローしている人
+  has_many :reporter_customer, through: :reported, source: :reporter # 自分をフォローしている人
 
  # ユーザーをフォローする
   def follow(customer_id)
@@ -28,6 +33,21 @@ class Customer < ApplicationRecord
   # フォローしていればtrueを返す
   def following?(customer)
     following_customer.include?(customer)
+  end
+  
+  # ユーザーを通報する
+  def report(customer_id)
+    reporter.create(reported_id: customer_id)
+  end
+
+  # ユーザーの通報を解除
+  def unreport(customer_id)
+    reporter.find_by(reported_id: customer_id).destroy
+  end
+
+  # 通報していればtrueを返す
+  def reporting?(customer)
+    reporting_customer.include?(customer)
   end
 
   # 退会済ユーザーをブロック

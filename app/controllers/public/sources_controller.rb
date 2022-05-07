@@ -17,9 +17,6 @@ class Public::SourcesController < ApplicationController
     end
   end
 
-  def new
-  end
-
   def create
     @source = Source.new(source_params)
     @source.customer_id = current_customer.id
@@ -71,7 +68,7 @@ class Public::SourcesController < ApplicationController
   private
 
   def source_params
-    params.require(:source).permit(:source, :purpose, :performance_review, :note, :reveiw, :recommended_rank,:is_public, :is_valid)
+    params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid)
   end
 
 end
