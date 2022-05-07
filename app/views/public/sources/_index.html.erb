@@ -1,0 +1,76 @@
+<table class='table table-hover table-inverse'>
+  <%= render 'layouts/errors', obj: @source %>
+  <thead>
+    <tr>
+      <th>ニックネーム</th>
+      <th>目的</th>
+      <th>参考にした情報ソース(URL)</th>
+      <th>評価コメント</th>
+      <th>情報ソースが古い、誤りがある場合のコメント</th>
+      <th>Rate</th>
+      <!--<th>recommended_rank</th>-->
+      <th>いいね</th>
+      <th>コメント数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% sources.each do |source| %>
+      <tr>
+
+        <td><%= link_to(source.customer) do %>
+          <%= image_tag source.customer.get_profile_image(50,50) %>
+          <%= source.customer.nickname %>
+          <% end %>
+        </td>
+
+        <td><%= link_to source.purpose, "sources/#{source.id}" %></td>
+        <td><%= source.source %></td>
+        <td><%= source.performance_review %></td>
+        <td><%= source.note %></td>
+        <%
+=begin %>
+        <td><%= link_to source.jenre, search_source_path(keyword: source.jenre) %></td>
+<%
+=end %>
+
+        <!--星評価表示機能-->
+        <td>
+        <div class="relative-source-rate">
+          <span id="star-rate-<%= source.id %>"></span>
+          <script>
+            $('#star-rate-<%= source.id %>').raty({
+              size: 36,
+              starOff: "<%= asset_path('star-off.png') %>",
+              starOn: "<%= asset_path('star-on.png') %>",
+              starHalf: "<%= asset_path('star-half.png') %>",
+              half: true,
+              readOnly: true,
+              score: "<%= source.rate %>",
+            });
+          </script>
+          <%= source.rate %>
+        </div>
+        </td>
+        <!--いいね機能追加-->
+        <% if source.liked_by?(current_customer) %>
+          <td>
+            <%= link_to source_likes_path(source),style: "color:red", method: :delete do %>
+              ♥<%= source.likes.count %>
+            <% end %>
+          </td>
+          <% else %>
+          <td>
+            <%= link_to source_likes_path(source),style: "color:blue", method: :post do %>
+              ♥<%= source.likes.count %>
+            <% end %>
+          </td>
+        <% end %>
+
+        <!--コメント件数表示-->
+        <td><span><%= link_to "#{source.comments.count} コメント", source_path(source.id), class:"text-dark" %></span></td>
+
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

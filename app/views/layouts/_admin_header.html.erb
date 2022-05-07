@@ -1,32 +1,34 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark navbar-fixed-top", style="background-color: #432c28;">
-  <div class="container">
-    <div class="row">
-      <%= link_to "NAGANO管理者サイト", admin_items_path, class: "navbar-brand" %>
-      <% if admin_signed_in? %>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <%= link_to "情報ソース一覧", about_items_path, class: "nav-link" %>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/"><span>SourceReview</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <% if admin_signed_in? %>
+        <ul class="navbar-nav ml-auto">
+          <li>
+            <%= link_to admin_genres_path, class: "nav-link" do %>
+              <i class="fas fa-home"></i> ジャンル一覧
+            <% end %>
           </li>
-          <li class="nav-item">
-            <%= link_to "投稿者ランキング一覧", admin_customers_path, class: "nav-link" %>
+          <li>
+            <%=  link_to contributors_path,class: 'nav-link text-light' do %>
+              <i class="fas fa-users"></i> 投稿者一覧
+            <% end %>
           </li>
-          <li class="nav-item">
-            <%= link_to "レビューアーランキング一覧", admin_top_path, class: "nav-link" %>
+          <li>
+            <%=  link_to sources_path ,class: 'nav-link text-light' do %>
+              <i class="fas fa-book-open"></i> 情報ソース一覧
+            <% end %>
           </li>
-          <li class="nav-item">
-            <%= link_to "ジャンル一覧", admin_genres_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+          <li>
+            <%= link_to destroy_admin_session_path, method: :delete,class: 'nav-link text-light' do %>
+              <i class="fas fa-sign-out-alt"></i> ログアウト
+            <% end %>
           </li>
         </ul>
-
-        <form class="form-inline">
-          <input class="form-control-sm mr-sm-2" type="search" placeholder="検索機能予定" aria-label="検索...">
-          <button type="submit" class="btn btn-outline-light btn-sm my-2 my-sm-0">検索</button>
-        </form>
-      <% end %>
-
+        <% end %>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>

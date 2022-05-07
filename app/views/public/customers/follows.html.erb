@@ -1,2 +1,36 @@
-<h1>Public::Customers#follows</h1>
-<p>Find me in app/views/public/customers/follows.html.erb</p>
+
+<div class="container">
+    <div class="row">
+      <div class='col-md-12'>
+
+        <% unless @customers.present? %>
+          <h1>フォローしている人はいません。</h1>
+        <% else %>
+        <table class='table table-hover table-inverse'>
+          <h1>Follow User</h1>
+          <thead>
+              <tr>
+                <th>image</th>
+                <th>name</th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <% @customers.each do |customer| %>
+                      <td><%= image_tag customer.get_profile_image(30,30) %></td>
+                      <td><%= customer.name %></td>
+                      <td>フォロー数:<%= customer.following_customer.count %></td>
+                      <td>フォロワー数:<%= customer.follower_customer.count %></td>
+                      <td><%= link_to "Show",customer_path(customer) %></td>
+                  <% end %>
+              </tr>
+          </tbody>
+        </table>
+        <% end %>
+
+      </div>
+    </div>
+  </div>

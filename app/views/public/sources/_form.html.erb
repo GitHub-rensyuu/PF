@@ -1,0 +1,74 @@
+
+<%= form_with model:source,local:true do |f| %>
+  <div class="form-group">
+    <%= f.label :"目的" %>
+    <%= f.text_field :purpose, class: 'form-control source_title' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :"参考にした情報ソース(URL)" %>
+    <%= f.text_field :source, class: 'form-control source_title' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :"評価コメント" %>
+    <%= f.text_area :performance_review, class: 'form-control source_body' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :"情報ソースが古い、誤りがある場合のコメント" %>
+    <%= f.text_area :note, class: 'form-control source_body' %>
+  </div>
+
+<!--★評価-->
+<div class="form-group field" id="star">
+      <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>
+      <%= f.hidden_field :rate, id: :rate_star %>
+  </div>
+  <script>
+      $('#star').raty({
+          size     : 36,
+          starOff:  '<%= asset_path('star-off.png') %>',
+          starOn : '<%= asset_path('star-on.png') %>',
+          starHalf: '<%= asset_path('star-half.png') %>',
+          scoreName: 'source[rate]',
+          half: true,
+      });
+  </script>
+
+  <div class="form-group field" id="star">
+      <%= f.label :recommended_rank,  "おすすめの対象者レベル★評価 （初心者～上級者）(※必須)" ,id: "e"%>
+      <%= f.hidden_field :recommended_rank, id: :rate_star %>
+  </div>
+  <script>
+      $('#star').raty({
+          size     : 36,
+          starOff:  '<%= asset_path('star-off.png') %>',
+          starOn : '<%= asset_path('star-on.png') %>',
+          starHalf: '<%= asset_path('star-half.png') %>',
+          scoreName: 'source[recommended_rank]',
+          half: true,
+      });
+  </script>
+
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-success' %>
+  </div>
+<% end %>
+
+<!--カテゴリー-->
+<%
+=begin
+%>
+  <div class="form-group">
+    <%= f.label :"カテゴリー" %>
+    <%= f.text_field :category %>
+  </div>
+  <%
+=end %>
+
+
+
+
+
+

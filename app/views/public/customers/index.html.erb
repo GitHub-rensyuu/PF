@@ -1,0 +1,19 @@
+<div class="container px-5 px-sm-0">
+
+  <div class="row">
+
+    <div class="col-md-3">
+      <h2>会員情報</h2>
+      <%= render 'info', customer: current_customer %>
+      <h2 class="mt-3">新しい情報ソース</h2>
+      <%= render 'public/sources/form', source: @source %>
+    </div>
+
+    <div class="col-md-8 offset-md-1">
+      <h2>会員一覧</h2>
+      <%= render 'index',customers: @customers %>
+    </div>
+
+  </div>
+
+</div>

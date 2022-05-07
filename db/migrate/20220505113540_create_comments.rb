@@ -6,7 +6,7 @@ class CreateComments < ActiveRecord::Migration[6.1]
       t.text :comment
       t.float :recommended_rank
       t.float :review
-      t.boolean :is_valid
+      t.boolean :is_valid, default: true
 
       t.timestamps
     end

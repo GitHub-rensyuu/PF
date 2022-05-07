@@ -6,15 +6,13 @@
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-
-
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <body>
-   <header class="header">
+
+    <header>
       <% if request.fullpath.include? "admin"  %>
         <%= render 'layouts/admin_header' %>
       <% else%>
@@ -23,21 +21,17 @@
     </header>
 
     <main>
+      <p id="notice"><%= notice %></p>
       <%= yield %>
     </main>
 
-<!-- footer デザイン分岐 -->
-    <% if request.fullpath.include? "admin"  %>
-      <footer class="footer text-white bg-dark">
-    <% else%>
-      <footer class="footer text-white", style="background-color: #432c28;">
-    <% end %>
-
-      <div class="container text-center mt-3">
-        <p>© 2022 NAGANOblacks inc.</p>
-      </div>
+    <footer class="footer text-white bg-dark">
+      <% if request.fullpath.include? "admin"  %>
+      <% else%>
+        <%= render 'layouts/footer' %>
+      <% end %>
     </footer>
 
-
   </body>
+
 </html>

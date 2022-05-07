@@ -1,2 +1,50 @@
-<h1>Public::Customers#edit</h1>
-<p>Find me in app/views/public/customers/edit.html.erb</p>
+<div class='container'>
+  <div class='row'>
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+    <h2>登録情報</h2>
+    <%= form_with model:@customer, local:true do |f| %>
+      <%= render 'layouts/errors', obj: @customer %>
+      <div class="form-group">
+        <%= f.label :"ニックネーム" %>
+        <%= f.text_field :nickname, class: "form-control name" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :"メールアドレス" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
+      <div class="form-group">
+        <%= f.radio_button :sex, Customer.sexes.key(0) %>
+        <%= f.label :sex, Customer.sexes_i18n[:man] %>
+        <%= f.radio_button :sex, Customer.sexes.key(1) %>
+        <%= f.label :sex, Customer.sexes_i18n[:woman]  %>
+      </div>
+      <div class="form-group">
+        <%= f.label :"生年月日(数字8桁)", class: "col-sm-6" %>
+        <%= f.text_field :birthday, autofocus: true, autocomplete: "birthday" %>
+      </div>
+      <div class="form-group">
+      <%= f.label :"電話番号（ハイフンなし）" %>
+      <%= f.text_field :telephone_number, autofocus: true, autocomplete: "telephone_number" %>
+      </div>
+
+     <div class="form-group">
+        <%= f.label :"プロフィール画像" %>
+        <%= f.file_field :profile_image, class: "form-control-file customer_image", accept: 'image/*' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :"自己紹介文" %>
+        <%= f.text_area :introduction, class: "form-control introduction" %>
+      </div>
+      <div class="form-group">
+        <%= f.submit class: 'btn btn-secondary' %>
+      </div>
+      <div class="field ">
+        <%= link_to "退会する", withdraw_confirm_customer_path, class: "btn btn-danger" %>
+      </div>
+
+      <div class="field ">
+        <%= link_to "戻る", customer_path(current_customer), class: "btn btn-info" %>
+      </div>
+    <% end %>
+  </div>
+</div>

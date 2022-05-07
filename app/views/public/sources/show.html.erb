@@ -1,2 +1,71 @@
-<h1>Public::Sources#show</h1>
-<p>Find me in app/views/public/sources/show.html.erb</p>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>ユーザー情報</h2>
+      <%= render 'public/customers/info' ,customer:@customer %>
+      <h2 class="mt-3">New source</h2>
+      <%= render 'form', source: @newsource %>
+    </div>
+    <div class='col-md-8 offset-md-1'>
+  		<h2>情報ソース詳細</h2>
+  		<table class='table'>
+  		  <tr>
+          <td><%= link_to(@source.customer) do %>
+            <%= image_tag @source.customer.get_profile_image(100,100) %><br>
+            <%= @source.customer.nickname %>
+            <% end %>
+          </td>
+          <td><%= link_to @source.purpose, @source %></td>
+          <td><%= @source.performance_review %></td>
+          <% if @source.customer_id == current_customer.id %>
+            <td><%= link_to 'Edit', edit_source_path(@source), class: "btn btn-sm btn-success edit_source_#{@source.id}" %></td>
+            <td><%= link_to 'Destroy', @source, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_source_#{@source.id}"%></td>
+          <% end %>
+          <!--いいね機能追加-->
+          <% if @source.liked_by?(current_customer) %>
+            <td>
+              <%= link_to source_likes_path(@source),style: "color:red", method: :delete do %>
+                ♥<%= @source.likes.count %>
+              <% end %>
+            </td>
+            <% else %>
+            <td>
+              <%= link_to source_likes_path(@source),style: "color:blue", method: :post do %>
+                ♥<%= @source.likes.count %>
+              <% end %>
+            </td>
+          <% end %>
+
+          <td><p>コメント件数：<%= @source.comments.count %></p></td>
+
+        </tr>
+          <% @source.comments.each do |comment| %>
+        <tr>
+            <td><p><%= image_tag comment.customer.get_profile_image(100,100) %><br>
+                <%= link_to comment.customer.name, @source.customer %></p>
+            </td>
+            <td><%= comment.comment %></td>
+            <% if comment.customer == current_customer %>
+              <td><%= link_to "Destroy", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %></td>
+            <% end %>
+          <% end %>
+        </tr>
+
+      </table>
+
+      <!--コメント機能-->
+ <%
+=begin %>
+          <div>
+            <%= form_with model: [@source, @comment] do |f| %>
+              <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+              <%= f.submit "送信する" %>
+            <% end %>
+          </div>
+<%
+=end %>
+
+
+    </div>
+  </div>
+</div>

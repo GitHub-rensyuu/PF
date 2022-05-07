@@ -1,0 +1,39 @@
+<table class='table'>
+  <tr><%= image_tag customer.get_profile_image(100,100) %></tr>
+  <tr>
+	  <th>name</th>
+	  <th><%= customer.nickname %></th>
+  </tr>
+  <tr>
+	  <th>introduction</th>
+	  <th><%#= customer.introduction %></th>
+  </tr>
+
+
+  <!--フォロー、フォロワー一覧ページにジャンプ-->
+  <tr>
+    <th>follows</th>
+    <th><%= link_to customer.following_customer.count, follows_customer_path(customer) %></th>
+  </tr>
+  <tr>
+    <th>followers</th>
+    <th><%= link_to customer.follower_customer.count, followers_customer_path(customer) %></th>
+  </tr>
+
+</table>
+
+
+<div class='row'>
+  <%= link_to edit_customer_path(customer), class: "btn btn-outline-secondary btn-block edit_customer_#{customer.id}" do %>
+    <i class="fas fa-customer-cog"></i>
+  <% end %>
+
+  <!--フォロー登録、解除ボタン-->
+  <% if current_customer != customer %>
+    <% if current_customer.following?(customer) %>
+      <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
+    <% else %>
+      <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success" %>
+    <% end %>
+  <% end %>
+</div>

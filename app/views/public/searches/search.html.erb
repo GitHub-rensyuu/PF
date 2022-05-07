@@ -1,2 +1,16 @@
-<h1>Public::Searches#search</h1>
-<p>Find me in app/views/public/searches/search.html.erb</p>
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-12'>
+        <!--検索対象モデルがCustomerの時 -->
+        <% if @model == "customer" %>
+        <h3>会員 "<%= @content %>" の検索結果</h3>
+          <%= render 'public/customers/search', customers: @records %>
+
+        <!--検索対象モデルがCustomerではない時(= 検索対象モデルがSourceの時) -->
+        <% else %>
+        <h3>Sources search for "<%= @content %>"</h3>
+          <%= render 'public/sources/search', sources: @records %>
+        <% end %>
+    </div>
+  </div>
+</div>

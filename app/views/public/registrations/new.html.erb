@@ -9,10 +9,9 @@
   <%= render "public/shared/error_messages", resource: resource %>
 
   <div class="form-group row">
-  <%= f.label :氏名, class: "col-sm-4" %><br>
+  <%= f.label :"ニックネーム", class: "col-sm-4" %><br>
   <%= f.text_field :nickname, class: "col-sm-4" %>
   </div>
-
 
   <div class="form-group row">
     <%= f.label :"メールアドレス", class: "col-sm-6" %><br />
@@ -20,7 +19,12 @@
   </div>
 
   <div class="form-group row">
-  <%= f.label :"生年月日", class: "col-sm-6" %><br>
+  <%= f.label :"性別", class: "col-sm-6" %><br>
+  <%= f.text_field :sex, class: "col-sm-6" %>
+  </div>
+
+  <div class="form-group row">
+  <%= f.label :"生年月日(数字8桁)", class: "col-sm-6" %><br>
   <%= f.text_field :birthday, class: "col-sm-6" %>
   </div>
 
@@ -37,8 +41,6 @@
     <% end %><br />
     <%= f.password_field :password, autocomplete: "new-password", class: "col-sm-6" %>
   </div>
-
-
 
   <div class="form-group row">
     <%= f.label :"パスワード（確認用）", class: "col-sm-6" %><br />

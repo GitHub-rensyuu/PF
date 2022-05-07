@@ -1,2 +1,23 @@
-<h1>Public::Sources#index</h1>
-<p>Find me in app/views/public/sources/index.html.erb</p>
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <%= render 'public/searches/form' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>ユーザー情報</h2>
+      <%= render 'public/customers/info', customer: current_customer %>
+      <h2 class="mt-3">New source</h2>
+      <%= render 'form', source: @source %>
+    </div>
+    <div class='col-md-8 offset-md-1'>
+
+      <%= link_to '新着順でソートする', sources_path(sort_new: "true") %>|
+      <%= link_to '評価順でソートする', sources_path(sort_rate: "true") %>
+
+      <h2>Books</h2>
+      <%= render 'index', sources: @sources%>
+    </div>
+  </div>
+</div>
