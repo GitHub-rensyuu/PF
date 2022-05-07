@@ -4,12 +4,12 @@
         <!--検索対象モデルがCustomerの時 -->
         <% if @model == "customer" %>
         <h3>会員 "<%= @content %>" の検索結果</h3>
-          <%= render 'public/customers/search', customers: @records %>
+          <%= render 'public/customers/index', customers: @records %>
 
         <!--検索対象モデルがCustomerではない時(= 検索対象モデルがSourceの時) -->
         <% else %>
-        <h3>Sources search for "<%= @content %>"</h3>
-          <%= render 'public/sources/search', sources: @records %>
+        <h3>情報ソース "<%= @content %>" の検索結果</h3>
+          <%= render 'public/sources/index', sources: @records %>
         <% end %>
     </div>
   </div>
