@@ -1,0 +1,22 @@
+<table class='table table-hover table-inverse'>
+  <thead>
+    <tr>
+      <th>image</th>
+      <th>name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% customers.each do |customer| %>
+          <td><%= image_tag customer.get_profile_image(30,30) %></td>
+          <td><%= customer.nickname %></td>
+          <td>フォロー数:<%= customer.following_customer.count %></td>
+          <td>フォロワー数:<%= customer.follower_customer.count %></td>
+          <td><%= link_to "Show",customer_path(customer) %></td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>

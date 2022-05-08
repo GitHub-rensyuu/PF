@@ -3,7 +3,7 @@ class Public::SourcesController < ApplicationController
     @newsource = Source.new
     @source = Source.find(params[:id])
     @customer = @source.customer
-    @source_comment = Comment.new
+    @comment = Comment.new
   end
   def index
     @customer = current_customer
@@ -51,7 +51,7 @@ class Public::SourcesController < ApplicationController
   def destroy
     @source = Source.find(params[:id])
     if @source.destroy
-      flash[:notice]="Source was successfully destroyed."
+      flash[:notice]="削除しました"
       redirect_to sources_path
     end
   end

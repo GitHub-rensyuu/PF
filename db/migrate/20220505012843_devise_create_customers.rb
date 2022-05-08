@@ -34,7 +34,8 @@ class DeviseCreateCustomers < ActiveRecord::Migration[6.1]
 
       # カラム追加部分
       t.string :nickname
-      t.string :birthday
+      # t.string :birthday
+      t.date :birthday
       t.string :introduction
       t.string :telephone_number
       t.integer :sex

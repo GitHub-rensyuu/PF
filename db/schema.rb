@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2022_05_07_150615) do
     t.integer "source_id"
     t.text "comment"
     t.float "recommended_rank"
-    t.float "review"
+    t.float "rate"
     t.boolean "is_valid", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2022_05_07_150615) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string "nickname"
-    t.string "birthday"
+    t.date "birthday"
     t.string "introduction"
     t.string "telephone_number"
     t.integer "sex"

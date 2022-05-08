@@ -9,6 +9,7 @@ class Customer < ApplicationRecord
   has_many :sources, dependent: :destroy
   has_many:likes,dependent: :destroy
   has_many:comments,dependent: :destroy
+  has_many:usefuls,dependent: :destroy
 
   has_many :follower, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followed, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
@@ -17,8 +18,8 @@ class Customer < ApplicationRecord
   
   has_many :reporter, class_name: "Report", foreign_key: "reporter_id", dependent: :destroy
   has_many :reported, class_name: "Report", foreign_key: "reported_id", dependent: :destroy
-  has_many :reporting_customer, through: :reporter, source: :reported # 自分がフォローしている人
-  has_many :reporter_customer, through: :reported, source: :reporter # 自分をフォローしている人
+  has_many :reporting_customer, through: :reporter, source: :reported # 自分が通報している人
+  has_many :reporter_customer, through: :reported, source: :reporter # 自分を通報している人
 
  # ユーザーをフォローする
   def follow(customer_id)
@@ -55,6 +56,13 @@ class Customer < ApplicationRecord
     super && (is_deleted == false)
   end
 
+  # ゲストログイン設定
+  def self.guest
+    find_or_create_by!(nickname: 'guestcustomer' ,email: 'guest@example.com') do |customer|
+      customer.password = SecureRandom.urlsafe_base64
+      customer.nickname = "guestcustomer"
+    end
+  end
 
   # 画像の保存設定
   has_one_attached :profile_image

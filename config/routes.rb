@@ -15,13 +15,15 @@ Rails.application.routes.draw do
       end
     end
 
-    devise_for :customers, skip: [:passwords], controllers: {
-    registrations: "public/registrations",
-    sessions: "public/sessions"
-  }
+    devise_for :customers, skip: [:passwords], controllers: {registrations: "public/registrations", sessions: "public/sessions"} 
+    
+    devise_scope :customer do
+      post 'customers/guest_sign_in', to: 'sessions#guest_sign_in'
+    end
+    
     resources :customers, only: [:index, :show, :edit, :update] do
       member do
-        get :follows, :followers, :withdraw_confirm
+        get :follows, :followers, :withdraw_confirm, :reporteds, :reporters, :chart
         patch :withdraw
       end
       resource :follows, only: [:create, :destroy]

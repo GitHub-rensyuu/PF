@@ -19,30 +19,43 @@
     <th>followers</th>
     <th><%= link_to customer.follower_customer.count, followers_customer_path(customer) %></th>
   </tr>
+  
+  <!--通報した人、通報された人一覧ページにジャンプ-->
+  <tr>
+    <th>あなたが通報した人</th>
+    <th><%= link_to customer.reporting_customer.count, reporteds_customer_path(customer) %></th>
+  </tr>
+  <tr>
+    <th>あなたを通報した人</th>
+    <th><%= link_to customer.reporter_customer.count, reporters_customer_path(customer) %></th>
+  </tr>
 
 </table>
 
-
 <div class='row'>
-  <%= link_to edit_customer_path(customer), class: "btn btn-outline-secondary btn-block edit_customer_#{customer.id}" do %>
-    <i class="fas fa-customer-cog"></i>
-  <% end %>
-
-  <% if current_customer != customer %>
-  
-  <!--フォロー登録、解除ボタン-->
-    <% if current_customer.following?(customer) %>
-      <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
-    <% else %>
-      <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success" %>  
+  <% if customer.nickname != "guestuser" %>
+    <%= link_to edit_customer_path(customer), class: "btn btn-outline-secondary btn-block edit_customer_#{customer.id}" do %>
+      <i class="fas fa-user-cog"></i>
     <% end %>
   
-  <!--通報登録、解除ボタン-->
-    <% if current_customer.reporting?(customer) %>
-      <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
-    <% else %>
-      <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn-sm btn-danger" %>
-    <% end %>
+    <% if current_customer != customer %>
     
+    <!--フォロー登録、解除ボタン-->
+      <% if current_customer.following?(customer) %>
+        <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
+      <% else %>
+        <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success" %>  
+      <% end %>
+    
+    <!--通報登録、解除ボタン-->
+      <% if current_customer.reporting?(customer) %>
+        <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
+      <% else %>
+        <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn-sm btn-danger" %>
+      <% end %>
+      
+    <% else %>
+      <%= link_to "チャート", chart_customer_path(customer),data: {turbolinks: false} %>
+    <% end %>
   <% end %>
 </div>

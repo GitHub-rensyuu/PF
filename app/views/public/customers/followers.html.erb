@@ -1,37 +1,12 @@
-
   <div class="container">
     <div class="row">
       <div class='col-md-12'>
-
-
             <% unless @customers.present? %>
-              <h1>フォロワーがいません。</h1>
+              <h1><%#= @customer.nickname %>さんのフォロワーはいません。</h1>
             <% else %>
-            <table class='table table-hover table-inverse'>
               <h1>Follower User</h1>
-              <thead>
-                <tr>
-                  <th>image</th>
-                  <th>name</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <% @customers.each do |customer| %>
-                      <td><%= image_tag customer.get_profile_image(30,30) %></td>
-                      <td><%= customer.nickname %></td>
-                      <td>フォロー数:<%= customer.following_customer.count %></td>
-                      <td>フォロワー数:<%= customer.follower_customer.count %></td>
-                      <td><%= link_to "Show",customer_path(customer) %></td>
-                  <% end %>
-                </tr>
-              </tbody>
-            </table>
+              <%= render 'follow',customers: @customers %>
             <% end %>
-
       </div>
     </div>
     <%#= paginate @customers %>

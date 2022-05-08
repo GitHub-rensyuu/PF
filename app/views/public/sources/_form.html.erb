@@ -20,10 +20,6 @@
     <%= f.text_area :note, class: 'form-control source_body' %>
   </div>
 
-  <div class="form-group">
-    <%= f.submit class: 'btn btn-success' %>
-  </div>
-
 
 <!--★評価-->
 <div class="form-group field" id="star">
@@ -40,8 +36,13 @@
           half: true,
       });
   </script>
+  
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-success' %>
+  </div>
 
-
+<%
+=begin
   <div class="form-group field" id="star">
       <%= f.label :recommended_rank,  "おすすめの対象者レベル★評価 （初心者～上級者）(※必須)" ,id: "e"%>
       <%= f.hidden_field :recommended_rank, id: :rate_star %>
@@ -56,7 +57,8 @@
           half: true,
       });
   </script>
-
+ <%
+=end %>
 
 
 

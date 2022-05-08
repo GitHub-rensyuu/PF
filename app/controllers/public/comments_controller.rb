@@ -16,6 +16,6 @@ class Public::CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:comment,:recommended_rank,:review)
+    params.require(:comment).permit(:comment,:recommended_rank,:rate)
   end
 end
