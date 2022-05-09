@@ -11,7 +11,7 @@ Admin.create!(
    password: "123456"
 )
 
-5.times do |n|
+7.times do |n|
    Customer.create!(
       email: "#{n + 1}@#{n + 1}",
       nickname: "名#{n + 1}",
