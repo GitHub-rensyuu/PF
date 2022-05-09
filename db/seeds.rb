@@ -16,7 +16,6 @@ Admin.create!(
       email: "#{n + 1}@#{n + 1}",
       nickname: "名#{n + 1}",
       birthday:"2018-12-05".to_date,
-      # birthday: "2000010#{n + 1}",
       introduction: "#{n + 1}です。よろしくお願いします。",
       telephone_number: "0801000000#{n + 1}",
       sex: 1,
@@ -32,6 +31,6 @@ end
       performance_review: "#{n + 1}が確認できました。",
       note:"#{n + 1}が間違ってました。",
       rate:n + 1,
-      recommended_rank: 1
+      recommended_rank: 0
     )
 end

@@ -14,7 +14,9 @@
     <div class='col-md-8 offset-md-1'>
 
       <%= link_to '新着順でソートする', sources_path(sort_new: "true") %>|
-      <%= link_to '評価順でソートする', sources_path(sort_rate: "true") %>
+      <%= link_to '評価順でソートする', sources_path(sort_rate: "true") %>|
+      <%= link_to 'いいね数順でソートする', sources_path(sort_like: "true") %>|
+      <%= link_to 'コメント数順でソートする', sources_path(sort_comment: "true") %>
 
       <h2>情報ソース一覧</h2>
       <%= render 'index', sources: @sources%>

@@ -10,8 +10,12 @@ class Public::SourcesController < ApplicationController
     @source = Source.new
     if params[:sort_new]
       @sources = Source.all.order(created_at: :desc)
-    elsif params[:sort_raty]
+    elsif params[:sort_rate]
       @sources = Source.all.order(rate: :desc)
+    elsif params[:sort_like]
+      @sources = Source.all.order(like: :desc)
+    elsif params[:sort_comment]
+      @sources = Source.all.order(comment: :desc)
     else
       @sources = Source.all
     end
