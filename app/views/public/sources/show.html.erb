@@ -18,7 +18,7 @@
               
             </div>
             <div class="">
-              <h5 class="card-title">評価:
+              <h5 class="card-title">評価: 
               <!--<div class="relative-source-rate">-->
                 <span id="star-rate-<%= @source.id %>"></span>
                 <script>
@@ -38,24 +38,24 @@
               </h5>
             </div>
             <div class="card-body">
-              <h5 class="card-title">推奨する対象者:<%= @source.recommended_rank_i18n %></h5>
+              <h5 class="card-title">推奨する対象者: <%= @source.recommended_rank_i18n %></h5>
               <p class="card-text"></p>
             </div>
           
             <div class="card-body">
-              <h5 class="card-title">目的:<%= @source.purpose %></h5>
+              <h5 class="card-title">目的: <%= @source.purpose %></h5>
               <p class="card-text"></p>
             </div>
             <div class="card-body">
-              <h5 class="card-title">参考にした情報ソース(URL):<%= text_url_to_link(h(@source.source)).html_safe %></h5>
+              <h5 class="card-title">参考にした情報ソース(URL): <%= text_url_to_link(h(@source.source)).html_safe %></h5>
               <p class="card-text"></p>
             </div>
             <div class="card-body">
-              <h5 class="card-title">評価コメント:<%= @source.performance_review %></h5>
+              <h5 class="card-title">評価コメント: <%= @source.performance_review %></h5>
               <p class="card-text"></p>
             </div>
             <div class="card-body">
-              <h5 class="card-title">備考:<%= @source.note %></h5>
+              <h5 class="card-title">備考: <%= @source.note %></h5>
               <p class="card-text"></p>
             </div>
             <div class="card-body">
