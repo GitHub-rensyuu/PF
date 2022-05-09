@@ -31,7 +31,7 @@ end
       purpose: "#{n + 1}確認のため",
       performance_review: "#{n + 1}が確認できました。",
       note:"#{n + 1}が間違ってました。",
-      rate:"#{n + 1}",
-      recommended_rank:"#{n + 1}"
+      rate:n + 1,
+      recommended_rank: 1
     )
 end

@@ -16,7 +16,7 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :"情報ソースが古い、誤りがある場合のコメント" %>
+    <%= f.label :"内容が古い、誤りがある場合のコメント" %>
     <%= f.text_area :note, class: 'form-control source_body' %>
   </div>
 
@@ -38,15 +38,17 @@
   </script>
   
   <div class="form-group">
+      <%= f.label :recommended_rank,  "推奨する対象者" %>
+      <%= f.select :recommended_rank, Source.recommended_ranks.keys.map {|k| [I18n.t("enums.source.recommended_rank.#{k}"), k]} %>
+  </div>
+  
+  <div class="form-group">
     <%= f.submit class: 'btn btn-success' %>
   </div>
 
 <%
 =begin
-  <div class="form-group field" id="star">
-      <%= f.label :recommended_rank,  "おすすめの対象者レベル★評価 （初心者～上級者）(※必須)" ,id: "e"%>
-      <%= f.hidden_field :recommended_rank, id: :rate_star %>
-  </div>
+  
   <script>
       $('#star').raty({
           size     : 36,

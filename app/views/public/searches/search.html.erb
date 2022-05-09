@@ -5,8 +5,7 @@
         <% if @model == "customer" %>
         <h3>会員 "<%= @content %>" の検索結果</h3>
           <%= render 'public/customers/index', customers: @records %>
-
-        <!--検索対象モデルがCustomerではない時(= 検索対象モデルがSourceの時) -->
+        <!--検索対象モデルがSourceの時 -->
         <% else %>
         <h3>情報ソース "<%= @content %>" の検索結果</h3>
           <%= render 'public/sources/index', sources: @records %>

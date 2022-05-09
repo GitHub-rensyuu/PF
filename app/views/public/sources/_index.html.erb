@@ -2,11 +2,11 @@
   <%#= render 'layouts/errors', obj: @source %>
   <thead>
     <tr>
-      <th>ニックネーム</th>
+      <th>投稿者</th>
       <th>目的</th>
-      <th>参考にした情報ソース(URL)</th>
+      <th>参考(URL)</th>
       <th>評価コメント</th>
-      <th>Rate</th>
+      <th>評価</th>
       <!--<th>recommended_rank</th>-->
       <th>いいね</th>
       <th>コメント数</th>
@@ -47,7 +47,6 @@
               score: "<%= source.rate %>",
             });
           </script>
-          <%= source.rate %>
         </div>
         </td>
         <!--いいね機能追加-->
@@ -66,7 +65,16 @@
         <% end %>
 
         <!--コメント件数表示-->
+<%
+=begin %>        
         <td><span><%= link_to "#{source.comments.count} ", source_path(source.id), class:"text-dark" %></span></td>
+<%
+=end %>
+        <td>
+          <%= link_to source_path(source.id) do %>
+                <i class="fa-light fa-comment-dots"></i><%= "#{source.comments.count} " %>
+          <% end %>
+        </td>
 
 
       </tr>

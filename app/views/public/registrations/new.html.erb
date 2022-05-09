@@ -23,10 +23,7 @@
   
   <div class="form-group row">
         <%= f.label :"性別", class: "col-sm-6" %><br>
-        <%= f.radio_button :sex, Customer.sexes.key(0) %>
-        <%= f.label :sex, Customer.sexes_i18n[:man], class: "mr-3" %>
-        <%= f.radio_button :sex, Customer.sexes.key(1) %>
-        <%= f.label :sex, Customer.sexes_i18n[:woman]  %>
+        <%= f.collection_radio_buttons :sex,  Customer.sexes_i18n, :first , :last %>
   </div>
   
   
@@ -46,12 +43,12 @@
     <% if @minimum_password_length %>
     <em><% @minimum_password_length %></em>
     <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: "col-sm-6" %>
+    <%= f.password_field :password, placeholder: "password", autocomplete: "new-password", class: "col-sm-6" %>
   </div>
 
   <div class="form-group row">
     <%= f.label :"パスワード（確認用）", class: "col-sm-6" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "col-sm-6" %>
+    <%= f.password_field :password_confirmation, placeholder: "password", autocomplete: "new-password", class: "col-sm-6" %>
   </div>
 
   <div class="row">

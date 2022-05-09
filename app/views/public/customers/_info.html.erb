@@ -6,7 +6,7 @@
   </tr>
   <tr>
 	  <th>introduction</th>
-	  <th><%#= customer.introduction %></th>
+	  <th><%= customer.introduction %></th>
   </tr>
 
 
@@ -42,18 +42,19 @@
     
     <!--フォロー登録、解除ボタン-->
       <% if current_customer.following?(customer) %>
-        <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
+        <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn-sm btn-info ml-3 mr-5 mt-2" %>
       <% else %>
-        <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success" %>  
+        <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn-sm btn-success ml-3 mr-5 mt-2" %>  
       <% end %>
     
     <!--通報登録、解除ボタン-->
       <% if current_customer.reporting?(customer) %>
-        <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn-sm btn-info" %>
+        <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn-sm btn-info mt-2" %>
       <% else %>
-        <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn-sm btn-danger" %>
+        <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn-sm btn-danger mt-2" %>
       <% end %>
       
+    <!--投稿数グラフ-->
     <% else %>
       <%= link_to "チャート", chart_customer_path(customer),data: {turbolinks: false} %>
     <% end %>

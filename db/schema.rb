@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2022_05_07_150615) do
     t.text "performance_review"
     t.text "note"
     t.float "rate"
-    t.float "recommended_rank"
+    t.integer "recommended_rank"
     t.boolean "is_vaild", default: true
     t.boolean "is_public", default: false
     t.datetime "created_at", precision: 6, null: false

@@ -5,8 +5,9 @@ class Source < ApplicationRecord
   validates :source,presence:true
   validates :purpose,presence:true,length:{maximum:200}
   validates :performance_review,presence:true
-  # validates :reveiw,presence:true
+  validates :rate,presence:true
   # validates :recommended_rank,presence:true
+  enum recommended_rank: { beginner: 0, intermediate: 1,advanced:2}
 
   def liked_by?(customer)
     likes.where(customer_id: customer.id).exists?

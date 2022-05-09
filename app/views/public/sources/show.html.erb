@@ -8,7 +8,207 @@
     </div>
     <div class='col-md-8 offset-md-1'>
   		<h2>情報ソース詳細</h2>
+  		  <% if @source.customer_id == current_customer.id %>
+          <%= link_to '編集', edit_source_path(@source), class: "btn btn-sm btn-success edit_source_#{@source.id} mr-3" %>
+          <%= link_to '削除', @source, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_source_#{@source.id}"%>
+        <% end %>
   		<table class='table'>
+  		  <thead>
+          <tr>
+            <th>投稿者</th>
+            <th><%= link_to(@source.customer) do %>
+                  <%= image_tag @source.customer.get_profile_image(100,100) %><br>
+                  <%= @source.customer.nickname %>
+                <% end %>
+            </th>
+          </tr>
+          <tr>
+            <th>目的</th>
+            <th><%= link_to @source.purpose, @source %></th>
+          </tr>
+          <tr>
+            <th>参考にした情報ソース(URL)</th>
+            <th><%= text_url_to_link(h(@source.source)).html_safe %></th>
+          </tr>
+          <tr>
+            <th>評価コメント</th>
+            <th><%= @source.performance_review %></th>
+          </tr>
+          <tr>
+            <th>内容が古い、誤りがある場合のコメント</th>
+            <th><%= @source.note %></th>
+          </tr>
+          <tr>
+            <th>評価</th>
+                <!--星評価表示機能-->
+            <th>
+            <div class="relative-source-rate">
+              <span id="star-rate-<%= @source.id %>"></span>
+              <script>
+                $('#star-rate-<%= @source.id %>').empty();
+                $('#star-rate-<%= @source.id %>').raty({
+                  size: 36,
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starOn: "<%= asset_path('star-on.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  half: true,
+                  readOnly: true,
+                  score: "<%= @source.rate %>",
+                });
+              </script>
+              <%= @source.rate %>
+            </div>
+            </th>
+          </tr>
+          <tr>
+            <th>推奨する対象者</th>
+            <th><%= @source.recommended_rank_i18n %></th>
+          </tr>
+          
+          <tr>
+            <th>いいねの数</th>
+            <% if @source.liked_by?(current_customer) %>
+            <th>
+              <%= link_to source_likes_path(@source),style: "color:red", method: :delete do %>
+                ♥<%= @source.likes.count %>
+              <% end %>
+            </th>
+            <% else %>
+            <th>
+              <%= link_to source_likes_path(@source),style: "color:blue", method: :post do %>
+                ♥<%= @source.likes.count %>
+              <% end %>
+            </th>
+          <% end %>
+            
+          </tr>
+          <tr>
+            <th>レビュー件数</th>
+            <th><p><%= @source.comments.count %></p></th>
+          </tr>
+          <br>
+          <% if @source.comments.exists? %>
+          <tr>
+            <th>情報ソースに対してのコメント一覧</th>
+          <tr>
+          
+          <tr>
+            <th>レビューア</th>
+            <th>コメント</th>
+            <th>評価</th>
+            <th>推奨する対象者</th>
+            <th></th>
+          <tr>
+          </thead>
+          
+          <tbody>
+          
+          <% @source.comments.each do |comment| %>
+            <tr>
+                <td><p><%= image_tag comment.customer.get_profile_image(100,100) %><br>
+                    <%= link_to comment.customer.nickname, @source.customer %></p>
+                </td>
+                <td><%= comment.comment %><br>
+                <% if comment.customer == current_customer %>
+                  <%= link_to "削除", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %>
+                <% end %>
+                </td>
+                <td>
+                <span id="star-rate-<%= comment.id %>"></span>
+                    <script>
+                       $('#star-rate-<%= comment.id %>').empty();
+                      $('#star-rate-<%= comment.id %>').raty({
+                        size: 36,
+                        starOff: "<%= asset_path('star-off.png') %>",
+                        starOn: "<%= asset_path('star-on.png') %>",
+                        starHalf: "<%= asset_path('star-half.png') %>",
+                        half: true,
+                        readOnly: true,
+                        score: "<%= comment.rate %>",
+                        
+                      });
+                    </script>
+                </td>
+                <td>
+                  <%= comment.recommended_rank_i18n %>
+                </td>
+                <% if comment.customer == current_customer %>
+                <% else %>
+                  <!--役に立った機能追加-->
+                  <% if comment.usefuld_by?(current_customer) %>
+                    <td>
+                      <%= link_to source_comment_useful_path(comment.source, comment),style: "color:red", method: :delete do %>
+                        役に立った<%= comment.usefuls.count %>人
+                      <% end %>
+                    </td>
+                  <% else %>
+                    <td>
+                      <%= link_to source_comment_usefuls_path(comment.source,comment),style: "color:blue", method: :post do %>
+                        役に立った<%= comment.usefuls.count %>人
+                      <% end %>
+                    </td>
+                  <% end %>
+                <% end %>
+                
+              <% end %>
+            </tr>
+        </tbody>
+        <% end %>
+      </table>
+
+      <!--コメント機能-->
+        <% if @source.customer != current_customer %>
+          <div>
+            <%= form_with model: [@source, @comment] do |f| %>
+              <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+              <div class="relative-comment-rate">
+                <div id="star-rate">
+                  <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>
+                  <%= f.hidden_field :rate, id: :rate_star %>
+                </div>
+                <script>
+                  $('#star-rate').empty();
+                  $('#star-rate').raty({
+                    size: 36,
+                    starOff: "<%= asset_path('star-off.png') %>",
+                    starOn: "<%= asset_path('star-on.png') %>",
+                    starHalf: "<%= asset_path('star-half.png') %>",
+                    scoreName: 'comment[rate]',
+                    half: true,
+                  });
+                </script>
+                <%= @comment.rate %>
+                
+              </div>
+              <div class="form-group">
+                <%= f.label :recommended_rank,  "推奨する対象者" %>
+                <%= f.select :recommended_rank, Source.recommended_ranks.keys.map {|k| [I18n.t("enums.source.recommended_rank.#{k}"), k]} %>
+              </div>
+              <%= f.submit "送信する" %>
+            <% end %>
+          </div>
+        <% end %>
+          
+    </div>
+  </div>
+</div>
+<%
+=begin %>
+  		<table class='table'>
+  		  <thead>
+          <tr>
+            <th>投稿者</th>
+            
+            <th>目的</th>
+            <th>参考にした情報ソース(URL)</th>
+            <th>評価コメント</th>
+            <th>評価</th>
+            <!--<th>recommended_rank</th>-->
+            <th>いいね</th>
+            <th>コメント数</th>
+          </tr>
+        </thead>
+        <tbody>
   		  <tr>
           <td><%= link_to(@source.customer) do %>
             <%= image_tag @source.customer.get_profile_image(100,100) %><br>
@@ -64,7 +264,7 @@
                 </script>
             </td>
             <% if comment.customer == current_customer %>
-              <td><%= link_to "Destroy", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %></td>
+              <td><%= link_to "削除", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %></td>
             <% else %>
               <!--役に立った機能追加-->
               <% if comment.usefuld_by?(current_customer) %>
@@ -81,51 +281,10 @@
                 </td>
               <% end %>
             <% end %>
-        <%
-=begin %>
-<%
-=end %>
             
           <% end %>
         </tr>
-
+        </tbody>
       </table>
-
-      <!--コメント機能-->
-          <div>
-            <%= form_with model: [@source, @comment] do |f| %>
-              <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
-              <div class="relative-comment-rate">
-                <div id="star-rate">
-                  <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>
-                  <%= f.hidden_field :rate, id: :rate_star %>
-                </div>
-                <script>
-                  $('#star-rate').empty();
-                  $('#star-rate').raty({
-                    size: 36,
-                    starOff: "<%= asset_path('star-off.png') %>",
-                    starOn: "<%= asset_path('star-on.png') %>",
-                    starHalf: "<%= asset_path('star-half.png') %>",
-                    scoreName: 'comment[rate]',
-                    half: true,
-                  });
-                </script>
-                <%= @comment.rate %>
-                
-              </div>
-              <%= "recommended_rank" %><br>
-              <%= f.submit "送信する" %>
-            <% end %>
-          </div>
-          
-          <!--星評価表示機能-->
-        
-        
-        
-
-
-
-    </div>
-  </div>
-</div>
+<%
+=end %>
