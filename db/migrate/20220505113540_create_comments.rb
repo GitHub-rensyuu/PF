@@ -3,6 +3,7 @@ class CreateComments < ActiveRecord::Migration[6.1]
     create_table :comments do |t|
       t.integer :customer_id
       t.integer :source_id
+      t.string :title
       t.text :comment
       t.float :recommended_rank
       t.float :rate

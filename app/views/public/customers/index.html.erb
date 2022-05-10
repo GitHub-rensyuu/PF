@@ -10,6 +10,12 @@
     </div>
 
     <div class="col-md-8 offset-md-1">
+      <%= link_to '投稿数順でソートする', customers_path(sort_source: "true") %>|
+      <%= link_to 'コメント数順でソートする', customers_path(sort_comment: "true") %>|
+      <%= link_to 'フォロワー数順でソートする', customers_path(sort_follower: "true") %>|
+      <%= link_to '役に立ったを貰った数順でソートする', customers_path(sort_usefuled: "true") %>|
+      <%= link_to 'いいねを貰った数順でソートする', customers_path(sort_liked: "true") %>|
+      <%= link_to '通報された数順でソートする', customers_path(sort_reported: "true") %>
       <h2>会員一覧</h2>
       <%= render 'index',customers: @customers %>
     </div>

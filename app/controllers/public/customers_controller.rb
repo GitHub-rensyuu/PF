@@ -4,6 +4,22 @@ class Public::CustomersController < ApplicationController
   def index
     @customers = Customer.all
     @source = Source.new
+    
+    # if params[:sort_source]
+    #   @customers = Customer.all.order(source: :desc)
+    # elsif params[:sort_comment]
+    #   @customers = Customer.all.order(comment: :desc)
+    # elsif params[:sort_follower]
+    #   @customers = Customer.includes(:follows).sort {|a,b| b.follows.size <=> a.follows.size}
+    # elsif params[:sort_usefuled]
+    #   @customers = Customer.includes(:usefuls).sort {|a,b| b.usefuls.size <=> a.usefuls.size}
+    # elsif params[:sort_liked]
+    #   @customers = Customer.includes(:likes).sort {|a,b| b.likes.size <=> a.likes.size}
+    # elsif params[:sort_reported]
+    #   # @customers = Customer.includes(:reports).sort {|a,b| b.reports.size <=> a.reports.size}
+    # else
+    #   @customers = Customer.all
+    # end
   end
 
   def show
@@ -70,6 +86,11 @@ class Public::CustomersController < ApplicationController
   def reporters
     customer = Customer.find(params[:id])
     @customers = customer.reporter_customer
+    # @customers = customer.reporter_customer.page(params[:page]).per(3).reverse_order
+  end
+  def likes
+    customer = Customer.find(params[:id])
+    @sources = customer.likes.map{|like| like.source}
     # @customers = customer.reporter_customer.page(params[:page]).per(3).reverse_order
   end
   

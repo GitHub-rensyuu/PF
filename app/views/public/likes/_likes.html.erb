@@ -1,0 +1,11 @@
+  <td id="like_buttons_<%= source.id %>">
+<% if source.liked_by?(current_customer) %>
+    <%= link_to source_likes_path(source),style: "color:red", method: :delete, remote: true do %>
+      ♥<%= source.likes.size %>
+    <% end %>
+  <% else %>
+    <%= link_to source_likes_path(source),style: "color:blue", method: :post, remote: true do %>
+      ♥<%= source.likes.size %>
+    <% end %>
+<% end %>
+  </td>

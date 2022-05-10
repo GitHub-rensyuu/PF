@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  source_id: 
+  customer_id: 1
+
+two:
+  source_id: 
+  customer_id: 1

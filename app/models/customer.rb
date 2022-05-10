@@ -10,6 +10,7 @@ class Customer < ApplicationRecord
   has_many:likes,dependent: :destroy
   has_many:comments,dependent: :destroy
   has_many:usefuls,dependent: :destroy
+  has_many :view_counts, dependent: :destroy# 閲覧数用
 
   has_many :follower, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followed, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy

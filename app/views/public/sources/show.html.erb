@@ -1,3 +1,5 @@
+<%
+=begin %>
 <div class='container'>
   <div class='row'>
     <div class='col-md-3'>
@@ -7,6 +9,8 @@
       <%= render 'form', source: @newsource %>
     </div>
     <div class='col-md-8 offset-md-1'>
+      
+      
 
   		<h3 class="mt-2"情報ソース詳細</h3>
   		  <div class="container mt-5">
@@ -61,14 +65,14 @@
             <div class="card-body">
               <% if @source.liked_by?(current_customer) %>
                 <%= link_to source_likes_path(@source),style: "color:red", method: :delete do %>
-                  ♥(<%= @source.likes.count %>)
+                  ♥(<%= @source.likes.size %>)
                 <% end %>
               <% else %>
                 <%= link_to source_likes_path(@source),style: "color:blue", method: :post do %>
-                  ♥(<%= @source.likes.count %>)
+                  ♥(<%= @source.likes.size %>)
                 <% end %>
               <% end %>
-                レビュー件数(<%= @source.comments.count %>)
+                レビュー件数(<%= @source.comments.size %>)
             </div>
             <div class="card-body">
               <% if @source.customer_id == current_customer.id %>
@@ -141,7 +145,7 @@
                   <% end %>
                 <% end %>
                 
-                <%= comment.usefuls.count %>人が役に立ったと答えています
+                <%= comment.usefuls.size %>人が役に立ったと答えています
             </tr>
           <% end %>
             
@@ -197,8 +201,7 @@
 
 
 
-<%
-=begin %>
+
 <div class='container'>
   <div class='row'>
     <div class='col-md-3'>
@@ -208,13 +211,14 @@
       <%= render 'form', source: @newsource %>
     </div>
     <div class='col-md-8 offset-md-1'>
-  		<h2>情報ソース詳細</h2>
+  		<h2>情報ソース詳細</h2><% link_to '戻る', 'javascript:history.back()' %>
   		  <% if @source.customer_id == current_customer.id %>
           <%= link_to '編集', edit_source_path(@source), class: "btn btn-sm btn-success edit_source_#{@source.id} mr-3" %>
           <%= link_to '削除', @source, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_source_#{@source.id}"%>
         <% end %>
   		<table class='table'>
   		  <thead>
+  		    投稿日: <%= @source.created_at.strftime('%Y/%m/%d') %>
           <tr>
             <th>投稿者</th>
             <th><%= link_to(@source.customer) do %>
@@ -225,7 +229,7 @@
           </tr>
           <tr>
             <th>目的</th>
-            <th><%= link_to @source.purpose, @source %></th>
+            <th><%= @source.purpose %></th>
           </tr>
           <tr>
             <th>参考にした情報ソース(URL)</th>
@@ -271,33 +275,35 @@
             <% if @source.liked_by?(current_customer) %>
             <th>
               <%= link_to source_likes_path(@source),style: "color:red", method: :delete do %>
-                ♥<%= @source.likes.count %>
+                ♥<%= @source.likes.size %>
               <% end %>
             </th>
             <% else %>
             <th>
               <%= link_to source_likes_path(@source),style: "color:blue", method: :post do %>
-                ♥<%= @source.likes.count %>
+                ♥<%= @source.likes.size %>
               <% end %>
             </th>
           <% end %>
-            
           </tr>
           <tr>
-            <th>レビュー件数</th>
-            <th><p><%= @source.comments.count %></p></th>
+            <th>コメント件数</th>
+            <th><p style= "color:blue"><i class="fas fa-comment-dots"></i><%= @source.comments.size %></p></th>
+          </tr>
+          <tr>
+            <th>閲覧数</th>
+            <th><i class="fas fa-solid fa-eye"></i><%= @source.view_counts.count %></th>
           </tr>
           <br>
           <% if @source.comments.exists? %>
           <tr>
             <th>情報ソースに対してのコメント一覧</th>
           <tr>
-          
           <tr>
             <th>レビューア</th>
             <th>コメント</th>
             <th>評価</th>
-            <th>推奨する対象者</th>
+            <th>おすすめの対象者</th>
             <th></th>
           <tr>
           </thead>
@@ -308,6 +314,7 @@
             <tr>
                 <td><p><%= image_tag comment.customer.get_profile_image(100,100) %><br>
                     <%= link_to comment.customer.nickname, @source.customer %></p>
+                     <%= comment.usefuls.size %>人が役に立ったと答えています
                 </td>
                 <td><%= comment.comment %><br>
                 <% if comment.customer == current_customer %>
@@ -350,8 +357,7 @@
                     </td>
                   <% end %>
                 <% end %>
-                
-                <%= comment.usefuls.count %>人が役に立ったと答えています
+
             </tr>
           <% end %>
             
@@ -363,6 +369,7 @@
         <% if @source.customer != current_customer %>
           <div>
             <%= form_with model: [@source, @comment] do |f| %>
+              <%= f.text_field :title, rows: '5', placeholder: "タイトル" %><br><br>
               <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
               <div class="relative-comment-rate">
                   <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>    
@@ -384,7 +391,7 @@
                 
               </div>
               <div class="form-group">
-                <%= f.label :recommended_rank,  "推奨する対象者" %>
+                <%= f.label :recommended_rank,  "おすすめの対象者" %>
                 <%= f.select :recommended_rank, Source.recommended_ranks_i18n.invert %>
               </div>
               <%= f.submit "送信する" %>
@@ -395,5 +402,3 @@
     </div>
   </div>
 </div>
-<%
-=end %>

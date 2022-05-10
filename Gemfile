@@ -63,5 +63,6 @@ gem 'rename'
 gem 'devise'
 gem 'rails-i18n'
 gem "enum_help"
+gem 'jquery-rails'
 # gem "refile", require: "refile/rails", github: 'manfe/refile'
 # gem "refile-mini_magick"

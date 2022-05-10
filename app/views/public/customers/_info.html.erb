@@ -29,6 +29,10 @@
     <th>あなたを通報した人</th>
     <th><%= link_to customer.reporter_customer.count, reporters_customer_path(customer) %></th>
   </tr>
+  <tr>
+    <th>いいね一覧</th>
+    <th><%= link_to "いいね一覧",likes_customer_path(customer) %></th>
+  </tr>
 
 </table>
 

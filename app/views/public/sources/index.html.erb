@@ -12,11 +12,20 @@
       <%= render 'form', source: @source %>
     </div>
     <div class='col-md-8 offset-md-1'>
+      <%= form_with model: @source, url: sources_path, method: :get, local: true do |form| %>
+       <%= form.select :keyword, [ ['投稿が新しい順', 'new'],['評価が高い順', 'rate'],['いいねが多い順', 'like'],['コメント数が多い順', 'comment'],['閲覧数が多い順', 'watch']] %>
+       <%= form.submit "並び替え", class: "btn btn-primary" %>
+      <% end %>
 
+<%
+=begin %> 
       <%= link_to '新着順でソートする', sources_path(sort_new: "true") %>|
       <%= link_to '評価順でソートする', sources_path(sort_rate: "true") %>|
       <%= link_to 'いいね数順でソートする', sources_path(sort_like: "true") %>|
-      <%= link_to 'コメント数順でソートする', sources_path(sort_comment: "true") %>
+      <%= link_to 'コメント数順でソートする', sources_path(sort_comment: "true") %>|
+      <%= link_to '閲覧数順でソートする', sources_path(sort_watch: "true") %>
+<%
+=end %>
 
       <h2>情報ソース一覧</h2>
       <%= render 'index', sources: @sources%>

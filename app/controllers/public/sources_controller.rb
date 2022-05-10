@@ -4,22 +4,37 @@ class Public::SourcesController < ApplicationController
     @source = Source.find(params[:id])
     @customer = @source.customer
     @comment = Comment.new
+    unless ViewCount.find_by(customer_id: current_customer.id, source_id: @source.id)
+      current_customer.view_counts.create(source_id: @source.id)
+    end
   end
   def index
     @customer = current_customer
     @source = Source.new
-    if params[:sort_new]
-      @sources = Source.all.order(created_at: :desc)
-    elsif params[:sort_rate]
-      @sources = Source.all.order(rate: :desc)
-    elsif params[:sort_like]
-      @sources = Source.all.order(like: :desc)
-    elsif params[:sort_comment]
-      @sources = Source.all.order(comment: :desc)
-    else
-      @sources = Source.all
+    @sources = Source.all
+    
+    unless params[:source].blank?
+      case params[:source][:keyword]
+       when 'new' then
+        @sources = Source.all.order(created_at: :desc)
+       when 'rate' then
+        @sources = Source.all.order(rate: :desc)
+       when 'like' then
+      # hash = {}
+        #Source.all.each {|s| hash["#{s.id}"] = s.likes.count }
+      # @sources = Source.find(hash.sort_by { |_, v| v }.reverse.to_h.keys)
+        @sources =  Source.includes(:likes).sort {|a,b| b.likes.size <=> a.likes.size}
+       when 'comment' then
+        @sources =  Source.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
+        # @sources = Source.all.order(comment: :desc)
+       when 'watch' then
+        @sources = Source.includes(:view_counts).sort {|a,b| b.view_counts.size <=> a.view_counts.size}
+      end
     end
+  
   end
+  
+
 
   def create
     @source = Source.new(source_params)
@@ -64,9 +79,16 @@ class Public::SourcesController < ApplicationController
      @source = Source.new
      @sources = Source.search(params[:keyword])
   end
+  
+  def search
+    selection = params[:keyword]
+    @sources = Source.sort(selection)
+  end
 
   def public_update
   end
+  
+  
 
 
   private

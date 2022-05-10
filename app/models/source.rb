@@ -2,6 +2,8 @@ class Source < ApplicationRecord
   belongs_to :customer
   has_many:likes,dependent: :destroy
   has_many:comments,dependent: :destroy
+  has_many :view_counts, dependent: :destroy# 閲覧数用
+  
   validates :source,presence:true
   validates :purpose,presence:true,length:{maximum:200}
   validates :performance_review,presence:true

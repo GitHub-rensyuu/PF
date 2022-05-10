@@ -1,17 +1,31 @@
 <table class='table table-hover table-inverse'>
   <thead>
     <tr>
-      <th>プロフィール画像</th>
       <th>ニックネーム</th>
-      <th colspan="3"></th>
+      <th>投稿数</th>
+      <th>コメント数</th>
+      <th>フォロワー数</th>
+      <th>通報された数</th>
+      <th>役に立ったを貰った総数</th>
     </tr>
   </thead>
   <tbody>
     <% customers.each do |customer| %>
       <tr>
-        <td><%= image_tag customer.get_profile_image(50,50) %></td>
-        <td><%= customer.nickname %></td>
-        <td><%= link_to 'Show', customer, class: "customer_#{customer.id}" %></td>
+        <td><%= link_to(customer) do %>
+            <%= image_tag customer.get_profile_image(50,50) %><br>
+            <%= customer.nickname %>
+            <% end %></td>
+        <td><i class="fas fa-book-open"></i><%= customer.sources.count %></td>
+        <td><i class="fas fa-comment-dots"></i><%= customer.comments.count %></td>
+        <td><%= link_to  followers_customer_path(customer) do %>
+          <i class="fas fa-users"></i><%= customer.follower_customer.count %>
+            <% end %>
+          </td>
+        <td><%= link_to reporters_customer_path(customer) do %>
+        <i class="fas fa-solid fa-bell"></i><%= customer.reporter_customer.count %>
+        <% end %></td>
+        <td><%= Useful.where(comment_id: customer.comments.pluck(:id)).count %></td>
       </tr>
     <% end %>
   </tbody>

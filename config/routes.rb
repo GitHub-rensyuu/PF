@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     get "/reviewers"=>"homes#reviewers"
     get "/chart"=>"homes#chart"
     get "/search"=> "searches#search"
+    get 'resources/search' => 'resources#search'
     resources :sources do
       resources:recommends, only: [:create, :edit, :destroy]
       resource:likes, only: [:create, :destroy]
@@ -23,7 +24,7 @@ Rails.application.routes.draw do
     
     resources :customers, only: [:index, :show, :edit, :update] do
       member do
-        get :follows, :followers, :withdraw_confirm, :reporteds, :reporters, :chart
+        get :follows, :followers, :withdraw_confirm, :reporteds, :reporters, :chart,:likes
         patch :withdraw
       end
       resource :follows, only: [:create, :destroy]

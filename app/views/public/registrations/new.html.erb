@@ -13,7 +13,7 @@
 
   <div class="form-group row">
   <%= f.label :"ニックネーム", class: "col-sm-6" %><br>
-  <%= f.text_field :nickname, placeholder: "ニック", class: "col-sm-4" %>
+  <%= f.text_field :nickname, placeholder: "ニック", class: "col-sm-6" %>
   </div>
 
   <div class="form-group row">
@@ -43,12 +43,12 @@
     <% if @minimum_password_length %>
     <em><% @minimum_password_length %></em>
     <% end %><br />
-    <%= f.password_field :password, placeholder: "password", autocomplete: "new-password", class: "col-sm-6" %>
+    <%= f.password_field :password, placeholder: "パスワードを入力してください", autocomplete: "new-password", class: "col-sm-6" %>
   </div>
 
   <div class="form-group row">
     <%= f.label :"パスワード（確認用）", class: "col-sm-6" %><br />
-    <%= f.password_field :password_confirmation, placeholder: "password", autocomplete: "new-password", class: "col-sm-6" %>
+    <%= f.password_field :password_confirmation, placeholder: "パスワードを入力してください", autocomplete: "new-password", class: "col-sm-6" %>
   </div>
 
   <div class="row">
