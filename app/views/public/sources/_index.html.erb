@@ -7,11 +7,12 @@
       <th>参考(URL)</th>
       <th>評価コメント</th>
       <th>評価</th>
-      <!--<th>recommended_rank</th>-->
       <th>いいね</th>
       <th>コメント数</th>
       <th>閲覧数</th>
       <th>投稿日</th>
+      <th>難易度</th>
+      <th>タグ</th>
     </tr>
   </thead>
   <tbody>
@@ -68,6 +69,9 @@
         </td>
         <td><i class="fas fa-solid fa-eye"></i><%= source.view_counts.count %></td>
         <td><%= source.created_at.strftime('%Y/%m/%d') %></td>
+        <td><%= source.recommended_rank_i18n %></td>
+        <td><i class="fas fa-tag"></i><%= source.tags.map(&:name).join(', ') %></td>
+
 
       </tr>
     <% end %>

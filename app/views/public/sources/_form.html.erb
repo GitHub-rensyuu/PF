@@ -13,6 +13,7 @@
   <div class="form-group">
     <%= f.label :"評価コメント" %>
     <%= f.text_area :performance_review, class: 'form-control source_body' %>
+    <!--'data-provider': :summernote-->
   </div>
 
   <div class="form-group">
@@ -41,22 +42,21 @@
       <%= f.label :recommended_rank,  "推奨する対象者" %>
       <%= f.select :recommended_rank, Source.recommended_ranks.keys.map {|k| [I18n.t("enums.source.recommended_rank.#{k}"), k]} %>
   </div>
+
+  <div class="form-group">
+    <%= f.label"タグ (,で区切ると複数タグ登録できます)" %>
+    <%= f.text_field :name ,class:"form-control",placeholder: "１つのタグは１０字以内にしてください" %>
+    <p>※下書き保存では、タグの情報は保存されません。</p>
+  </div>
+<%
+=begin
+%>
+<%
+=end %>
   
   <div class="form-group">
     <%= f.submit class: 'btn btn-success' %>
   </div>
-
-<!--カテゴリー-->
-<%
-=begin
-%>
-  <div class="form-group">
-    <%= f.label :"カテゴリー" %>
-    <%= f.text_field :category %>
-  </div>
-  <%
-=end %>
-
 
 
 <% end %>

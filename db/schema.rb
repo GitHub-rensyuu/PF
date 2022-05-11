@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_142357) do
+ActiveRecord::Schema.define(version: 2022_05_11_070820) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -129,6 +129,16 @@ ActiveRecord::Schema.define(version: 2022_05_09_142357) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "source_tags", force: :cascade do |t|
+    t.integer "source_id"
+    t.integer "tag_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["source_id", "tag_id"], name: "index_source_tags_on_source_id_and_tag_id", unique: true
+    t.index ["source_id"], name: "index_source_tags_on_source_id"
+    t.index ["tag_id"], name: "index_source_tags_on_tag_id"
+  end
+
   create_table "sources", force: :cascade do |t|
     t.integer "customer_id"
     t.integer "genres_id", default: 1
@@ -140,6 +150,12 @@ ActiveRecord::Schema.define(version: 2022_05_09_142357) do
     t.integer "recommended_rank"
     t.boolean "is_vaild", default: true
     t.boolean "is_public", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -160,4 +176,6 @@ ActiveRecord::Schema.define(version: 2022_05_09_142357) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "source_tags", "sources"
+  add_foreign_key "source_tags", "tags"
 end

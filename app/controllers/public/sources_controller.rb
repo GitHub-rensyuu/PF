@@ -4,6 +4,7 @@ class Public::SourcesController < ApplicationController
     @source = Source.find(params[:id])
     @customer = @source.customer
     @comment = Comment.new
+    @source_tags = @source.tags
     unless ViewCount.find_by(customer_id: current_customer.id, source_id: @source.id)
       current_customer.view_counts.create(source_id: @source.id)
     end
@@ -12,6 +13,7 @@ class Public::SourcesController < ApplicationController
     @customer = current_customer
     @source = Source.new
     @sources = Source.all
+    @tag_list=Tag.all
     
     unless params[:source].blank?
       case params[:source][:keyword]
@@ -39,8 +41,18 @@ class Public::SourcesController < ApplicationController
   def create
     @source = Source.new(source_params)
     @source.customer_id = current_customer.id
-    if @source.save
-      redirect_to source_path(@source.id), notice: "You have created source successfully."
+    blacklist = "死ね|殺す|うんこ"
+    if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
+      flash[:alert] = "NGワードが含まれています"
+      @customer = current_customer
+      @sources = Source.all
+      render 'index'
+    # @source.save! && !@source.purpose.match?(/(.*)#{blacklist}(.*)/)
+      
+    elsif @source.save
+      tag_list=params[:source][:name].split(',')
+      @source.save_tag(tag_list)
+      redirect_to source_path(@source.id), notice: "情報ソースの作成に成功しました"
     else
       @customer = current_customer
       @sources = Source.all
@@ -50,6 +62,7 @@ class Public::SourcesController < ApplicationController
 
   def edit
     @source = Source.find(params[:id])
+    @tag_list=@source.tags.pluck(:name).join(',')
     if @source.customer == current_customer
       render "edit"
     else
@@ -60,8 +73,16 @@ class Public::SourcesController < ApplicationController
   def update
     @source = Source.find(params[:id])
     @source.customer_id = current_customer.id
+    tag_list=params[:source][:name].split(',')
     if @source.update(source_params)
-      redirect_to source_path(@source), notice: "You have updated source successfully."
+     # このsource_idに紐づいていたタグを@oldに入れる
+        @old_relations = SourceTag.where(source_id: @source.id)
+        # それらを取り出し、消す。消し終わる
+        @old_relations.each do |relation|
+          relation.delete
+        end
+        @source.save_tag(tag_list)
+      redirect_to source_path(@source), notice: "情報ソースを更新しました"
     else
       render "edit"
     end
@@ -89,7 +110,34 @@ class Public::SourcesController < ApplicationController
   end
   
   
-
+  def save_tag(sent_tags)
+    # タグが存在していれば、タグの名前を配列として全て取得
+      current_tags = self.tags.pluck(:name) unless self.tags.nil?
+      # 現在取得したタグから送られてきたタグを除いてoldtagとする
+      old_tags = current_tags - sent_tags
+      # 送信されてきたタグから現在存在するタグを除いたタグをnewとする
+      new_tags = sent_tags - current_tags
+  
+      # 古いタグを消す
+      old_tags.each do |old|
+        self.tags.deleteTag.find_by(name: old)
+      end
+  
+      # 新しいタグを保存
+      new_tags.each do |new|
+        new_source_tag = Tag.find_or_create_by(name: new)
+        self.tags << new_source_tag
+     end
+  end
+  
+  def search_tag
+    #検索結果画面でもタグ一覧表示
+    @tag_list=Tag.all
+    #検索されたタグを受け取る
+    @tag=Tag.find(params[:tag_id])
+    #検索されたタグに紐づく投稿を表示
+    @sources=@tag.sources.page(params[:page]).per(10)
+  end
 
   private
 

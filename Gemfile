@@ -64,5 +64,9 @@ gem 'devise'
 gem 'rails-i18n'
 gem "enum_help"
 gem 'jquery-rails'
+gem 'obscenity'
+gem 'kaminari','~> 1.2.1'
+gem 'simple_form'
+gem 'summernote-rails', '~> 0.8.10.0'
 # gem "refile", require: "refile/rails", github: 'manfe/refile'
 # gem "refile-mini_magick"

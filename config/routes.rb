@@ -7,7 +7,8 @@ Rails.application.routes.draw do
     get "/reviewers"=>"homes#reviewers"
     get "/chart"=>"homes#chart"
     get "/search"=> "searches#search"
-    get 'resources/search' => 'resources#search'
+    get 'sources/search' => 'sources#search'
+    get "sources/search_tag"=>"sources#search_tag"
     resources :sources do
       resources:recommends, only: [:create, :edit, :destroy]
       resource:likes, only: [:create, :destroy]

@@ -192,16 +192,6 @@
 <%
 =end %>
 
-
-
-
-
-
-
-
-
-
-
 <div class='container'>
   <div class='row'>
     <div class='col-md-3'>
@@ -294,7 +284,26 @@
             <th>閲覧数</th>
             <th><i class="fas fa-solid fa-eye"></i><%= @source.view_counts.count %></th>
           </tr>
+          <tr>
+            <th>タグ</th>
+            <th><i class="fas fa-search-location"></i><br>
+                <% if @source_tags.present? %>
+                <% @source_tags.each do |tag| %>
+                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
+                    <span class="btn btn-outline-info">
+                      <%= tag.name %><%="(#{tag.sources.count})" %>
+                  <% end %>
+                    </span>
+                <% end %>
+                <% else %><p>タグはありません。</p>
+                <% end %></th>
+          </tr>
+<%
+=begin %>
+<%
+=end %>
           <br>
+          <!--コメント部分-->
           <% if @source.comments.exists? %>
           <tr>
             <th>情報ソースに対してのコメント一覧</th>
@@ -312,7 +321,8 @@
           
           <% @source.comments.each do |comment| %>
             <tr>
-                <td><p><%= image_tag comment.customer.get_profile_image(100,100) %><br>
+                <td><strong><%= comment.title %></strong>
+                  <p><%= image_tag comment.customer.get_profile_image(100,100) %><br>
                     <%= link_to comment.customer.nickname, @source.customer %></p>
                      <%= comment.usefuls.size %>人が役に立ったと答えています
                 </td>

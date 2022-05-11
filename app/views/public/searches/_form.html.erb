@@ -1,10 +1,28 @@
 <% if customer_signed_in? %>
   <div class="search_form">
+    
+    
     <%=  form_tag(search_path, method: :get) do %>
       <%= text_field_tag "content", "", placeholder: "キーワードから探す（会員名、情報ソース）", class:"col-lg-4 ml-10" %>
       <%= select_tag "model", options_for_select({ "会員" => "customer", "情報ソース" => "source" }) %>
-      <%= select_tag "method", options_for_select([["完全一致","perfect_match"], ["前方一致","forward_match"],  ["後方一致","backward_match"], ["部分一致","partial_match"]]) %>
+      <%= select_tag "method", options_for_select([["部分一致","partial_match"]]) %>
       <%= submit_tag "検索", class: "btn btn-primary" %>
     <% end %>
+
+<%
+=begin %>
+  <%= form_with(scope: :source, url: search_path, method: 'get') do |form| %>
+  	<div class="radio_button">
+  		<%= form.label :search_radio,"0", value: 0 %>
+  		<%= form.radio_button :search_radio, 0 %>
+  	</div>
+  	<div class="radio_button">
+  		<%= form.label :search_radio,"1", value: 1 %>
+  		<%= form.radio_button :search_radio, 1	 %>
+  	</div>
+  <% end %>
+<%
+=end %>
+  
   </div>
 <% end %>

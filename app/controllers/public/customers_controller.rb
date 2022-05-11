@@ -1,25 +1,27 @@
 class Public::CustomersController < ApplicationController
   before_action :ensure_guest_customer, only: [:edit]
+  before_action :ensure_correct_customer, only: [:edit, :update]
 
   def index
     @customers = Customer.all
     @source = Source.new
     
-    # if params[:sort_source]
-    #   @customers = Customer.all.order(source: :desc)
-    # elsif params[:sort_comment]
-    #   @customers = Customer.all.order(comment: :desc)
-    # elsif params[:sort_follower]
-    #   @customers = Customer.includes(:follows).sort {|a,b| b.follows.size <=> a.follows.size}
-    # elsif params[:sort_usefuled]
-    #   @customers = Customer.includes(:usefuls).sort {|a,b| b.usefuls.size <=> a.usefuls.size}
-    # elsif params[:sort_liked]
-    #   @customers = Customer.includes(:likes).sort {|a,b| b.likes.size <=> a.likes.size}
-    # elsif params[:sort_reported]
-    #   # @customers = Customer.includes(:reports).sort {|a,b| b.reports.size <=> a.reports.size}
-    # else
-    #   @customers = Customer.all
-    # end
+    unless params[:customer].blank?
+      case params[:customer][:keyword]
+       when 'source' then
+       @customers =  Customer.includes(:sources).sort {|a,b| b.sources.size <=> a.sources.size}
+       when 'comment' then
+       @customers =  Customer.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
+       when 'follow' then
+        @customers =  Customer.includes(:followers).sort {|a,b| b.followers.size <=> a.followers.size}
+       when 'report' then
+        @customers =  Customer.includes(:reporters).sort {|a,b| b.reporters.size <=> a.reporters.size}
+       when 'like' then
+        @customers =  Customer.includes(:likes).sort {|a,b| b.comments.size <=> a.comments.size}
+       when 'useful' then
+        @customers = Customer.includes(:usefuleds).sort {|a,b| b.usefuleds.size <=> a.usefuleds.size}
+      end
+    end
   end
 
   def show
@@ -41,16 +43,11 @@ class Public::CustomersController < ApplicationController
   end
 
   def edit
-    @customer = Customer.find(params[:id])
-    unless @customer == current_customer
-      redirect_to customer_path(current_customer)
-    end
   end
 
   def update
-    @customer = Customer.find(params[:id])
     if @customer.update(customer_params)
-      redirect_to customer_path(current_customer), notice: "You have updated customer successfully."
+      redirect_to customer_path(current_customer), notice: "会員情報を変更しました"
     else
       render "edit"
     end

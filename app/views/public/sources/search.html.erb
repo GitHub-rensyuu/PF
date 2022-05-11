@@ -20,19 +20,3 @@
     <%= form.select :keyword, [ ['投稿が新しい順', 'new'],['評価が高い順', 'rate'],['いいねが多い順', 'like'],['コメント数が多い順', 'comment'],['閲覧数が多い順', 'watch']] %>
     <%= form.submit "並び替え", class: "btn btn-primary" %>
 <% end %>
-　
-- @posts.each do |post|
-  p
-    = link_to post.user.email, user_path(post.user.id)
-    br
-    = link_to post.title, post_path(post.id)
-    br
-    = post.created_at
-    br
-    - if user_signed_in?
-      - if post.favorited_by?(current_user)
-        = link_to "いいね: #{post.favorites.count}", post_favorites_path(post.id), method: :delete
-      - else
-        = link_to "いいね: #{post.favorites.count}", post_favorites_path(post.id), method: :post
-    - else
-      = post.favorites.count
