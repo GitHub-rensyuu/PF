@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_11_070820) do
+ActiveRecord::Schema.define(version: 2022_05_12_051958) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -119,6 +119,20 @@ ActiveRecord::Schema.define(version: 2022_05_11_070820) do
     t.boolean "is_public", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "notices", force: :cascade do |t|
+    t.integer "send_id", null: false
+    t.integer "receive_id", null: false
+    t.integer "source_id"
+    t.string "action"
+    t.boolean "checked", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "\"comment_id\"", name: "index_notices_on_comment_id"
+    t.index "\"sent_id\"", name: "index_notices_on_sent_id"
+    t.index ["receive_id"], name: "index_notices_on_receive_id"
+    t.index ["source_id"], name: "index_notices_on_source_id"
   end
 
   create_table "reports", force: :cascade do |t|

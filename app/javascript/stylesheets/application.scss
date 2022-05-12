@@ -13,6 +13,13 @@
     box-sizing: border-box;/*←全て含めてmin-height:100vhに*/
 }
 
+header{
+    top:0;
+    // position:fixed;
+    width:100%;
+    z-index:10;
+}
+
 footer{
     width: 100%;
     background-color: #89c7de;
@@ -21,6 +28,14 @@ footer{
     padding: 10px 0;
     // margin-top: 100px;
 
+ 
  position: absolute;/*←絶対位置*/
     bottom: 0; /*下に固定*/
+}
+
+.n-circle {
+  position: absolute;
+  padding-left: 1rem;
+  padding-top: 0rem;
+  color: #efa04c;
 }

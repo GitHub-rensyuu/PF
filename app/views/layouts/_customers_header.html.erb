@@ -10,6 +10,16 @@
           <span class="u h7 text-white strong">
             ようこそ！<%= current_customer.nickname %>さん！
           </span>
+           <% if unchecked_notices.any? %>
+             <li><i class="fas fa-bell"></i><%= link_to "Notice",notices_path, class: "btn btn-light",style: "color:tomato;"%>
+          <% else %>
+             <li><i class="fas fa-check"></i><%= link_to "Notice",notices_path, class: "btn btn-light"%>
+          <% end %>
+<%
+=begin %>
+<%
+=end %>
+          
           <li>
             <%= link_to customer_path(current_customer),class: 'nav-link text-light' do %>
               <i class="fas fa-home"></i> マイページ

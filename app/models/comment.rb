@@ -7,6 +7,7 @@ class Comment < ApplicationRecord
   belongs_to :customer
   belongs_to :source
   has_many:usefuls,dependent: :destroy
+  has_many :notices, dependent: :destroy
   
   def usefuld_by?(customer)
     usefuls.where(customer_id: customer.id).exists?

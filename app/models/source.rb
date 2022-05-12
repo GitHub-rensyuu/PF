@@ -5,6 +5,7 @@ class Source < ApplicationRecord
   has_many :view_counts, dependent: :destroy# 閲覧数用
   has_many :source_tags,dependent: :destroy
   has_many :tags,through: :source_tags
+  has_many :notices, dependent: :destroy
   
   
   # NGワードを定義する
@@ -48,6 +49,63 @@ class Source < ApplicationRecord
       self.tags << new_source_tag
     end
   end
+  
+  
+  def create_notice_like!(current_customer)
+    # すでに「いいね」されているか検索
+    temp = Notice.where(["receive_id = ? and sent_id = ? and source_id = ? and action = ? ", current_customer.id, customer_id, id, 'like'])
+    # いいねされていない場合のみ、通知レコードを作成
+    if temp.blank?
+      notice = current_customer.active_notices.new(
+        source_id: id,
+        send_id: customer_id,
+        action: 'like'
+      )
+      # 自分の投稿に対するいいねの場合は、通知済みとする
+      if notice.receive_id == notice.send_id
+        notice.checked = true
+      end
+      notice.save if notice.valid?
+    end
+  end
+  
+  def create_notice_comment!(current_customer, comment_id)
+    # 自分以外にコメントしている人をすべて取得し、全員に通知を送る
+    temp_ids = Comment.select(:customer_id).where(source_id: id).where.not(customer_id: current_customer.id).distinct
+    temp_ids.each do |temp_id|
+      save_notice_comment!(current_customer, comment_id, temp_id['customer_id'])
+    end
+    # まだ誰もコメントしていない場合は、投稿者に通知を送る
+    save_notice_comment!(current_customer, comment_id, customer_id) if temp_ids.blank?
+  end
+
+  def save_notice_comment!(current_customer, comment_id, send_id)
+    # コメントは複数回することが考えられるため、１つの投稿に複数回通知する
+    notice = current_customer.active_notices.new(
+      source_id: id,
+      comment_id: comment_id,
+      send_id: send_id,
+      action: 'comment'
+    )
+    # 自分の投稿に対するコメントの場合は、通知済みとする
+    if notice.receive_id == notice.send_id
+      notice.checked = true
+    end
+    notice.save if notice.valid?
+  end
+  
+  # def create_notice_by(current_customer)
+  #   notice = current_customer.active_notices.new(
+  #   source_id: id,
+  #     # send_id: customer_id,
+  #     receive_id: customer_id,
+  #     action: 'comment'
+  #   )
+  #   if notice.receive_id == notice.send_id
+  #         notice.checked = true
+  #   end
+  #   notice.save if notice.valid?
+  # end
   
   def self.search(search_word)
     Source.where(['category LIKE ?', "#{search_word}"])

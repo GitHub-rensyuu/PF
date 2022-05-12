@@ -9,7 +9,10 @@ Rails.application.routes.draw do
     get "/search"=> "searches#search"
     get 'sources/search' => 'sources#search'
     get "sources/search_tag"=>"sources#search_tag"
+    resources :notices, only: [:index, :destroy]
+    
     resources :sources do
+      
       resources:recommends, only: [:create, :edit, :destroy]
       resource:likes, only: [:create, :destroy]
       resources:comments, only: [:create, :destroy] do

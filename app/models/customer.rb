@@ -22,6 +22,9 @@ class Customer < ApplicationRecord
   has_many :reporting_customer, through: :reporter, source: :reported # 自分が通報している人
   has_many :reporter_customer, through: :reported, source: :reporter # 自分を通報している人
 
+  has_many :active_notices, class_name: 'Notice', foreign_key: 'send_id', dependent: :destroy
+  has_many :passive_notices, class_name: 'Notice', foreign_key: 'receive_id', dependent: :destroy
+
  # ユーザーをフォローする
   def follow(customer_id)
     follower.create(followed_id: customer_id)
