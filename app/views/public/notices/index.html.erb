@@ -4,11 +4,11 @@
             <h4 class="text-center"><i class="fas fa-bell"></i>通知</h4>
             <p class="text-center">通知は30日間で自動的に削除されます。</p>
              <!--<p class="text-right"><i class="fas fa-trash"></i><%#= link_to "全削除",notice_path(@notices), method: :delete,class:"btn btn-light" %></p>-->
-                <%=notices = @notices.where.not(receive_id: current_customer.id) %>
+                <% notices = @notices.where.not(receive_id: current_customer.id) %>
         <% if @notices.exists? %>
-        <%= render @notices %>
+            <%= render @notices %>
         <% else %>
-        <p>通知はありません</p>
+            <p>通知はありません</p>
         <% end %>
 　　　　</div>
  　　</div>
@@ -25,4 +25,4 @@
 
 </style>
 
-/ 自分の投稿に対するいいね、コメントは通知に表示しない
+<!--/ 自分の投稿に対するいいね、コメントは通知に表示しない-->

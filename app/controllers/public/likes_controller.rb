@@ -6,6 +6,7 @@ class Public::LikesController < ApplicationController
     @source = Source.find(params[:source_id])
     like = current_customer.likes.new(source_id: @source.id)
     like.save
+    @source.create_notice_like!(current_customer)
   end
 
   def destroy

@@ -19,7 +19,6 @@ class Public::CommentsController < ApplicationController
       # ここから
       @source.create_notice_comment!(current_customer, @comment.id)
       # ここまで
-      respond_to :js
     else
       @newsource = Source.new
       @source = Source.find(params[:source_id])

@@ -51,6 +51,7 @@ class Source < ApplicationRecord
   end
   
   
+  # いいね通知機能
   def create_notice_like!(current_customer)
     # すでに「いいね」されているか検索
     temp = Notice.where(["receive_id = ? and sent_id = ? and source_id = ? and action = ? ", current_customer.id, customer_id, id, 'like'])
@@ -69,6 +70,7 @@ class Source < ApplicationRecord
     end
   end
   
+  # コメント通知機能
   def create_notice_comment!(current_customer, comment_id)
     # 自分以外にコメントしている人をすべて取得し、全員に通知を送る
     temp_ids = Comment.select(:customer_id).where(source_id: id).where.not(customer_id: current_customer.id).distinct

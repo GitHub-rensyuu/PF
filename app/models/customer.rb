@@ -67,6 +67,18 @@ class Customer < ApplicationRecord
       customer.nickname = "guestcustomer"
     end
   end
+  
+  # フォロー通知
+  def create_notice_follow!(current_customer)
+    temp = Notice.where(["receive_id = ? and send_id = ? and action = ? ",current_customer.id, id, 'follow'])
+    if temp.blank?
+      notice = current_customer.active_notices.new(
+        send_id: id,
+        action: 'follow'
+      )
+      notice.save if notice.valid?
+    end
+  end
 
   # 画像の保存設定
   has_one_attached :profile_image
