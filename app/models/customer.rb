@@ -7,23 +7,25 @@ class Customer < ApplicationRecord
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
 
   has_many :sources, dependent: :destroy
-  has_many:likes,dependent: :destroy
-  has_many:comments,dependent: :destroy
-  has_many:usefuls,dependent: :destroy
+  has_many :likes,dependent: :destroy
+  has_many :comments,dependent: :destroy
+  has_many :usefuls,dependent: :destroy
   has_many :view_counts, dependent: :destroy# 閲覧数用
 
-  has_many :follower, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
-  has_many :followed, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
-  has_many :following_customer, through: :follower, source: :followed # 自分がフォローしている人
-  has_many :follower_customer, through: :followed, source: :follower # 自分をフォローしている人
+  has_many :followers, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
+  has_many :followeds, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
+  has_many :following_customers, through: :followers, source: :followed # 自分がフォローしている人
+  has_many :follower_customers, through: :followeds, source: :follower # 自分をフォローしている人
   
-  has_many :reporter, class_name: "Report", foreign_key: "reporter_id", dependent: :destroy
-  has_many :reported, class_name: "Report", foreign_key: "reported_id", dependent: :destroy
-  has_many :reporting_customer, through: :reporter, source: :reported # 自分が通報している人
-  has_many :reporter_customer, through: :reported, source: :reporter # 自分を通報している人
+  has_many :reporters, class_name: "Report", foreign_key: "reporter_id", dependent: :destroy
+  has_many :reporteds, class_name: "Report", foreign_key: "reported_id", dependent: :destroy
+  has_many :reporting_customers, through: :reporters, source: :reported # 自分が通報している人
+  has_many :reporter_customers, through: :reporteds, source: :reporter # 自分を通報している人
 
+  has_many :notices, dependent: :destroy
   has_many :active_notices, class_name: 'Notice', foreign_key: 'send_id', dependent: :destroy
   has_many :passive_notices, class_name: 'Notice', foreign_key: 'receive_id', dependent: :destroy
+
 
  # ユーザーをフォローする
   def follow(customer_id)
@@ -37,7 +39,7 @@ class Customer < ApplicationRecord
 
   # フォローしていればtrueを返す
   def following?(customer)
-    following_customer.include?(customer)
+    following_customers.include?(customer)
   end
   
   # ユーザーを通報する
@@ -52,7 +54,7 @@ class Customer < ApplicationRecord
 
   # 通報していればtrueを返す
   def reporting?(customer)
-    reporting_customer.include?(customer)
+    reporting_customers.include?(customer)
   end
 
   # 退会済ユーザーをブロック
@@ -70,10 +72,10 @@ class Customer < ApplicationRecord
   
   # フォロー通知
   def create_notice_follow!(current_customer)
-    temp = Notice.where(["receive_id = ? and send_id = ? and action = ? ",current_customer.id, id, 'follow'])
+    temp = Notice.where(["send_id = ? and receive_id = ? and action = ? ",current_customer.id, id, 'follow'])
     if temp.blank?
       notice = current_customer.active_notices.new(
-        send_id: id,
+        receive_id: id,
         action: 'follow'
       )
       notice.save if notice.valid?

@@ -12,17 +12,21 @@ class Public::CommentsController < ApplicationController
   # end
   
   def create
-    @customer = current_customer
-    @comment = Comment.new(comment_params)
+    @comment = current_customer.comments.new(comment_params)
     @source = @comment.source
+    @source = Source.find(params[:source_id])
+    @comment.source_id =@source.id
     if @comment.save
       # ここから
       @source.create_notice_comment!(current_customer, @comment.id)
+      redirect_to source_path(@source)
+      
       # ここまで
     else
       @newsource = Source.new
-      @source = Source.find(params[:source_id])
-      render 'public/sources/show'
+      # render 'error'
+      @customer = current_customer
+     redirect_to source_path(@source) #render if error hosii
     end
   end
 

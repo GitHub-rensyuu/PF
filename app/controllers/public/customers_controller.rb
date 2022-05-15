@@ -4,22 +4,22 @@ class Public::CustomersController < ApplicationController
 
   def index
     @customers = Customer.all
-    @source = Source.new
-    
+    @customer = Customer.new
     unless params[:customer].blank?
       case params[:customer][:keyword]
        when 'source' then
+
        @customers =  Customer.includes(:sources).sort {|a,b| b.sources.size <=> a.sources.size}
        when 'comment' then
        @customers =  Customer.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
        when 'follow' then
-        @customers =  Customer.includes(:followers).sort {|a,b| b.followers.size <=> a.followers.size}
+        @customers =  Customer.includes(:followers).sort {|a,b| b.follower_customers.size <=> a.follower_customers.size}
        when 'report' then
-        @customers =  Customer.includes(:reporters).sort {|a,b| b.reporters.size <=> a.reporters.size}
+        @customers = Customer.includes(:reporters).sort {|a,b| b.reporter_customers.size <=> a.reporter_customers.size}
        when 'like' then
-        @customers =  Customer.includes(:likes).sort {|a,b| b.comments.size <=> a.comments.size}
+        @customers = Customer.includes(:likes).sort {|a,b| Like.where(source_id: b.sources.pluck(:id)).size <=> Like.where(source_id: a.sources.pluck(:id)).size } 
        when 'useful' then
-        @customers = Customer.includes(:usefuleds).sort {|a,b| b.usefuleds.size <=> a.usefuleds.size}
+        @customers = Customer.includes(:usefuls).sort {|a,b| Useful.where(comment_id: b.comments.pluck(:id)).size <=> Useful.where(comment_id: a.comments.pluck(:id)).size } 
       end
     end
   end
@@ -28,10 +28,10 @@ class Public::CustomersController < ApplicationController
     @customer = Customer.find(params[:id])
     @source = Source.new
     @sources = Source.where(customer_id: @customer.id)
-    @following_customers = @customer.following_customer
-    @follower_customers = @customer.follower_customer 
-    @reporting_customers = @customer.reporting_customer
-    @reporter_customers = @customer.reporter_customer
+    @following_customers = @customer.following_customers
+    @follower_customers = @customer.follower_customers
+    @reporting_customers = @customer.reporting_customers
+    @reporter_customers = @customer.reporter_customers
   end
   
   def chart

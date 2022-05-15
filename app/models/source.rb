@@ -54,16 +54,16 @@ class Source < ApplicationRecord
   # いいね通知機能
   def create_notice_like!(current_customer)
     # すでに「いいね」されているか検索
-    temp = Notice.where(["receive_id = ? and sent_id = ? and source_id = ? and action = ? ", current_customer.id, customer_id, id, 'like'])
+    temp = Notice.where(["send_id = ? and receive_id = ? and source_id = ? and action = ? ", current_customer.id, customer_id, id, 'like'])
     # いいねされていない場合のみ、通知レコードを作成
     if temp.blank?
       notice = current_customer.active_notices.new(
         source_id: id,
-        send_id: customer_id,
+        receive_id: customer_id,
         action: 'like'
       )
       # 自分の投稿に対するいいねの場合は、通知済みとする
-      if notice.receive_id == notice.send_id
+      if notice.send_id == notice.receive_id
         notice.checked = true
       end
       notice.save if notice.valid?
@@ -81,16 +81,16 @@ class Source < ApplicationRecord
     save_notice_comment!(current_customer, comment_id, customer_id) if temp_ids.blank?
   end
 
-  def save_notice_comment!(current_customer, comment_id, send_id)
+  def save_notice_comment!(current_customer, comment_id, receive_id)
     # コメントは複数回することが考えられるため、１つの投稿に複数回通知する
     notice = current_customer.active_notices.new(
       source_id: id,
       comment_id: comment_id,
-      send_id: send_id,
+      receive_id: receive_id,
       action: 'comment'
     )
     # 自分の投稿に対するコメントの場合は、通知済みとする
-    if notice.receive_id == notice.send_id
+    if notice.send_id == notice.receive_id
       notice.checked = true
     end
     notice.save if notice.valid?
@@ -99,11 +99,11 @@ class Source < ApplicationRecord
   # def create_notice_by(current_customer)
   #   notice = current_customer.active_notices.new(
   #   source_id: id,
-  #     # send_id: customer_id,
-  #     receive_id: customer_id,
+  #     # receive_id: customer_id,
+  #     send_id: customer_id,
   #     action: 'comment'
   #   )
-  #   if notice.receive_id == notice.send_id
+  #   if notice.send_id == notice.receive_id
   #         notice.checked = true
   #   end
   #   notice.save if notice.valid?

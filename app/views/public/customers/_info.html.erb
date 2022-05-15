@@ -13,21 +13,21 @@
   <!--フォロー、フォロワー一覧ページにジャンプ-->
   <tr>
     <th>follows</th>
-    <th><%= link_to customer.following_customer.count, follows_customer_path(customer) %></th>
+    <th><%= link_to customer.following_customers.count, follows_customer_path(customer) %></th>
   </tr>
   <tr>
     <th>followers</th>
-    <th><%= link_to customer.follower_customer.count, followers_customer_path(customer) %></th>
+    <th><%= link_to customer.follower_customers.count, followers_customer_path(customer) %></th>
   </tr>
   
   <!--通報した人、通報された人一覧ページにジャンプ-->
   <tr>
     <th>あなたが通報した人</th>
-    <th><%= link_to customer.reporting_customer.count, reporteds_customer_path(customer) %></th>
+    <th><%= link_to customer.reporting_customers.count, reporteds_customer_path(customer) %></th>
   </tr>
   <tr>
     <th>あなたを通報した人</th>
-    <th><%= link_to customer.reporter_customer.count, reporters_customer_path(customer) %></th>
+    <th><%= link_to customer.reporter_customers.count, reporters_customer_path(customer) %></th>
   </tr>
   <tr>
     <th>いいね一覧</th>

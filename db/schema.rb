@@ -122,17 +122,14 @@ ActiveRecord::Schema.define(version: 2022_05_12_051958) do
   end
 
   create_table "notices", force: :cascade do |t|
-    t.integer "send_id", null: false
-    t.integer "receive_id", null: false
+    t.integer "send_id"
+    t.integer "receive_id"
     t.integer "source_id"
+    t.integer "comment_id"
     t.string "action"
     t.boolean "checked", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index "\"comment_id\"", name: "index_notices_on_comment_id"
-    t.index "\"sent_id\"", name: "index_notices_on_sent_id"
-    t.index ["receive_id"], name: "index_notices_on_receive_id"
-    t.index ["source_id"], name: "index_notices_on_source_id"
   end
 
   create_table "reports", force: :cascade do |t|

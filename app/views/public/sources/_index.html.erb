@@ -53,15 +53,9 @@
         </div>
         </td>
         <!--いいね機能追加-->
-      
             <%= render 'public/likes/likes', source: source %>
-
         <!--コメント件数表示-->
-<%
-=begin %>        
-        <td><span><%= link_to "#{source.comments.size} ", source_path(source.id), class:"text-dark" %></span></td>
-<%
-=end %>
+
         <td>
           <%= link_to source_path(source.id) do %>
                 <i class="fas fa-comment-dots"></i><%= source.comments.size %>

@@ -12,7 +12,7 @@
     <div class="col-md-8 offset-md-1">
       
       <%= form_with model: @customer, url: customers_path, method: :get, local: true do |form| %>
-       <%= form.select :keyword, [ ['投稿数が多い順', 'source'],['コメント数が多い順', 'comment'],['フォロワー数が多い順', 'follow'],['通報された数が多い順', 'follower'],['役に立ったを貰った数が多い順', 'useful'],['いいねを貰った数が多い順', 'like']] %>
+       <%= form.select :keyword, [ ['投稿数が多い順', 'source'],['コメント数が多い順', 'comment'],['フォロワー数が多い順', 'follow'],['通報された数が多い順', 'report'],['いいねを貰った数が多い順', 'like'],['役に立ったを貰った数が多い順', 'useful']] %>
        <%= form.submit "並び替え", class: "btn btn-primary" %>
       <% end %>
   

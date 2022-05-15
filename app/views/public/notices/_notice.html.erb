@@ -1,37 +1,46 @@
- <% receive = notice.receive send = notice.send %>
-
-<div class="col-md-6.mx-auto">
-  <div class="form-inline">
-    <span></span>
-      <%= link_to customer_path(receive) do %>
-        <%= image_tag avatar_url(receive).to_s, class: "icon_mini" %>
-        <strong>
-          <%= receive.nickname %>さんが
+<% sender = Customer.find(notice.send_id) %>
+<% receiver = Customer.find(notice.receive_id) %>
+<li>
+      <%= link_to customer_path(sender) do %>
+        <%= image_tag sender.get_profile_image(50,50) %>
+        <strong><%= sender.nickname %></strong>
+      <% end %>さんが
        
 
-        <%= case notice.action %>
-        <%= when 'follow' then %>
+        <% case notice.action when 'follow' then %>
             あなたをフォローしました
-        <%= when 'like' then %>
-        <%= link_to 'あなたの投稿', notice.source, style: "font-weight: bold;" %>
-            にいいねしました
-        <%= when 'comment' then %>
-          <%= if notice.source.customer_id == visited.id %>
+        <% when 'like' then %>
+          <%= link_to 'あなたの投稿', notice.source, style: "font-weight: bold;" %>
+          にいいねしました
+        <% when 'comment' then %>
+          <% if notice.source.customer_id == notice.receive.id %>
            <%= link_to "あなたの投稿", notice.source, style: "font-weight: bold;" %>
-          <%= else %>
-          <span>
+          <% else %>
             <%= link_to source_path(notice.source) do %>
-              <%= image_tag avatar_url(notice.source.customer).to_s, class: "icon_mini" %>
-              <strong>
-                <%= notice.source.customer.nickname + 'さんの投稿' %>にコメントしました
+              <%#= image_tag avatar_url(notice.source.customer).to_s, class: "icon_mini" %>
+              <%= image_tag notice.source.customer.get_profile_image(50,50) %>
+              <strong><%= notice.source.customer.nickname + 'さんの投稿' %></strong>
+            <% end %>
+          <% end %>
+          にコメントしました
+        <% end %>
+</li>
+    <%
+=begin %>
         <p class="text-muted mb-0"><%= = Comment.find_by(id: notice.comment_id)&.comment %></p>
   <div class="small text-muted text-right"><%= time_ago_in_words(notice.created_at).upcase %></div>
     
   <hr>
 
+<%
+=end %>
 
-
-
+<li>
+  send_id:<%= notice.send_id %>
+sendnickname:<%= Customer.find(notice.send_id).nickname %>
+receive_id:<%= notice.receive_id %>
+receivenickname:<%= Customer.find(notice.receive_id).nickname %>
+action:<%= notice.action %></li>
 
 
 
@@ -41,11 +50,11 @@
 <%
 =begin %>
 
-<% receive = notice.receive %>
+<% sender = notice.sender %>
 <% source = notice.source %>
 
 <ul>
-    <li><%= link_to customer_path(receive) do %><strong><%=receive.nickname %><% end %></strong>さんが
+    <li><%= link_to customer_path(sender) do %><strong><%=sender.nickname %><% end %></strong>さんが
     <strong><%= link_to source_path(notice.source_id) do %><%= source.title.truncate(20)%><% end %></strong>にコメントしました。
     <%= " (#{time_ago_in_words(notice.created_at)} 前)" %></li>
 

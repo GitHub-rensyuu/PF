@@ -3,7 +3,9 @@ class Public::FollowsController < ApplicationController
   def create
     following = current_customer.follow(params[:customer_id])
     flash[:notice] = if following.save
-                        @customer.create_notification_follow!(current_customer)
+                        # byebug
+                        @customer = Customer.find(params[:customer_id])
+                        @customer.create_notice_follow!(current_customer)
                        'ユーザーをフォローしました'
                      else
                        'ユーザーのフォローに失敗しました'
