@@ -1,15 +1,4 @@
 class Public::CommentsController < ApplicationController
-
-  # def create
-  #   source = Source.find(params[:source_id])
-  #   comment = current_customer.comments.new(comment_params)
-  #   comment.source_id = source.id
-  #   comment.save
-  #   @source = Source.find(params[:source_id])
-  #   @comment = Comment.new
-  #   @source.create_notice_by(current_customer)
-  #   redirect_to source_path(source)
-  # end
   
   def create
     @comment = current_customer.comments.new(comment_params)

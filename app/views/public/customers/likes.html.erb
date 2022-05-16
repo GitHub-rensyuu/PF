@@ -1,7 +1,20 @@
 <%
 =begin %>
 
-<%= render 'public/sources/index',sources: @sources %>
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>会員情報</h2>
+      <%= render 'info', customer: @customer %>
+      <h2 class="mt-3">新しい情報ソース</h2>
+      <%= render 'public/sources/form', source: @source %>
+    </div>
+    <div class='col-md-8 offset-md-1'>
+      <h2>投稿情報ソース一覧</h2>
+      <%= render 'public/sources/index',sources: @sources %>
+    </div>
+  </div>
+</div>
 
 <%
 =end %>
@@ -81,5 +94,3 @@
   </div>
   <%#= paginate @customers %>
 </div>
-
-

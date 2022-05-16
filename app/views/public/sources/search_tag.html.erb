@@ -1,2 +1,2 @@
-<p class="text-center" style="color:blue; font-size:15px;"><i class="far fa-smile"></i>「<%=@tag.name%>」タグの投稿が<%= @tag.sources.count%>件あります。<p>
+<p class="text-center" style="color:blue; font-size:15px;"><i class="far fa-smile"></i>「<%=@tag.tagname%>」タグの投稿が<%= @tag.sources.count%>件あります。<p>
 <%= render 'index', tag_list: @tag_list,sources: @sources %>

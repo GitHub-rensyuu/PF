@@ -29,12 +29,12 @@ class Customer < ApplicationRecord
 
  # ユーザーをフォローする
   def follow(customer_id)
-    follower.create(followed_id: customer_id)
+    followers.create(followed_id: customer_id)
   end
 
   # ユーザーのフォローを外す
   def unfollow(customer_id)
-    follower.find_by(followed_id: customer_id).destroy
+    followers.find_by(followed_id: customer_id).destroy
   end
 
   # フォローしていればtrueを返す
@@ -44,12 +44,12 @@ class Customer < ApplicationRecord
   
   # ユーザーを通報する
   def report(customer_id)
-    reporter.create(reported_id: customer_id)
+    reporters.create(reported_id: customer_id)
   end
 
   # ユーザーの通報を解除
   def unreport(customer_id)
-    reporter.find_by(reported_id: customer_id).destroy
+    reporters.find_by(reported_id: customer_id).destroy
   end
 
   # 通報していればtrueを返す

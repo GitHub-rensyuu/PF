@@ -4,7 +4,7 @@ class Source < ApplicationRecord
   has_many:comments,dependent: :destroy
   has_many :view_counts, dependent: :destroy# 閲覧数用
   has_many :source_tags,dependent: :destroy
-  has_many :tags,through: :source_tags
+  has_many :tags,through: :source_tags,dependent: :destroy
   has_many :notices, dependent: :destroy
   
   
@@ -12,18 +12,17 @@ class Source < ApplicationRecord
   
   NGWORD_REGEX = /(.)\1{4,}/.freeze
   # blacklist = "死ね|殺す|うんこ"
-  
-  with_options presence: true do
+  with_options presence: true, on: :publicize do
     with_options format: { without: NGWORD_REGEX, alert: 'は5文字以上の繰り返しは禁止です' } do
       validates :purpose, length: { maximum: 200 }
-      validates :performance_review, length: { maximum: 200 }
+      validates :performance_review
     end
   end
   validates :source,presence:true
-  # validates :purpose,presence:true,length:{maximum:200}
-  # validates :performance_review,presence:true
+  validates :purpose,presence:true,length:{maximum:200}, on: :publicize
+  validates :performance_review,presence:true,length: { maximum: 200 }, on: :publicize
   validates :rate,presence:true
-  # validates :recommended_rank,presence:true
+  validates :recommended_rank,presence:true
   enum recommended_rank: { beginner: 0, intermediate: 1,advanced:2}
 
   def liked_by?(customer)
@@ -45,7 +44,7 @@ class Source < ApplicationRecord
 
     # 新しいタグを保存
     new_tags.each do |new|
-      new_source_tag = Tag.find_or_create_by(name: new)
+      new_source_tag = Tag.find_or_create_by(tagname: new)
       self.tags << new_source_tag
     end
   end

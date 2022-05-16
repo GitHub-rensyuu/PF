@@ -64,9 +64,19 @@
         <td><i class="fas fa-solid fa-eye"></i><%= source.view_counts.count %></td>
         <td><%= source.created_at.strftime('%Y/%m/%d') %></td>
         <td><%= source.recommended_rank_i18n %></td>
-        <td><i class="fas fa-tag"></i><%= source.tags.map(&:name).join(', ') %></td>
-
-
+        <td>
+          <% if source.tags.present? %>
+                <i class="fas fa-tag"></i>
+                <% source.tags.each do |tag| %>
+                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
+                    <span class="btn btn-outline-info">
+                      <%= tag.tagname %><%="(#{tag.sources.count})" %>
+                  <% end %>
+                    </span>
+                <% end %>
+          <% else %><p>タグはありません。</p>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

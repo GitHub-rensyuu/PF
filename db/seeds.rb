@@ -31,6 +31,14 @@ end
       performance_review: "#{n + 1}が確認できました。",
       note:"#{n + 1}が間違ってました。",
       rate:n + 1,
-      recommended_rank: 0
+      recommended_rank: 0,
+      is_public: true
     )
+end
+
+genres = ["未分類"]
+genres.length.times do |i|
+Genre.create!(
+    name: genres[i]
+  )
 end

@@ -5,7 +5,6 @@
         <%= image_tag sender.get_profile_image(50,50) %>
         <strong><%= sender.nickname %></strong>
       <% end %>さんが
-       
 
         <% case notice.action when 'follow' then %>
             あなたをフォローしました
@@ -25,15 +24,13 @@
           にコメントしました
         <% end %>
 </li>
+  <div class="small text-muted text-right"><%= time_ago_in_words(notice.created_at).upcase %>前</div>
     <%
 =begin %>
         <p class="text-muted mb-0"><%= = Comment.find_by(id: notice.comment_id)&.comment %></p>
-  <div class="small text-muted text-right"><%= time_ago_in_words(notice.created_at).upcase %></div>
     
   <hr>
 
-<%
-=end %>
 
 <li>
   send_id:<%= notice.send_id %>
@@ -42,6 +39,8 @@ receive_id:<%= notice.receive_id %>
 receivenickname:<%= Customer.find(notice.receive_id).nickname %>
 action:<%= notice.action %></li>
 
+<%
+=end %>
 
 
 
@@ -50,14 +49,6 @@ action:<%= notice.action %></li>
 <%
 =begin %>
 
-<% sender = notice.sender %>
-<% source = notice.source %>
 
-<ul>
-    <li><%= link_to customer_path(sender) do %><strong><%=sender.nickname %><% end %></strong>さんが
-    <strong><%= link_to source_path(notice.source_id) do %><%= source.title.truncate(20)%><% end %></strong>にコメントしました。
-    <%= " (#{time_ago_in_words(notice.created_at)} 前)" %></li>
-
-</ul>
 <%
 =end %>

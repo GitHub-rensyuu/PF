@@ -4,7 +4,7 @@
       <%= render 'layouts/errors', obj: @source %>
   		<h1>投稿内容編集</h1>
   		<%= render 'form', source: @source %>
-  		<%= link_to 'Show', @source, class: "source_#{@source.id}" %> |
-  		<%= link_to 'Back', sources_path, class: "back" %>
+  		<%= link_to '詳細ページへ', @source, class: "source_#{@source.id}" %> |
+  		<%= link_to '一覧ページへ', sources_path, class: "back" %>
   </div>
 </div>
