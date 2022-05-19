@@ -15,15 +15,17 @@ class Public::SearchesController < ApplicationController
   def search_for(model, content, method)
     # 選択したモデルがcustomerだったら
     if model == 'customer'
-        Customer.where('nickname LIKE ?', "%#{content}%")
+        Customer.where('nickname LIKE ?', "%#{content}%").where(is_deleted: false).where(is_deleted: false).page(params[:page]).per(2)
     # 選択したモデルsourceだったら
+    
     elsif model == 'source'
-        Source.where('purpose LIKE ?', "%#{content}%")
+      if method == 'beginner_match'
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{content}%").where(is_public: true).where(recommended_rank: 0).page(params[:page]).per(2)
+      elsif method == "intermediate_match"
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{content}%").where(is_public: true).where(recommended_rank: 1).page(params[:page]).per(2)
+      elsif method == "senior_match"
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{content}%").where(is_public: true).where(recommended_rank: 2).page(params[:page]).per(2)
+      end
     end
   end
-  
-  # def search_params
-  #   params.require(:source).permit(:search,:search_radio)
-  #   params.require(:custmer).permit(:search,:search_radio)
-  # end
 end

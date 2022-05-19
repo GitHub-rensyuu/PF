@@ -2,12 +2,11 @@
     <div class="row">
       <div class='col-md-12'>
             <% unless @customers.present? %>
-          　　<h1><%#= @customer.nickname %>さんがフォローしている人はいません。</h1>
+          　　<h1><%= @customer.nickname %>さんがフォローしている人はいません。</h1>
         　　<% else %>
-            <h1>Follow User</h1>
+            <h1>フォロー一覧</h1>
               <%= render 'follow',customers: @customers %>
             <% end %>
       </div>
     </div>
-    <%#= paginate @customers %>
   </div>

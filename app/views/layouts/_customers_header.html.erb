@@ -7,22 +7,21 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
         <% if customer_signed_in? %>
-          <span class="u h7 text-white strong">
+          <span class="u h7 text-white strong mr-3">
             ようこそ！<%= current_customer.nickname %>さん！
           </span>
-           <% if unchecked_notices.any? %>
-             <li><i class="fas fa-bell"></i><%= link_to "Notice",notices_path, class: "btn btn-light",style: "color:tomato;"%>
-          <% else %>
-             <li><i class="fas fa-check"></i><%= link_to "Notice",notices_path, class: "btn btn-light"%>
-          <% end %>
-<%
-=begin %>
-<%
-=end %>
-          
           <li>
-            <%= link_to customer_path(current_customer),class: 'nav-link text-light' do %>
-              <i class="fas fa-home"></i> マイページ
+            <%=  link_to notices_path,class: 'nav-link text-light' do %>
+              <% if unchecked_notices.any? %>
+                <i class="far fa-bell" style="color: tomato;"></i>Notice
+              <% else %>
+                <i class="fas fa-check" style="color: white;"></i>Notice
+              <% end %>
+            <% end %>
+          </li>
+          <li>
+            <%=  link_to new_source_path,class: 'nav-link text-light' do %>
+              <i class="fas fa-plus"></i> 投稿する
             <% end %>
           </li>
           <li>
@@ -32,13 +31,33 @@
           </li>
           <li>
             <%=  link_to sources_path ,class: 'nav-link text-light' do %>
-              <i class="fas fa-book-open"></i> 情報ソース一覧
+              <i class="fas fa-rss"></i> 情報ソース一覧
             <% end %>
           </li>
+<%
+=begin %>
           <li>
             <%= link_to destroy_customer_session_path, method: :delete,class: 'nav-link text-light' do %>
               <i class="fas fa-sign-out-alt"></i> ログアウト
             <% end %>
+          </li>
+<%
+=end %>
+          <li>
+            <div class="dropdown">
+              <button class="btn  text-light dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-home"></i> マイページ</button>
+              <div class="dropdown-menu">
+                <%= link_to "マイページ",customer_path(current_customer),class: 'dropdown-item',data: {"turbolinks" => false} %>
+                <p></p>
+                <%=link_to"いいねした情報ソース",likes_customer_path(current_customer),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <p></p>
+                <%= link_to '投稿済情報ソース一覧', customer_path(current_customer, sort_post: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <p></p>
+                <%= link_to '下書きの情報ソース一覧', customer_path(current_customer, sort_draft: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <p></p>
+                <%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class:"dropdown-item",data: {"turbolinks" => false} %>
+              </div>
+            </div>
           </li>
         <% else %>
           <span class="u h7 text-white strong">

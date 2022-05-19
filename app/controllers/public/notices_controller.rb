@@ -8,7 +8,7 @@ class Public::NoticesController < ApplicationController
   # end
   
   def index
-    @notices = current_customer.passive_notices.page(params[:page]).per(20)
+    @notices = current_customer.passive_notices.page(params[:page]).per(10)
     @notices.where(checked: false).each do |notice|
       notice.checked = true
       notice.save

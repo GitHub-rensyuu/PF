@@ -58,9 +58,9 @@ class Customer < ApplicationRecord
   end
 
   # 退会済ユーザーをブロック
-  def active_for_authentication?
-    super && (is_deleted == false)
-  end
+  # def active_for_authentication?
+  #   super && (is_deleted == false)
+  # end
 
   # ゲストログイン設定
   def self.guest

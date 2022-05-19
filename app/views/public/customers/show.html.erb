@@ -1,13 +1,52 @@
-<div class='container px-5 px-sm-0'>
-  <div class='row'>
-    <div class='col-md-3'>
-      <h2>会員情報</h2>
+<div class="container">
+  <div class="row my-5">
+    <div class="col-md-12  border border-secondary">
+      <div class="mt-3">
       <%= render 'info', customer: @customer %>
-      <h2 class="mt-3">新しい情報ソース</h2>
-      <%= render 'public/sources/form', source: @source %>
-    </div>
-    <div class='col-md-8 offset-md-1'>
-      <h2>投稿情報ソース一覧</h2>
+  
+    <div class='col-md-12 offset-md-1'>
+      <h2></h2>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <h2 class="nav-link"><%= link_to 'お気に入り', customer_path(sort_like: "true") %></h2>
+      </li>
+      <li class="nav-item">
+        <h2 class="nav-link active"><%= link_to '投稿済', customer_path(sort_post: "true") %></h2>
+      </li>
+      <li class="nav-item">
+        <h2 class="nav-link"><%= link_to '下書き', customer_path(sort_draft: "true") %></h2>
+      </li>
+      
+      
+<% 
+=begin %>
+      <li class="nav-item">
+        <h2 class="nav-link"><%= render 'chart', customer: @customer, sources: @sources %>
+          <%#= link_to "チャート", chart_customer_path(@customer),data: {turbolinks: false} %></h2>
+        <!--<h2 class="nav-link"><%#= link_to "チャート", chart_customer_path(@customer),data: {turbolinks: false} %></h2>-->
+      </li>
+<%
+=end %>
+    </ul>
+
+<% 
+=begin %>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">投稿済</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">下書き</a>
+    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">チャート</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"><%= render 'chart', customer: @customer, sources: @sources %></div>
+</div>
+
+<%
+=end %>
+
       <%= render 'public/sources/index',sources: @sources %>
     </div>
   </div>

@@ -1,0 +1,80 @@
+<table class='table table-hover table-inverse'>
+  <%#= render 'layouts/errors', obj: @source %>
+  <thead>
+    <tr>
+      <th>順位</th>
+      <th>投稿者</th>
+      <th>目的</th>
+      <th>参考(URL)</th>
+      <th>評価コメント</th>
+      <th>評価</th>
+      <th>いいね</th>
+      <th>コメント数</th>
+      <th>閲覧数</th>
+      <th>投稿日</th>
+      <th>難易度</th>
+      <th>タグ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% sources.each_with_index do |source, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= link_to(source.customer) do %>
+          <%= image_tag source.customer.get_profile_image(50,50) %><br>
+          <%= source.customer.nickname %>
+          <% end %>
+        </td>
+
+        <td><%= link_to source.purpose, source_path(source.id) %></td>
+        
+        <td><%= text_url_to_link(h(source.source)).html_safe %>
+        <td><%= source.performance_review %></td>
+        <!--星評価表示機能-->
+        <td>
+        <div class="relative-source-average">
+          <span id="star-average-<%= source.id %>"></span>
+          <script>
+            $('#star-average-<%= source.id %>').empty();
+            $('#star-average-<%= source.id %>').raty({
+              size: 36,
+              starOff: "<%= asset_path('star-off.png') %>",
+              starOn: "<%= asset_path('star-on.png') %>",
+              starHalf: "<%= asset_path('star-half.png') %>",
+              half: true,
+              readOnly: true,
+              score: "<%= source.comments.average(:rate).to_f.round(1) %>",
+            });
+          </script>
+          (<%= source.comments.size %>件)
+        </div>
+        </td>
+        <!--いいね機能追加-->
+            <%= render 'public/likes/likes', source: source %>
+        <td>
+        <!--コメント件数表示-->
+          <%= link_to source_path(source.id) do %>
+                <i class="fas fa-comment-dots"></i><%= source.comments.size %>
+          <% end %>
+        </td>
+        <td><i class="fas fa-solid fa-eye"></i><%= source.view_counts.count %></td>
+        <td><%= source.created_at.strftime('%Y/%m/%d') %></td>
+        <td><%= source.recommended_rank_i18n %></td>
+        <td>
+          <% if source.tags.present? %>
+                <i class="fas fa-tag"></i>
+                <% source.tags.each do |tag| %>
+                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
+                    <span class="btn btn-outline-info">
+                      <%= tag.tagname %><%="(#{tag.sources.count})" %>
+                  <% end %>
+                    </span>
+                <% end %>
+          <% else %><p>タグはありません。</p>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate sources, theme: 'bootstrap-5' %>

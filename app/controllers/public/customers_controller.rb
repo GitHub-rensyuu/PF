@@ -1,25 +1,31 @@
 class Public::CustomersController < ApplicationController
   before_action :ensure_guest_customer, only: [:edit]
   before_action :ensure_correct_customer, only: [:edit, :update]
+  # before_action :kaminari_page
 
   def index
-    @customers = Customer.all
+    @customers = Customer.all.page(params[:page])
     @customer = Customer.new
     unless params[:customer].blank?
       case params[:customer][:keyword]
        when 'source' then
-
-       @customers =  Customer.includes(:sources).sort {|a,b| b.sources.size <=> a.sources.size}
+         @things =  Customer.includes(:sources).sort {|a,b| b.sources.size <=> a.sources.size}
+         @customers = Kaminari.paginate_array(@things).page(params[:page])
        when 'comment' then
-       @customers =  Customer.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
+         @things =  Customer.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
+         @customers = Kaminari.paginate_array(@things).page(params[:page])
        when 'follow' then
-        @customers =  Customer.includes(:followers).sort {|a,b| b.follower_customers.size <=> a.follower_customers.size}
+        @things =  Customer.includes(:followers).sort {|a,b| b.follower_customers.size <=> a.follower_customers.size}
+        @customers = Kaminari.paginate_array(@things).page(params[:page])
        when 'report' then
-        @customers = Customer.includes(:reporters).sort {|a,b| b.reporter_customers.size <=> a.reporter_customers.size}
+        @things = Customer.includes(:reporters).sort {|a,b| b.reporter_customers.size <=> a.reporter_customers.size}
+        @customers = Kaminari.paginate_array(@things).page(params[:page])
        when 'like' then
-        @customers = Customer.includes(:likes).sort {|a,b| Like.where(source_id: b.sources.pluck(:id)).size <=> Like.where(source_id: a.sources.pluck(:id)).size } 
+        @things = Customer.includes(:likes).sort {|a,b| Like.where(source_id: b.sources.pluck(:id)).size <=> Like.where(source_id: a.sources.pluck(:id)).size } 
+        @customers = Kaminari.paginate_array(@things).page(params[:page])
        when 'useful' then
-        @customers = Customer.includes(:usefuls).sort {|a,b| Useful.where(comment_id: b.comments.pluck(:id)).size <=> Useful.where(comment_id: a.comments.pluck(:id)).size } 
+        @things = Customer.includes(:usefuls).sort {|a,b| Useful.where(comment_id: b.comments.pluck(:id)).size <=> Useful.where(comment_id: a.comments.pluck(:id)).size } 
+        @customers = Kaminari.paginate_array(@things).page(params[:page])
       end
     end
   end
@@ -27,11 +33,23 @@ class Public::CustomersController < ApplicationController
   def show
     @customer = Customer.find(params[:id])
     @source = Source.new
-    @sources = Source.where(customer_id: @customer.id)
+    
     @following_customers = @customer.following_customers
     @follower_customers = @customer.follower_customers
     @reporting_customers = @customer.reporting_customers
     @reporter_customers = @customer.reporter_customers
+    
+    if params[:sort_draft]
+      @sources = Source.where(is_public: false).where(customer_id: @customer.id).page(params[:page])
+    elsif params[:sort_post]
+      @sources = Source.where(is_public: true).where(customer_id: @customer.id).page(params[:page])
+    elsif params[:sort_like]
+      customer = Customer.find(params[:id])
+      @things = @customer.likes.map{|like| like.source}
+      @sources = Kaminari.paginate_array(@things).page(params[:page])
+    else
+      @sources = Source.where(customer_id: @customer.id).page(params[:page])
+    end
   end
   
   def chart
@@ -64,38 +82,33 @@ class Public::CustomersController < ApplicationController
 
   # フォロー、フォロワー一覧表示
   def follows
-    customer = Customer.find(params[:id])
-    @customers = customer.following_customer
-    # @customers = customer.following_customer.page(params[:page]).per(3).reverse_order
+    @customer = Customer.find(params[:id])
+    @customers = @customer.following_customers.page(params[:page])
   end
   def followers
-    customer = Customer.find(params[:id])
-    @customers = customer.follower_customer
-    # @customers = customer.follower_customer.page(params[:page]).per(3).reverse_order
+    @customer = Customer.find(params[:id])
+    @customers = @customer.follower_customers.page(params[:page])
   end
   
   # 会員に通報された人、会員を通報した人一覧表示
   def reporteds
-    customer = Customer.find(params[:id])
-    @customers = customer.reporting_customer
-    # @customers = customer.reporting_customer.page(params[:page]).per(3).reverse_order
+    @customer = Customer.find(params[:id])
+    @customers = @customer.reporting_customers.page(params[:page])
   end
   def reporters
-    customer = Customer.find(params[:id])
-    @customers = customer.reporter_customer
-    # @customers = customer.reporter_customer.page(params[:page]).per(3).reverse_order
+    @customer = Customer.find(params[:id])
+    @customers = @customer.reporter_customers.page(params[:page])
   end
-  def likes
-    customer = Customer.find(params[:id])
-    @sources = customer.likes.map{|like| like.source}
-    # @customers = customer.reporter_customer.page(params[:page]).per(3).reverse_order
-  end
+  # def likes
+  #   customer = Customer.find(params[:id])
+  #   @things = customer.likes.map{|like| like.source}
+  #   @sources = Kaminari.paginate_array(@things).page(params[:page])
+  # end
   
-
   private
 
   def customer_params
-    params.require(:customer).permit(:nickname, :birthday, :introduction,:telephone_number, :sex)
+    params.require(:customer).permit(:nickname, :birthday, :introduction,:telephone_number, :sex,:email, :is_deleted, :profile_image)
   end
 
   def ensure_correct_customer

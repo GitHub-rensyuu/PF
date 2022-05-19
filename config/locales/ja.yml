@@ -2,7 +2,7 @@ ja:
   # devise日本語化設定
   activerecord:
     attributes:
-      user:
+      customer:
         confirmation_sent_at: パスワード確認送信時刻
         confirmation_token: パスワード確認用トークン
         confirmed_at: パスワード確認時刻
@@ -11,6 +11,8 @@ ja:
         current_sign_in_at: 現在のログイン時刻
         current_sign_in_ip: 現在のログインIPアドレス
         email: Eメール
+        nickname: ニックネーム
+        sex: 性別
         encrypted_password: 暗号化パスワード
         failed_attempts: 失敗したログイン試行回数
         last_sign_in_at: 最終ログイン時刻
@@ -26,8 +28,19 @@ ja:
         unconfirmed_email: 未確認Eメール
         unlock_token: ロック解除用トークン
         updated_at: 更新日
+      source:
+        source: URL
+        purpose: 目的
+        performance_review: 評価コメント
+        rate: ★評価
+        recommended_rank: 推奨レベル
+      comment:
+        title: タイトル
+        comment: コメント
+        rate: ★評価
+        recommended_rank: 推奨レベル
     models:
-      user: ユーザー
+      customer: ユーザー
   devise:
     confirmations:
       confirmed: メールアドレスが確認できました。
@@ -142,6 +155,17 @@ ja:
       not_saved:
         one: エラーが発生したため %{resource} は保存されませんでした。
         other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
+      not_saved:
+        #one: "1 error prohibited this %{resource} from being saved:"
+        one: "１つのエラーがあります。修正して再度送信して下さい。:"
+        #other: "%{count} errors prohibited this %{resource} from being saved:"
+        other: "%{count}のエラーがあります。修正して再度送信して下さい。"
+    template:
+      body: 次の項目を確認してください
+      header:
+        one: "%{model}にエラーが発生しました"
+        other: "%{model}に%{count}個のエラーが発生しました"
+  
 
   # enumステータス設定
   enums:
@@ -180,3 +204,12 @@ ja:
       sex:
         man: "男"
         woman: "女"
+  
+  # kaminari日本語化
+  views:
+    pagination:
+      first: "最初"
+      last: "最後"
+      previous: "« 前"
+      next: "次 »"
+      truncate: "..."

@@ -5,18 +5,17 @@
       <th>ニックネーム</th>
       <th>この人が通報している人数</th>
       <th>この人を通報している人数</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr>
       <% customers.each do |customer| %>
+    <tr>
           <td><%= image_tag customer.get_profile_image(30,30) %></td>
-          <td><%= customer.nickname %></td>
-          <td><%= customer.reporting_customer.count %></td>
-          <td><%= customer.reporter_customer.count %></td>
-          <td><%= link_to "Show",customer_path(customer) %></td>
-      <% end %>
+          <td><%= link_to customer.nickname,customer_path(customer) %></td>
+          <td><%= customer.reporting_customers.count %></td>
+          <td><%= customer.reporter_customers.count %></td>
     </tr>
+      <% end %>
   </tbody>
 </table>
+<%= paginate @customers %>

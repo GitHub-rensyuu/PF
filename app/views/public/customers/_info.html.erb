@@ -1,3 +1,58 @@
+
+
+    <% if current_customer != @customer %>
+      <!--フォロー登録、解除ボタン-->
+      <% if current_customer.following?(customer) %>
+        <%= link_to 'フォロー外す', customer_follows_path(customer.id), method: :delete, class: "btn btn-info" %>
+      <% else %>
+        <%= link_to 'フォローする', customer_follows_path(customer.id), method: :POST, class:"btn btn-success" %>  
+      <% end %>
+      
+      <!--通報登録、解除ボタン-->
+      <% if current_customer.reporting?(customer) %>
+        <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn btn-info" %>
+      <% else %>
+        <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn btn-danger" %>
+      <% end %>
+    <% end %>
+      </div>
+      <div>
+        <%= image_tag customer.get_profile_image(100,100), class: "rounded-circle img-thumbnail" %>
+      </div>
+      <h4 class="mb-2"><%= customer.nickname %></h4>
+      <!--フォロー、フォロワー一覧ページにジャンプ-->
+      <span>
+        <%= link_to  follows_customer_path(customer), class: "text-dark" do %>
+          <i class="fas fa-user-friends"></i> フォロー<%= customer.following_customers.count %>
+        <% end %>
+      </span> |
+      <span>
+        <%= link_to followers_customer_path(customer), class: "text-dark" do %>
+          <i class="fas fa-user-friends"></i> フォロワー<%= customer.follower_customers.count %>
+        <% end %>
+      </span>
+      <p class="mt-5"><%= customer.introduction %></p>
+      <% if (customer.nickname != "guestuser") && (customer == current_customer) %>
+        <p><%= link_to "プロフィール編集", edit_customer_path(customer), class: "btn btn-light" %></p>
+      <% end %>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%
+=begin %>
 <table class='table'>
   <tr><%= image_tag customer.get_profile_image(100,100) %></tr>
   <tr>
@@ -12,11 +67,11 @@
 
   <!--フォロー、フォロワー一覧ページにジャンプ-->
   <tr>
-    <th>follows</th>
+    <th>フォロー</th>
     <th><%= link_to customer.following_customers.count, follows_customer_path(customer) %></th>
   </tr>
   <tr>
-    <th>followers</th>
+    <th>フォロワー</th>
     <th><%= link_to customer.follower_customers.count, followers_customer_path(customer) %></th>
   </tr>
   
@@ -57,10 +112,9 @@
       <% else %>
         <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn-sm btn-danger mt-2" %>
       <% end %>
-      
-    <!--投稿数グラフ-->
     <% else %>
-      <%= link_to "チャート", chart_customer_path(customer),data: {turbolinks: false} %>
     <% end %>
   <% end %>
 </div>
+<%
+=end %>

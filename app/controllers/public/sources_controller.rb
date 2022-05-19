@@ -9,78 +9,74 @@ class Public::SourcesController < ApplicationController
     unless ViewCount.find_by(customer_id: current_customer.id, source_id: @source.id)
       current_customer.view_counts.create(source_id: @source.id)
     end
+    session[:previous_url] = request.referer  # 前ページセッションを保存
   end
   def index
     
     @customer = current_customer
     @source = Source.new
-    # @sources = Source.all
-    @sources = Source.where(is_public: true).order('id DESC')
+    @sources = Source.where(is_public: true).order('id DESC').page(params[:page])
     @tag_list=Tag.all
     @source_tags = @source.tags
     
     unless params[:source].blank?
       case params[:source][:keyword]
        when 'new' then
-        @sources = Source.all.order(created_at: :desc)
+        @sources = Source.where(is_public: true).order(created_at: :desc).page(params[:page])
        when 'rate' then
-        @sources = Source.all.order(rate: :desc)
+        @sources = Source.where(is_public: true).order(rate: :desc).page(params[:page])
        when 'like' then
-      # hash = {}
-        #Source.all.each {|s| hash["#{s.id}"] = s.likes.count }
-      # @sources = Source.find(hash.sort_by { |_, v| v }.reverse.to_h.keys)
-        @sources =  Source.includes(:likes).sort {|a,b| b.likes.size <=> a.likes.size}
+        # kaminari適用するために以下のように描く（リファクタリングしたい）
+        @things = Source.where(is_public: true).includes(:likes).sort{|a,b| b.likes.size <=> a.likes.size}
+        @sources = Kaminari.paginate_array(@things).page(params[:page])
+        
        when 'comment' then
-        @sources =  Source.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
-        # @sources = Source.all.order(comment: :desc)
+        @things =  Source.where(is_public: true).includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
+        @sources = Kaminari.paginate_array(@things).page(params[:page])
        when 'watch' then
-        @sources = Source.includes(:view_counts).sort {|a,b| b.view_counts.size <=> a.view_counts.size}
+        @things = Source.where(is_public: true).includes(:view_counts).sort {|a,b| b.view_counts.size <=> a.view_counts.size}
+        @sources = Kaminari.paginate_array(@things).page(params[:page])
       end
     end
   
   end
   
-
+  def new
+    @source = Source.new
+  end
 
   def create
     @source = Source.new(source_params)
     @source.customer_id = current_customer.id
+    # NGワードを定義
     blacklist = "死ね|殺す"
     
-    if params[:post]
-      if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
-        flash[:alert] = "NGワードが含まれています"
+    if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
+        flash[:alert] = "NGワードが含まれています。"
+        # name:publicをdelete
         @customer = current_customer
         @sources = Source.all
-        render 'index'
-      # @source.save! && !@source.purpose.match?(/(.*)#{blacklist}(.*)/)
-      
-      elsif !@source.save(context: :publicize)
+        render 'new'
+    elsif params[:public]
+      if !@source.save(context: :publicize)
+        # flash[:alert] = "登録できませんでした。"
         @customer = current_customer
         @sources = Source.all
-        render 'index'
+        render 'new'
       else
         @source.update(is_public: true)
         tag_list=params[:source][:tagname].split(',')
         @source.save_tag(tag_list)
-        redirect_to source_path(@source.id), notice: "情報ソースの作成しました!"
+        redirect_to source_path(@source.id), notice: "情報ソース作成しました!"
       end
-    else
-      if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
-        flash[:alert] = "登録できませんでした。NGワードが含まれています。"
+    elsif params[:draft]
+      if !@source.update(is_public: false)
+        # flash[:alert] = "登録できませんでした。"
         @customer = current_customer
         @sources = Source.all
-        render 'index'
-      # @source.save! && !@source.purpose.match?(/(.*)#{blacklist}(.*)/)
-        
-      elsif !@source.update(is_public: false)
-        flash[:alert] = "登録できませんでした。"
-        @customer = current_customer
-        @sources = Source.all
-        render 'index'
+        render 'new'
       else
         tag_list=params[:source][:tagname].split(',')
-        # @source.save_tag(tag_list)
         redirect_to customer_path(current_customer), notice: "情報ソースの下書き保存しました！"
       end
     end
@@ -88,7 +84,7 @@ class Public::SourcesController < ApplicationController
 
   def edit
     @source = Source.find(params[:id])
-    @tag_list=@source.tags.pluck(:name).join(',')
+    @tag_list = @source.tags.pluck(:tagname).join(',')
     if @source.customer == current_customer
       render "edit"
     else
@@ -100,75 +96,74 @@ class Public::SourcesController < ApplicationController
     @source = Source.find(params[:id])
     @source.customer_id = current_customer.id
     blacklist = "死ね|殺す"
-    if params[:publicize_draft]
-      @source.is_public = true
-      # @source.attributes = source_params.merge(is_public: true)
-      if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
+    
+    # NGワードがあった場合
+    if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
         @source.is_public = false
         flash[:alert] = "登録できませんでした。NGワードが含まれています。"
         @customer = current_customer
         @sources = Source.all
         render 'index'
-      elsif  @source.save(context: :publicize)
-        # @source.update(is_public: true)
+    
+    # ①下書き更新（公開）の場合
+    elsif @source.is_public == false && params[:public]
+      # 情報ソース公開時にバリデーションを実施
+      # updateメソッドにはcontextが使用できないため、公開処理にはattributesとsaveメソッドを使用する
+      tag_list=params[:source][:tagname].split(',')
+      @source.attributes = source_params.merge(is_public: true)
+      if @source.save(context: :publicize)
+        @source.save_tag(tag_list)
         redirect_to source_path(@source.id), notice: "下書きの情報ソースを公開しました！"
-        
-      elsif !@source.update(is_public: true)
-        @source.is_public = false
-        flash[:alert] = "登録できませんでした。"
-        @customer = current_customer
-        @sources = Source.all
-        render 'index'
-      
       else
         @source.is_public = false
-        tag_list=params[:source][:tagname].split(',')
-        # @source.save_tag(tag_list)
-        redirect_to customer_path(current_customer), notice: "情報ソースの下書き保存しました！"
+        render :edit, alert: "情報ソースを公開できませんでした。お手数ですが、入力内容をご確認のうえ再度お試しください"
       end
-      
-    
-    elsif params[:update_post]
-      
+    # ②公開済み更新の場合
+    elsif @source.is_public == true
+      @source.attributes = source_params
       tag_list=params[:source][:tagname].split(',')
-      
-      if @source.update(source_params)
-       # このsource_idに紐づいていたタグを@oldに入れる
+      if @source.save(context: :publicize)
+        # このsource_idに紐づいていたタグを@oldに入れる
           @old_relations = SourceTag.where(source_id: @source.id)
           # それらを取り出し、消す。消し終わる
           @old_relations.each do |relation|
             relation.delete
           end
           @source.save_tag(tag_list)
-        redirect_to source_path(@source), notice: "情報ソースを更新しました"
+        redirect_to source_path(@source.id), notice: "情報ソースを更新しました！"
       else
-        render "edit"
+        render :edit, alert: "情報ソースを更新できませんでした。お手数ですが、入力内容をご確認のうえ再度お試しください"
+      end
+    # ③下書き更新（非公開）の場合
+    elsif @source.is_public == false && params[:draft]
+      if @source.update(source_params)
+        redirect_to source_path(@source.id), notice: "下書き情報ソースを更新しました！"
+      else
+        render :edit, alert: "更新できませんでした。お手数ですが、入力内容をご確認のうえ再度お試しください"
       end
     end
   end
-
+    
   def destroy
     @source = Source.find(params[:id])
     if @source.destroy
       flash[:notice]="削除しました"
-      redirect_to sources_path
+      redirect_to session[:previous_url]  # 2つ前に遷移させる
     end
   end
 
   def search_source
      @source = Source.new
-     @sources = Source.search(params[:keyword])
+     @sources = Source.where(is_public: true).search(params[:keyword])
   end
   
   def search
     selection = params[:keyword]
-    @sources = Source.sort(selection)
+    @things = Source.where(is_public: true)
+    @things.sort(selection)
+    @sources = Kaminari.paginate_array(@things).page(params[:page])
   end
 
-  def public_update
-  end
-  
-  
   def save_tag(sent_tags)
     # タグが存在していれば、タグの名前を配列として全て取得
       current_tags = self.tags.pluck(:tagname) unless self.tags.nil?
@@ -203,5 +198,4 @@ class Public::SourcesController < ApplicationController
   def source_params
     params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid)
   end
-
 end

@@ -3,11 +3,11 @@
     <div class='col-md-12'>
         <!--検索対象モデルがCustomerの時 -->
         <% if @model == "customer" %>
-        <h3>会員 "<%= @content %>" の検索結果</h3>
+        <h3>会員 "<%= @content %>" の検索結果</h3><%= link_to '戻る', 'javascript:history.back()' %>
           <%= render 'public/customers/index', customers: @records %>
         <!--検索対象モデルがSourceの時 -->
         <% else %>
-        <h3>情報ソース "<%= @content %>" の検索結果</h3>
+        <h3>情報ソース "<%= @content %>" の検索結果</h3><%= link_to '戻る', 'javascript:history.back()' %>
           <%= render 'public/sources/index', sources: @records %>
         <% end %>
     </div>

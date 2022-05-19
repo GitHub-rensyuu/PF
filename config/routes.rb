@@ -37,13 +37,13 @@ Rails.application.routes.draw do
       resources:likes, only: [:index]
     end
 
-   namespace :public do
-      get "likes/index"
-      get "likes/create"
-      get "likes/destroy"
-      get "news/index"
-      get "news/show"
-    end
+  # namespace :public do
+  #     get "likes/index"
+  #     get "likes/create"
+  #     get "likes/destroy"
+  #     get "news/index"
+  #     get "news/show"
+  #   end
 
   end
 

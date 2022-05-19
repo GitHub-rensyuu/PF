@@ -1,83 +1,70 @@
-<table class='table table-hover table-inverse'>
-  <%#= render 'layouts/errors', obj: @source %>
-  <thead>
-    <tr>
-      <th>投稿者</th>
-      <th>目的</th>
-      <th>参考(URL)</th>
-      <th>評価コメント</th>
-      <th>評価</th>
-      <th>いいね</th>
-      <th>コメント数</th>
-      <th>閲覧数</th>
-      <th>投稿日</th>
-      <th>難易度</th>
-      <th>タグ</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% sources.each do |source| %>
-      <tr>
-        <td><%= link_to(source.customer) do %>
-          <%= image_tag source.customer.get_profile_image(50,50) %><br>
-          <%= source.customer.nickname %>
+<div class="row">
+  <% sources.each_with_index do |source, i| %>
+    <div class="border border-warning col-lg-3 col-md-4 col-sm-6 col-6 mb-4" style="padding:10px; margin:10px;">
+    <%= link_to source_path(source.id) do %>
+      <% if controller.controller_name == 'homes' && controller.action_name == 'top' %>
+        <p><%= i + 1 %>位</p>
+      <% end %>
+      <p><strong><%= source.purpose.truncate(20, omission: '...') %></strong></p>
+      <p>
+      <% if source.comments.size == 0 %>
+        (<%= source.recommended_rank_i18n %>)
+      <% else %>
+        <% if source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+          (初)
+        <% elsif source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+          (上)
+        <% else %>
+          (中)
+        <% end %>
+      <% end %></p>
+        <div class="relative-source-average">
+            <span id="star-average-<%= source.id %>" class="raty-star"></span>
+          <% if source.comments.size == 0 %>
+            <script>
+              $('#star-average-<%= source.id %>').empty();
+                $('#star-average-<%= source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= source.rate %>",
+              });
+              
+            </script>
+          <% else %>
+              <script>
+               $('#star-average-<%= source.id %>').empty();
+              $('#star-average-<%= source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= source.comments.average(:rate).to_f.round(1) %>",
+              });
+              
+              </script>
           <% end %>
-        </td>
 
-        <td><%= link_to source.purpose, source_path(source.id) %></td>
-        
-        <td><%= text_url_to_link(h(source.source)).html_safe %>
-        <td><%= source.performance_review %></td>
-        <%
-=begin %>
-        <td><%= link_to source.jenre, search_source_path(keyword: source.jenre) %></td>
-<%
-=end %>
-
-        <!--星評価表示機能-->
-        <td>
-        <div class="relative-source-rate">
-          <span id="star-rate-<%= source.id %>"></span>
-          <script>
-            $('#star-rate-<%= source.id %>').empty();
-            $('#star-rate-<%= source.id %>').raty({
-              size: 36,
-              starOff: "<%= asset_path('star-off.png') %>",
-              starOn: "<%= asset_path('star-on.png') %>",
-              starHalf: "<%= asset_path('star-half.png') %>",
-              half: true,
-              readOnly: true,
-              score: "<%= source.rate %>",
-            });
-          </script>
+          (<%= source.comments.size %>)
+        <%= render 'public/likes/likes', source: source %><%= link_to source_path(source.id) do %>
+              <i class="fas fa-comment-dots"></i>(<%= source.comments.size %>)
+           <% end %>
+           <i class="fas fa-solid fa-eye"></i>(<%= source.view_counts.size %>)
         </div>
-        </td>
-        <!--いいね機能追加-->
-            <%= render 'public/likes/likes', source: source %>
-        <!--コメント件数表示-->
+        
+      <p>投稿者:<%= source.customer.nickname %>　　投稿日:<%= source.created_at.strftime('%Y/%m/%d') %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>  
 
-        <td>
-          <%= link_to source_path(source.id) do %>
-                <i class="fas fa-comment-dots"></i><%= source.comments.size %>
-          <% end %>
-        </td>
-        <td><i class="fas fa-solid fa-eye"></i><%= source.view_counts.count %></td>
-        <td><%= source.created_at.strftime('%Y/%m/%d') %></td>
-        <td><%= source.recommended_rank_i18n %></td>
-        <td>
-          <% if source.tags.present? %>
-                <i class="fas fa-tag"></i>
-                <% source.tags.each do |tag| %>
-                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
-                    <span class="btn btn-outline-info">
-                      <%= tag.tagname %><%="(#{tag.sources.count})" %>
-                  <% end %>
-                    </span>
-                <% end %>
-          <% else %><p>タグはありません。</p>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row mt-5">
+  <div class="col-md-12">
+    <%= paginate sources, theme: 'bootstrap-5' %>
+  </div>
+</div>

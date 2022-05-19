@@ -72,3 +72,7 @@ gem 'summernote-rails', '~> 0.8.10.0'
 # gem "refile", require: "refile/rails", github: 'manfe/refile'
 # gem "refile-mini_magick"
 # gem 'pry-rails'
+gem 'bootstrap5-kaminari-views', '~> 0.0.1'
+# URLサムネイル化用
+gem 'link_thumbnailer'
+gem 'seed-fu'
