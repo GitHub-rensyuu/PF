@@ -23,12 +23,12 @@
       <!--フォロー、フォロワー一覧ページにジャンプ-->
       <span>
         <%= link_to  follows_customer_path(customer), class: "text-dark" do %>
-          <i class="fas fa-user-friends"></i> フォロー<%= customer.following_customers.count %>
+          フォロー<%= customer.following_customers.count %>
         <% end %>
       </span> |
       <span>
         <%= link_to followers_customer_path(customer), class: "text-dark" do %>
-          <i class="fas fa-user-friends"></i> フォロワー<%= customer.follower_customers.count %>
+          フォロワー<%= customer.follower_customers.count %>
         <% end %>
       </span>
       <p class="mt-5"><%= customer.introduction %></p>

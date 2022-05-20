@@ -7,9 +7,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
         <% if customer_signed_in? %>
-          <span class="u h7 text-white strong mr-3">
+          <li><span class='nav-link text-light'>
             ようこそ！<%= current_customer.nickname %>さん！
-          </span>
+            </span>
+          </li>
           <li>
             <%=  link_to notices_path,class: 'nav-link text-light' do %>
               <% if unchecked_notices.any? %>
@@ -49,22 +50,24 @@
               <div class="dropdown-menu">
                 <%= link_to "マイページ",customer_path(current_customer),class: 'dropdown-item',data: {"turbolinks" => false} %>
                 <p></p>
-                <%=link_to"いいねした情報ソース",likes_customer_path(current_customer),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%=link_to"お気に入り",customer_path(current_customer, sort_like: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
                 <p></p>
-                <%= link_to '投稿済情報ソース一覧', customer_path(current_customer, sort_post: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%= link_to '投稿済', customer_path(current_customer, sort_post: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
                 <p></p>
-                <%= link_to '下書きの情報ソース一覧', customer_path(current_customer, sort_draft: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%= link_to '下書き', customer_path(current_customer, sort_draft: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
                 <p></p>
                 <%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class:"dropdown-item",data: {"turbolinks" => false} %>
               </div>
             </div>
           </li>
         <% else %>
-          <span class="u h7 text-white strong">
+          <li><span class='nav-link text-light'>
             ようこそ！ゲストさん！
-          </span>
+            </span>
+          </li>
           <li>
-            <%= link_to 'ゲストログイン（閲覧用）', customers_guest_sign_in_path, class: "btn btn-secondary btn-sm btn-block mb-3 sign_in", method: :post %>
+            <!--btn btn-secondary btn-sm btn-block mb-3 sign_in-->
+            <%= link_to 'ゲストログイン（閲覧用）', customers_guest_sign_in_path, class: "nav-link text-light", method: :post %>
           </li>
           <li>
             <%= link_to root_path,class: 'nav-link text-light' do %>

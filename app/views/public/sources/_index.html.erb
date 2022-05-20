@@ -1,12 +1,19 @@
 <div class="row">
   <% sources.each_with_index do |source, i| %>
-    <div class="border border-warning col-lg-3 col-md-4 col-sm-6 col-6 mb-4" style="padding:10px; margin:10px;">
+    <div class="border border-warning col-lg-3 col-md-4 col-sm-6 col-6" style="padding:10px; margin:10px;">
     <%= link_to source_path(source.id) do %>
       <% if controller.controller_name == 'homes' && controller.action_name == 'top' %>
         <p><%= i + 1 %>位</p>
       <% end %>
-      <p><strong><%= source.purpose.truncate(20, omission: '...') %></strong></p>
-      <p>
+      
+<%
+=begin %>
+      <div><%  @source = Source.last
+         object = LinkThumbnailer.generate( @source.source ) 
+        %><%= image_tag object.images.first.src.to_s, :width => '200' %></div>
+<%
+=end %>
+      <p><strong><%= source.purpose.truncate(20, omission: '...') %></strong>
       <% if source.comments.size == 0 %>
         (<%= source.recommended_rank_i18n %>)
       <% else %>
@@ -18,7 +25,7 @@
           (中)
         <% end %>
       <% end %></p>
-        <div class="relative-source-average">
+        <div class="relative-source-average" style="border-bottom: solid 1px #F0F0F0; border-top: solid 1px #F0F0F0;">
             <span id="star-average-<%= source.id %>" class="raty-star"></span>
           <% if source.comments.size == 0 %>
             <script>
@@ -56,8 +63,7 @@
            <% end %>
            <i class="fas fa-solid fa-eye"></i>(<%= source.view_counts.size %>)
         </div>
-        
-      <p>投稿者:<%= source.customer.nickname %>　　投稿日:<%= source.created_at.strftime('%Y/%m/%d') %></p>
+      <p><%= image_tag source.customer.get_profile_image(30,30) %><%= source.customer.nickname %>　　　　　　<%= source.created_at.strftime('%Y/%m/%d') %></p>
       <% end %>
     </div>
   <% end %>

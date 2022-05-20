@@ -9,7 +9,6 @@ class Public::SourcesController < ApplicationController
     unless ViewCount.find_by(customer_id: current_customer.id, source_id: @source.id)
       current_customer.view_counts.create(source_id: @source.id)
     end
-    session[:previous_url] = request.referer  # 前ページセッションを保存
   end
   def index
     
@@ -103,13 +102,14 @@ class Public::SourcesController < ApplicationController
         flash[:alert] = "登録できませんでした。NGワードが含まれています。"
         @customer = current_customer
         @sources = Source.all
-        render 'index'
+        render 'edit'
     
     # ①下書き更新（公開）の場合
     elsif @source.is_public == false && params[:public]
       # 情報ソース公開時にバリデーションを実施
       # updateメソッドにはcontextが使用できないため、公開処理にはattributesとsaveメソッドを使用する
       tag_list=params[:source][:tagname].split(',')
+      @source.save_tag(tag_list)
       @source.attributes = source_params.merge(is_public: true)
       if @source.save(context: :publicize)
         @source.save_tag(tag_list)
@@ -148,7 +148,7 @@ class Public::SourcesController < ApplicationController
     @source = Source.find(params[:id])
     if @source.destroy
       flash[:notice]="削除しました"
-      redirect_to session[:previous_url]  # 2つ前に遷移させる
+      redirect_to customer_path(current_customer) 
     end
   end
 
@@ -192,7 +192,7 @@ class Public::SourcesController < ApplicationController
     #検索されたタグに紐づく投稿を表示
     @sources=@tag.sources.page(params[:page]).per(10)
   end
-
+  
   private
 
   def source_params

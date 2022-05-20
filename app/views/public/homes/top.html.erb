@@ -1,16 +1,3 @@
 <h1>ようこそSourceReviewへ</h1>
-<%
-=begin %>
-<% 
-@source = Source.last
-object = LinkThumbnailer.generate( @source.source ) 
-%>
 
-<h2>タイトル:<%= object.title %></h2>
-<h2>ファビコン:<%= text_url_to_link(h(object.favicon)).html_safe %></h2>
-<h2>説明:<%= object.description %></h2>
-<h2>サムネイル:<%= text_url_to_link(h(object.images.first.src.to_s)).html_safe %></h2>
- <%= image_tag object.images.first.src.to_s, :width => '200' %>
-<%
-=end %>
 

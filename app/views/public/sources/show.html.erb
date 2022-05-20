@@ -1,3 +1,118 @@
+
+<div class="container">
+  <div class="row my-5">
+    <div class="col-md-7 border border-gray">
+<%
+=begin %>
+<%
+=end %>
+      <% object = LinkThumbnailer.generate( @source.source ) %>
+      <%= image_tag object.images.first.src.to_s, :width => '600' %><br><br>
+      参考URL:<%= text_url_to_link(h(@source.source)).html_safe %>.truncate(20, omission: '...')
+    </div>
+    <div class="col-md-5">
+      <h4 class="mb-2"><strong>目的:<%= @source.purpose %></strong>
+      <p>
+      <% if @source.comments.size == 0 %>
+        (<%= @source.recommended_rank_i18n %>)
+      <% else %>
+        <% if @source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+          (初)
+        <% elsif @source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+          (上)
+        <% else %>
+          (中)
+        <% end %>
+      <% end %></p></h4>
+        評価:
+      <span id="star-average-<%= @source.id %>" class="d-inline"></span>
+          <% if @source.comments.size == 0 %>
+            <span class="text-red"><%= @source.rate %></span>
+            <script>
+              $('#star-average-<%= @source.id %>').empty();
+                $('#star-average-<%= @source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= @source.rate %>",
+              });
+              
+            </script>
+          <% else %>
+              <span class="text-red"><%= @source.comments.average(:rate).to_f.round(1) %></span>
+              <script>
+               $('#star-average-<%= @source.id %>').empty();
+              $('#star-average-<%= @source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= @source.comments.average(:rate).to_f.round(1) %>",
+              });
+              </script>
+          <% end %>
+        <span>(<%= @source.comments.size %>)</span>
+        <div style="border-bottom: solid 1px #F0F0F0;">閲覧数:<i class="fas fa-solid fa-eye"></i><%= @source.view_counts.size %></div>
+      <div class="mt-3">タグ:
+        <i class="fas fa-search-location"></i>
+                <% if @source_tags.present? %>
+                <% @source_tags.each do |tag| %>
+                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
+                    <span class="btn btn-outline-info">
+                      <%= tag.tagname %><%="(#{tag.sources.count})" %>
+                  <% end %>
+                    </span>
+                <% end %>
+                <% else %>タグはありません。
+                <% end %>
+      </div>
+        いいね:
+        <%= render 'public/likes/likes', source: @source %><br><br>
+        評価コメント
+      <div class="border border-secondary rounded mb-4">
+        <div class="source-component">
+          <p><%= @source.performance_review %></p>
+        </div>
+      </div>
+      <% if @source.note.present? %>
+      内容が古い、誤りがある場合のコメント
+      <div class="border border-secondary rounded mb-4">
+        <div class="source-component">
+          <p><%= @source.note %></p>
+        </div>
+      </div>
+      <% end %>
+      <div style="display: flex; justify-content: space-between">
+        <% if @source.customer_id == current_customer.id %>
+    		  <% if @source.is_public == false %>
+            <%#= button_to '情報ソースを公開', source_path(@source.id, {public: true}), {method: :patch , class: 'mr-5 btn btn-sm btn-warning text-white'} %>
+            <%= button_to '下書きを編集', edit_source_path(@source.id), {method: :get ,params: {draft: true}, class: "btn btn-sm btn-success"} %>
+          <% else %>
+            <%= link_to '編集', edit_source_path(@source, {public: true}), class: "btn btn-sm btn-success edit_source_#{@source.id} mr-3" %>
+          <% end %>
+          <%= link_to '削除', @source, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_source_#{@source.id}"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<%
+=begin %>
 <div class='container'>
   <div class='row'>
     <div class='col-md-12 offset-md-1'>
@@ -15,9 +130,15 @@
   		  <thead>
   		    投稿日: <%= @source.created_at.strftime('%Y/%m/%d') %>
           <tr>
+            <th>サムネイル</th>
+            <th><% 
+                object = LinkThumbnailer.generate( @source.source ) 
+                %><%= image_tag object.images.first.src.to_s, :width => '200' %></th>
+          </tr>
+          <tr>
             <th>投稿者</th>
             <th><%= link_to(@source.customer) do %>
-                  <%= image_tag @source.customer.get_profile_image(100,100) %><br>
+                  <%= image_tag @source.customer.get_profile_image(100,100), class: "rounded-circle img-thumbnail" %><br>
                   <%= @source.customer.nickname %>
                 <% end %>
             </th>
@@ -79,7 +200,7 @@
             <th>対象者</th>
             <th>
                 <% if @source.comments.size == 0 %>
-                  <%= @source.recommended_rank_i18n %>向け
+                  <%= @source.recommended_rank_i18n %>者向け
                 <% else %>
                   <% if @source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
                     初心者向け
@@ -118,10 +239,6 @@
                 <% else %><p>タグはありません。</p>
                 <% end %></th>
           </tr>
-<%
-=begin %>
-<%
-=end %>
           <br>
           <!--コメント部分-->
           <% if @source.comments.exists? %>
@@ -232,3 +349,5 @@
     </div>
   </div>
 </div>
+<%
+=end %>

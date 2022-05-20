@@ -6,7 +6,7 @@
 
   <div class="form-group">
     <%= f.label :"参考にした情報ソース(URL)" %>
-    <%= f.text_field :source, class: 'form-control source_title' %>
+    <%= f.text_field :source, class: 'form-control source_title',placeholder: "https://www.google.com" %>
   </div>
 
   <div class="form-group">
@@ -26,6 +26,19 @@
       <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>
       <%= f.hidden_field :rate, id: :rate_star %>
   </div>
+<% if source.is_public  == true %>
+  <script>
+      $('#star').raty({
+          size     : 36,
+          starOff:  '<%= asset_path('star-off.png') %>',
+          starOn : '<%= asset_path('star-on.png') %>',
+          starHalf: '<%= asset_path('star-half.png') %>',
+          scoreName: 'source[rate]',
+          half: true,
+          score: <%= source.rate %>
+      });
+  </script>
+<% else %>
   <script>
       $('#star').raty({
           size     : 36,
@@ -36,9 +49,11 @@
           half: true,
       });
   </script>
+<% end %>
   
   <div class="form-group">
       <%= f.label :recommended_rank,  "推奨する対象者" %>
+      <%#= f.select :recommended_rank, [['初心者', 0.to_i], ['中級者', 1.to_i],['上級者', 2.to_i]], {}, { id: "source_id", class: "source_class" } %>
       <%= f.select :recommended_rank, Source.recommended_ranks.keys.map {|k| [I18n.t("enums.source.recommended_rank.#{k}"), k]} %>
   </div>
 
