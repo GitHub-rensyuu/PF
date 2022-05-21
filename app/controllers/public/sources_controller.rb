@@ -61,7 +61,7 @@ class Public::SourcesController < ApplicationController
         render 'new'
     elsif params[:public]
       if !@source.save(context: :publicize)
-        # flash[:alert] = "登録できませんでした。"
+        flash[:alert] = "登録できませんでした。"
         @customer = current_customer
         @sources = Source.all
         render 'new'
@@ -73,7 +73,7 @@ class Public::SourcesController < ApplicationController
       end
     elsif params[:draft]
       if !@source.update(is_public: false)
-        # flash[:alert] = "登録できませんでした。"
+        flash[:alert] = "登録できませんでした。"
         @customer = current_customer
         @sources = Source.all
         render 'new'
@@ -99,6 +99,8 @@ class Public::SourcesController < ApplicationController
     @source.customer_id = current_customer.id
     blacklist = "死ね|殺す"
     
+    @source.purpose = source_params[:purpose]
+    
     # NGワードがあった場合
     if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
         @source.is_public = false
@@ -111,8 +113,9 @@ class Public::SourcesController < ApplicationController
     elsif @source.is_public == false && params[:public]
       # 情報ソース公開時にバリデーションを実施
       # updateメソッドにはcontextが使用できないため、公開処理にはattributesとsaveメソッドを使用する
-      tag_list=params[:source][:tagname].split(',')
+      tag_list=params[:source][:tagnames].split(',')
       @source.save_tag(tag_list)
+      binding.pry
       @source.attributes = source_params.merge(is_public: true)
       if @source.save(context: :publicize)
         @source.save_tag(tag_list)
@@ -124,7 +127,7 @@ class Public::SourcesController < ApplicationController
     # ②公開済み更新の場合
     elsif @source.is_public == true
       @source.attributes = source_params
-      tag_list=params[:source][:tagname].split(',')
+      tag_list=params[:source][:tagnames].split(',')
       if @source.save(context: :publicize)
         # このsource_idに紐づいていたタグを@oldに入れる
           @old_relations = SourceTag.where(source_id: @source.id)

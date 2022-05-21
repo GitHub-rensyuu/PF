@@ -1,4 +1,5 @@
 <%= form_with model:source,local:true do |f| %>
+  <%#= render 'layouts/errors', model: f.object %>
   <div class="form-group">
     <%= f.label :"目的" %>
     <%= f.text_field :purpose, class: 'form-control source_title' %>
@@ -26,7 +27,7 @@
       <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>
       <%= f.hidden_field :rate, id: :rate_star %>
   </div>
-<% if source.is_public  == true %>
+<% unless source.id.nil?  %>
   <script>
       $('#star').raty({
           size     : 36,
@@ -59,7 +60,7 @@
 
   <div class="form-group">
     <%= f.label"タグ (,で区切ると複数タグ登録できます)" %>
-    <%= f.text_field :tagname ,class:"form-control",placeholder: "１つのタグは１０字以内にしてください" %>
+    <%= f.text_field :tagnames ,class:"form-control",placeholder: "１つのタグは１０字以内にしてください" %>
     <p>※下書き保存では、タグの情報は保存されません。</p>
   </div>
   

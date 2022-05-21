@@ -6,7 +6,7 @@ class Source < ApplicationRecord
   has_many :source_tags,dependent: :destroy
   has_many :tags,through: :source_tags,dependent: :destroy
   has_many :notices, dependent: :destroy
-  
+  attr_accessor :tagnames
   
   # NGワードを定義する
   
@@ -27,6 +27,10 @@ class Source < ApplicationRecord
 
   def liked_by?(customer)
     likes.where(customer_id: customer.id).exists?
+  end
+  
+  def tagnames
+     tags.map(&:tagname).join(',')
   end
   
   def save_tag(sent_tags)
