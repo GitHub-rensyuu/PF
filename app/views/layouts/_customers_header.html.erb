@@ -6,6 +6,19 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
+          <%= search_form_for @search, url: search_path do |f| %>
+            <%= f.label :recommended_rank_eq, '推奨レベル', class: 'label text-white d-inline' %>
+            <%= f.select :recommended_rank_eq, options_for_select({"初心者": 0, "中級者": 1, "上級者": 2}), include_blank: '指定なし', class: 'search-select' %>
+          <div class="form-group my-2 my-lg-0 form-inline">
+            <%#= f.search_field :tag_tagname_cont, class:"form-control mr-sm-2", placeholder:"タグをいれてください" %>
+            <%= f.search_field :purpose_cont, class:"form-control mr-sm-2", placeholder:"目的を入れてください" %>
+            <%= f.submit "検索", class:"btn btn-outline-success" %>
+          </div>
+          <% end %>
+<%
+=begin %>
+<%
+=end %>
         <% if customer_signed_in? %>
           <li><span class='nav-link text-light'>
             ようこそ！<%= current_customer.nickname %>さん！
@@ -35,28 +48,19 @@
               <i class="fas fa-rss"></i> 情報ソース一覧
             <% end %>
           </li>
-<%
-=begin %>
-          <li>
-            <%= link_to destroy_customer_session_path, method: :delete,class: 'nav-link text-light' do %>
-              <i class="fas fa-sign-out-alt"></i> ログアウト
-            <% end %>
-          </li>
-<%
-=end %>
           <li>
             <div class="dropdown">
               <button class="btn  text-light dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-home"></i> マイページ</button>
               <div class="dropdown-menu">
-                <%= link_to "マイページ",customer_path(current_customer),class: 'dropdown-item',data: {"turbolinks" => false} %>
+                <%=link_to"お気に入り",customer_path(current_customer, sort_like: "true"),class:"dropdown-item" %>
                 <p></p>
-                <%=link_to"お気に入り",customer_path(current_customer, sort_like: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%= link_to '投稿済', customer_path(current_customer, sort_post: "true"),class:"dropdown-item" %>
                 <p></p>
-                <%= link_to '投稿済', customer_path(current_customer, sort_post: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%= link_to '下書き', customer_path(current_customer, sort_draft: "true"),class:"dropdown-item" %>
                 <p></p>
-                <%= link_to '下書き', customer_path(current_customer, sort_draft: "true"),class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class:"dropdown-item" %>
                 <p></p>
-                <%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class:"dropdown-item",data: {"turbolinks" => false} %>
+                <%= link_to "退会する", withdraw_confirm_customer_path(current_customer), class: "dropdown-item" %>
               </div>
             </div>
           </li>
@@ -66,7 +70,6 @@
             </span>
           </li>
           <li>
-            <!--btn btn-secondary btn-sm btn-block mb-3 sign_in-->
             <%= link_to 'ゲストログイン（閲覧用）', customers_guest_sign_in_path, class: "nav-link text-light", method: :post %>
           </li>
           <li>

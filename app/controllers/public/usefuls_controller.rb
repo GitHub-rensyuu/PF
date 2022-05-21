@@ -1,4 +1,5 @@
 class Public::UsefulsController < ApplicationController
+  before_action :authenticate_customer!
   def create
     comment = Comment.find(params[:comment_id])
     useful = current_customer.usefuls.new(comment_id: comment.id)

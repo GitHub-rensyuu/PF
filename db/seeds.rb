@@ -26,25 +26,13 @@ Admin.create!(
 end
 
 # 情報ソース
-5.times do |n|
-   Source.create!(
-      customer_id: n + 1,
-      source: "https://#{n + 1}",
-      purpose: "#{n + 1}確認のため",
-      performance_review: "#{n + 1}が確認できました。",
-      note:"#{n + 1}が間違ってました。",
-      rate:n + 1,
-      recommended_rank: 0,
-      is_public: true
-    )
-end
-
 Source.create!(
       customer_id: 1,
       source: "https://freesworder.net/rails-link-a/",
       purpose: "urlのハイパーリンク化",
-      performance_review: "簡単に実装できた。",
-      rate:5,
+      performance_review: "簡単に実装できました。<a href=""></a>で囲めばハイパーリンク化すると思い、試しても上手くいかなかった時に見つけたのがこの記事です。
+      ",
+      rate:4,
       recommended_rank: 0,
       is_public: true
     )
@@ -53,7 +41,7 @@ Source.create!(
       customer_id: 1,
       source: "https://qiita.com/ishidamakot/items/2e74d980b3a338e4c784",
       purpose: "長い文字列を省略して表示",
-      performance_review: "簡単に実装できた。",
+      performance_review: "簡単に実装できました。railsにこのようなメソッドがあるとは知らなかった。",
       rate:5,
       recommended_rank: 0,
       is_public: true
@@ -62,8 +50,8 @@ Source.create!(
       customer_id: 2,
       source: "https://qiita.com/mocomou_/items/c3cce91c241e08f9a50b",
       purpose: "kaminariにbootstrapを実装する",
-      performance_review: "すぐ実装できた。",
-      rate:5,
+      performance_review: "すぐ実装できました。ページネーションでkaminariを使っている人におすすめです。",
+      rate:4,
       recommended_rank: 0,
       is_public: true
     )
@@ -71,7 +59,8 @@ Source.create!(
       customer_id: 2,
       source: "https://getbootstrap.jp/docs/5.0/components/dropdowns/",
       purpose: "レイアウトでドロップダウンを実装する",
-      performance_review: "簡単に実装できた。",
+      performance_review: "簡単に実装できました。ドロップダウンを実装すると見栄えが良くなるのでおすすめです。",
+      note: "Turbolinksを無効にしないと機能しないことがある。",
       rate:5,
       recommended_rank: 0,
       is_public: true
@@ -80,30 +69,20 @@ Source.create!(
       customer_id: 2,
       source: "https://getbootstrap.jp/docs/4.2/components/navs/",
       purpose: "レイアウトでタブの切り替え機能を実装する",
-      performance_review: "簡単に実装できた。",
+      performance_review: "簡単に実装できた。タブの切り替え機能を実装するとユーザビリティーが良くなるのでおすすめです。",
       rate:5,
-      recommended_rank: 0,
-      is_public: true
-    )
-Source.create!(
-      customer_id: 2,
-      source: "https://getbootstrap.jp/docs/4.2/components/navs/",
-      purpose: "レイアウトでタブの切り替え機能を実装する",
-      performance_review: "簡単に実装できた。",
-      rate:5,
-      recommended_rank: 0,
+      recommended_rank: 1,
       is_public: true
     )
 Source.create!(
       customer_id: 3,
       source: "https://qiita.com/pyon_kiti_jp/items/a23660d20e76fffa5dd4",
       purpose: "後からmigrateファイルを修正する",
-      performance_review: "とても便利な機能だと感じた。",
+      performance_review: "とても便利な機能だと感じた。これを知るまでは苦労してmigrateファイルを修正していた。",
       rate:5,
-      recommended_rank: 0,
+      recommended_rank: 1,
       is_public: true
     )
-    
 Source.create!(
       customer_id: 4,
       source: "https://www.youtube.com/watch?v=XCjOHj2po5s",
@@ -117,9 +96,27 @@ Source.create!(
       customer_id: 4,
       source: "https://www.naporitansushi.com/nenagara-amazon-prime/",
       purpose: "プライムビデオを倍速で視聴する",
-      performance_review: "プライムビデオ以外も倍速にでき、とても便利な機能だと感じた。",
-      note: "スマホのiOSのバージョンが高いとdeskreen上でプライムビデオを表示されない問題あり。",
+      performance_review: "プライムビデオ以外の動画も倍速にでき、とても便利な機能だと感じた。",
+      note: "スマホのiOSのバージョンによってdeskreen上でプライムビデオを表示されない問題あり。",
       rate:5,
+      recommended_rank: 1,
+      is_public: true
+    )
+Source.create!(
+    　customer_id: 5,
+      source: "https://www.youtube.com/watch?v=hrryguxWc4U&t=24s",
+      purpose: "Bootstrapについて理解する",
+      performance_review: "Bootstrapの基本について解説しており分かりやすかった。",
+      rate:4.5,
+      recommended_rank: 0,
+      is_public: true
+    )
+Source.create!(
+    　customer_id: 5,
+      source: "https://www.youtube.com/watch?v=kcPBAysgPPg&t=396s",
+      purpose: "Bootstrapについて理解する",
+      performance_review: "Bootstrapの公式ページの読み方について解説しており分かりやすかった。",
+      rate:4.5,
       recommended_rank: 0,
       is_public: true
     )
@@ -138,32 +135,32 @@ Tag.create!(
 
 # 情報ソースとタグの関係
 SourceTag.create!(
-  source_id: 6,
+  source_id: 1,
   tag_id: 2
 )
 
 SourceTag.create!(
-  source_id: 7,
+  source_id: 2,
   tag_id: 1, 
 )
 
 SourceTag.create!(
-  source_id: 8,
+  source_id: 3,
   tag_id: 1, 
 )
 
 SourceTag.create!(
-  source_id: 9,
+  source_id: 4,
   tag_id: 3, 
 )
 
 SourceTag.create!(
-  source_id: 10,
+  source_id: 5,
   tag_id: 3, 
 )
 
 SourceTag.create!(
-  source_id: 11,
+  source_id: 6,
   tag_id: 3, 
 )
 

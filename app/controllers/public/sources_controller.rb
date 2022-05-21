@@ -1,10 +1,13 @@
 class Public::SourcesController < ApplicationController
+  before_action :authenticate_customer!
   def show
     @newsource = Source.new
     @source = Source.find(params[:id])
+    
 
     @customer = @source.customer
     @comment = Comment.new
+    @comments = @source.comments.page(params[:page]).per(5)
     @source_tags = @source.tags
     unless ViewCount.find_by(customer_id: current_customer.id, source_id: @source.id)
       current_customer.view_counts.create(source_id: @source.id)
@@ -76,7 +79,7 @@ class Public::SourcesController < ApplicationController
         render 'new'
       else
         tag_list=params[:source][:tagname].split(',')
-        redirect_to customer_path(current_customer), notice: "情報ソースの下書き保存しました！"
+        redirect_to source_path(@source.id), notice: "情報ソースの下書き保存しました！"
       end
     end
   end
@@ -157,12 +160,12 @@ class Public::SourcesController < ApplicationController
      @sources = Source.where(is_public: true).search(params[:keyword])
   end
   
-  def search
-    selection = params[:keyword]
-    @things = Source.where(is_public: true)
-    @things.sort(selection)
-    @sources = Kaminari.paginate_array(@things).page(params[:page])
-  end
+  # def search
+  #   selection = params[:keyword]
+  #   @things = Source.where(is_public: true)
+  #   @things.sort(selection)
+  #   @sources = Kaminari.paginate_array(@things).page(params[:page])
+  # end
 
   def save_tag(sent_tags)
     # タグが存在していれば、タグの名前を配列として全て取得

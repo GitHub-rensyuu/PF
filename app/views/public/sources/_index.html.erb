@@ -15,7 +15,7 @@
 =end %>
       <p><strong><%= source.purpose.truncate(20, omission: '...') %></strong>
       <% if source.comments.size == 0 %>
-        (<%= source.recommended_rank_i18n %>)
+        (<%= recommended_rank_short(source.recommended_rank_i18n) %>)
       <% else %>
         <% if source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
           (初)

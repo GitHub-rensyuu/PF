@@ -1,7 +1,7 @@
 class Public::CustomersController < ApplicationController
+  before_action :authenticate_customer!, except: [:guest_sign_in]
   before_action :ensure_guest_customer, only: [:edit]
-  before_action :ensure_correct_customer, only: [:edit, :update]
-  # before_action :kaminari_page
+  before_action :ensure_customer, only: [:edit, :update]
 
   def index
     @customers = Customer.all.page(params[:page])
@@ -99,11 +99,6 @@ class Public::CustomersController < ApplicationController
     @customer = Customer.find(params[:id])
     @customers = @customer.reporter_customers.page(params[:page])
   end
-  # def likes
-  #   customer = Customer.find(params[:id])
-  #   @things = customer.likes.map{|like| like.source}
-  #   @sources = Kaminari.paginate_array(@things).page(params[:page])
-  # end
   
   private
 
@@ -111,7 +106,7 @@ class Public::CustomersController < ApplicationController
     params.require(:customer).permit(:nickname, :birthday, :introduction,:telephone_number, :sex,:email, :is_deleted, :profile_image)
   end
 
-  def ensure_correct_customer
+  def ensure_customer
     @customer = Customer.find(params[:id])
     unless @customer == current_customer
       redirect_to customer_path(current_customer)

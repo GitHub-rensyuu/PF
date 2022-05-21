@@ -1,4 +1,5 @@
 class Public::ReportsController < ApplicationController
+  before_action :authenticate_customer!
   def new
   end
 

@@ -1,11 +1,5 @@
 class Public::NoticesController < ApplicationController
-  # def index
-  #   # @notices = current_customer.passive_notices.(params[:page]).per(20)
-  #   @notices = current_customer.passive_notices
-  #   @notices.where(checked: false).each do |notice|
-  #     notice.update_attributes(checked: true)
-  #   end
-  # end
+  before_action :authenticate_customer!
   
   def index
     @notices = current_customer.passive_notices.page(params[:page]).per(10)

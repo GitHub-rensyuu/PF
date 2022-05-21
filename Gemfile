@@ -65,7 +65,6 @@ gem 'devise'
 gem 'rails-i18n'
 gem "enum_help"
 gem 'jquery-rails'
-gem 'obscenity'
 gem 'kaminari','~> 1.2.1'
 gem 'simple_form'
 gem 'summernote-rails', '~> 0.8.10.0'
@@ -76,3 +75,4 @@ gem 'bootstrap5-kaminari-views', '~> 0.0.1'
 # URLサムネイル化用
 gem 'link_thumbnailer'
 gem 'seed-fu'
+gem 'ransack'
