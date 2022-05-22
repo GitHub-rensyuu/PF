@@ -8,10 +8,15 @@ class Source < ApplicationRecord
   has_many :notices, dependent: :destroy
   attr_accessor :tagnames
   
+  ransacker :likes_count do
+    query = '(SELECT COUNT(likes.source_id) FROM likes where likes.source_id = sources.id GROUP BY likes.source_id)'
+    Arel.sql(query)
+  end
+  
   # NGワードを定義する
   
   NGWORD_REGEX = /(.)\1{4,}/.freeze
-  # blacklist = "死ね|殺す|うんこ"
+  # blacklist = "死ね|殺す"
   with_options presence: true, on: :publicize do
     with_options format: { without: NGWORD_REGEX, alert: 'は5文字以上の繰り返しは禁止です' } do
       validates :purpose, length: { maximum: 200 }
@@ -99,21 +104,11 @@ class Source < ApplicationRecord
     notice.save if notice.valid?
   end
   
-  # def create_notice_by(current_customer)
-  #   notice = current_customer.active_notices.new(
-  #   source_id: id,
-  #     # receive_id: customer_id,
-  #     send_id: customer_id,
-  #     action: 'comment'
-  #   )
-  #   if notice.send_id == notice.receive_id
-  #         notice.checked = true
-  #   end
-  #   notice.save if notice.valid?
-  # end
   
+  # 検索条件
   def self.search(search_word)
-    Source.where(['category LIKE ?', "#{search_word}"])
+    sources = Source.where(['category LIKE ?', "#{search_word}"])
+    return sources
   end
   
   scope :created_today, -> { where(created_at: Time.zone.now.all_day) }

@@ -3,11 +3,10 @@ Rails.application.routes.draw do
   scope module: "public" do
     root :to =>"homes#top"
     get "/about"=>"homes#about"
-    get "/contributors"=>"homes#contributors"
-    get "/reviewers"=>"homes#reviewers"
     get "/chart"=>"homes#chart"
     get "/search"=> "searches#search"
-    get 'sources/search' => 'sources#search'
+    get '/search/sort' => 'searches#sort'
+    match 'search' => 'sources#search', via: [:get, :post]
     get "sources/search_tag"=>"sources#search_tag"
     resources :notices, only: [:index, :destroy]
     
@@ -36,14 +35,6 @@ Rails.application.routes.draw do
       resources:recommends, only: [:index]
       resources:likes, only: [:index]
     end
-
-  # namespace :public do
-  #     get "likes/index"
-  #     get "likes/create"
-  #     get "likes/destroy"
-  #     get "news/index"
-  #     get "news/show"
-  #   end
 
   end
 

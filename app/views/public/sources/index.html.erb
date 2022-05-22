@@ -1,16 +1,28 @@
 <div class='container px-5 px-sm-0'>
-  <div class='row'>
-    <div class='col-md-12 text-center'>
-      <%= render 'public/searches/form' %>
-    </div>
-  </div>
+  <!--<div class='row'>-->
+  <!--  <div class='col-md-12 text-center'>-->
+  <!--    <%#= render 'public/searches/form' %>-->
+  <!--  </div>-->
+  <!--</div>-->
   <div class='row'>
     <div class='col-md-12'>
+      
+<%
+=begin %>
+        <%= search_form_for @search, url: search_path ,html: { method: :post } do |f| %>
+          <%= f.select( :sorts, { '並び替え': 'id desc', '古い順': 'id asc', '評価が高い順': 'rate desc', 'いいねが多い順': 'like desc', 'コメント数が多い順': 'comment desc', '閲覧数が多い順': 'view_count desc' } , { selected: params[:q][:sorts] }, { onchange: 'this.form.submit()'} ) %>
+          適宜、検索条件を追加してください
+        <%= f.submit '完了' %>
+        <% end %>s
+
       <%= form_with model: @source, url: sources_path, method: :get, local: true do |form| %>
-       <%= form.select :keyword, [ ['投稿が新しい順', 'new'],['評価が高い順', 'rate'],['いいねが多い順', 'like'],['コメント数が多い順', 'comment'],['閲覧数が多い順', 'watch']] %>
+       <%= form.select :sort, [ ['投稿が新しい順', 'new'],['評価が高い順', 'rate'],['いいねが多い順', 'like'],['コメント数が多い順', 'comment'],['閲覧数が多い順', 'watch']] %>
        <%= form.submit "並び替え", class: "btn btn-primary" %>
       <% end %>
-      <h2>情報ソース一覧</h2><%= link_to '戻る', 'javascript:history.back()' %>
+<%
+=end %>
+        <%#= render 'public/searches/form' %>
+      
     </div>
   </div>
       

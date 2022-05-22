@@ -13,6 +13,7 @@ class Public::SourcesController < ApplicationController
       current_customer.view_counts.create(source_id: @source.id)
     end
   end
+  
   def index
     
     @customer = current_customer
@@ -22,16 +23,14 @@ class Public::SourcesController < ApplicationController
     @source_tags = @source.tags
     
     unless params[:source].blank?
-      case params[:source][:keyword]
-       when 'new' then
-        @sources = Source.where(is_public: true).order(created_at: :desc).page(params[:page])
+      case params[:source][:sort]
+      when 'new' then
+        @sources =　Source.where(is_public: true).order(created_at: :desc).page(params[:page])
        when 'rate' then
         @sources = Source.where(is_public: true).order(rate: :desc).page(params[:page])
        when 'like' then
-        # kaminari適用するために以下のように描く（リファクタリングしたい）
         @things = Source.where(is_public: true).includes(:likes).sort{|a,b| b.likes.size <=> a.likes.size}
         @sources = Kaminari.paginate_array(@things).page(params[:page])
-        
        when 'comment' then
         @things =  Source.where(is_public: true).includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
         @sources = Kaminari.paginate_array(@things).page(params[:page])
@@ -40,8 +39,8 @@ class Public::SourcesController < ApplicationController
         @sources = Kaminari.paginate_array(@things).page(params[:page])
       end
     end
-  
   end
+  
   
   def new
     @source = Source.new
@@ -67,7 +66,7 @@ class Public::SourcesController < ApplicationController
         render 'new'
       else
         @source.update(is_public: true)
-        tag_list=params[:source][:tagname].split(',')
+        tag_list=params[:source][:tagnames].split(',')
         @source.save_tag(tag_list)
         redirect_to source_path(@source.id), notice: "情報ソース作成しました!"
       end
@@ -115,7 +114,6 @@ class Public::SourcesController < ApplicationController
       # updateメソッドにはcontextが使用できないため、公開処理にはattributesとsaveメソッドを使用する
       tag_list=params[:source][:tagnames].split(',')
       @source.save_tag(tag_list)
-      binding.pry
       @source.attributes = source_params.merge(is_public: true)
       if @source.save(context: :publicize)
         @source.save_tag(tag_list)
@@ -158,9 +156,26 @@ class Public::SourcesController < ApplicationController
     end
   end
 
+  # def search_source
+  #   @source = Source.new
+  #   @sources = Source.where(is_public: true).search(params[:keyword])
+  # end
+  
   def search_source
-     @source = Source.new
-     @sources = Source.where(is_public: true).search(params[:keyword])
+     @sources = Source.search(params[:keyword]).page(params[:page]).per(5)
+  end
+  
+  def search
+    if params[:q].present?
+    # 検索フォームからアクセスした時の処理
+      @search = Source.ransack(search_params)
+      @source = @search.result
+    else
+    # 検索フォーム以外からアクセスした時の処理
+      params[:q] = { sorts: 'id desc' }
+      @search = Source.ransack()
+      @sources = Source.all
+    end
   end
   
   # def search
@@ -192,14 +207,19 @@ class Public::SourcesController < ApplicationController
   
   def search_tag
     #検索結果画面でもタグ一覧表示
-    @tag_list=Tag.all
+    @tag_list = Tag.all
     #検索されたタグを受け取る
-    @tag=Tag.find(params[:tag_id])
+    @tag = Tag.find(params[:tag_id])
     #検索されたタグに紐づく投稿を表示
-    @sources=@tag.sources.page(params[:page]).per(10)
+    @sources = @tag.sources.page(params[:page]).per(10)
   end
   
   private
+  
+  def search_params
+    params.require(:q).permit(:sorts)
+    # 他のパラメーターもここに入れる
+  end
 
   def source_params
     params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid)

@@ -6,19 +6,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
-          <%= search_form_for @search, url: search_path do |f| %>
-            <%= f.label :recommended_rank_eq, '推奨レベル', class: 'label text-white d-inline' %>
-            <%= f.select :recommended_rank_eq, options_for_select({"初心者": 0, "中級者": 1, "上級者": 2}), include_blank: '指定なし', class: 'search-select' %>
-          <div class="form-group my-2 my-lg-0 form-inline">
-            <%#= f.search_field :tag_tagname_cont, class:"form-control mr-sm-2", placeholder:"タグをいれてください" %>
-            <%= f.search_field :purpose_cont, class:"form-control mr-sm-2", placeholder:"目的を入れてください" %>
-            <%= f.submit "検索", class:"btn btn-outline-success" %>
-          </div>
-          <% end %>
-<%
-=begin %>
-<%
-=end %>
+
         <% if customer_signed_in? %>
           <li><span class='nav-link text-light'>
             ようこそ！<%= current_customer.nickname %>さん！
@@ -50,7 +38,7 @@
           </li>
           <li>
             <div class="dropdown">
-              <button class="btn  text-light dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-home"></i> マイページ</button>
+              <button class="btn text-light dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fas fa-home"></i> マイページ</button>
               <div class="dropdown-menu">
                 <%=link_to"お気に入り",customer_path(current_customer, sort_like: "true"),class:"dropdown-item" %>
                 <p></p>
@@ -94,6 +82,9 @@
           </li>
         <% end %>
         </ul>
+        
+        
+        
       </div>
     </div>
   </nav>

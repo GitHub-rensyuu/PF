@@ -1,0 +1,30 @@
+<%
+=begin %>
+
+<% if customer_signed_in? %>
+  <% if controller.controller_name == 'customers' && controller.action_name == 'index' %>
+
+    <div class="search_form">
+      <%=  form_tag(search_path, method: :get) do %>
+        <%= text_field_tag "content", "", placeholder: "キーワードから探す（会員名）", class:"col-lg-4 ml-10" %>
+        <%= select_tag "model", options_for_select({ "会員" => "customer"}) %>
+        <%= submit_tag "検索", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  
+  <% elsif  controller.controller_name == 'sources' && controller.action_name == 'index' %>
+    <div class="search_form">
+    <%=  form_tag(search_path, method: :get) do %>
+      <%= text_field_tag "content", "", placeholder: "キーワードから探す（情報ソース）", class:"col-lg-4 ml-10" %>
+      <%= select_tag "model", options_for_select({"情報ソース" => "source" }) %>
+      <%= select_tag "method", options_for_select([["初心者","beginner_match"],["中級者","intermediate_match"],["上級者","senior_match"]]) %>
+      <%= submit_tag "検索", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+  <% end %>
+<% end %>
+
+
+<%
+=end %>
+

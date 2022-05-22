@@ -5,6 +5,8 @@ class Customer < ApplicationRecord
          :recoverable, :rememberable, :validatable
   validates :nickname, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
+  validates :sex,presence:true
+  validates :birthday,presence:true
 
   has_many :sources, dependent: :destroy
   has_many :likes,dependent: :destroy
@@ -22,7 +24,8 @@ class Customer < ApplicationRecord
   has_many :reporting_customers, through: :reporters, source: :reported # 自分が通報している人
   has_many :reporter_customers, through: :reporteds, source: :reporter # 自分を通報している人
 
-  has_many :notices, dependent: :destroy
+  # 下を書くと管理者側で物理削除できなくなる
+  # has_many :notisces, dependent: :destroy
   has_many :active_notices, class_name: 'Notice', foreign_key: 'send_id', dependent: :destroy
   has_many :passive_notices, class_name: 'Notice', foreign_key: 'receive_id', dependent: :destroy
 

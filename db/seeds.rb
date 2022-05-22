@@ -164,6 +164,11 @@ SourceTag.create!(
   tag_id: 3, 
 )
 
+SourceTag.create!(
+  source_id: 6,
+  tag_id: 2, 
+)
+
 
 # ジャンル
 genres = ["未分類"]
