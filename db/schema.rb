@@ -103,24 +103,6 @@ ActiveRecord::Schema.define(version: 2022_05_12_051958) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "messages", force: :cascade do |t|
-    t.integer "customer_id"
-    t.string "title"
-    t.text "text"
-    t.text "reply"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "news", force: :cascade do |t|
-    t.string "title"
-    t.text "text"
-    t.boolean "is_confirmed", default: false
-    t.boolean "is_public", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "notices", force: :cascade do |t|
     t.integer "send_id"
     t.integer "receive_id"
@@ -158,7 +140,9 @@ ActiveRecord::Schema.define(version: 2022_05_12_051958) do
     t.text "performance_review"
     t.text "note"
     t.float "rate"
+    t.float "total_rate"
     t.integer "recommended_rank"
+    t.integer "total_recommended_rank"
     t.boolean "is_vaild", default: true
     t.boolean "is_public", default: false
     t.datetime "created_at", precision: 6, null: false

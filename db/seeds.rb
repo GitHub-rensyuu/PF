@@ -42,7 +42,8 @@ Source.create!(
       source: "https://qiita.com/ishidamakot/items/2e74d980b3a338e4c784",
       purpose: "長い文字列を省略して表示",
       performance_review: "簡単に実装できました。railsにこのようなメソッドがあるとは知らなかった。",
-      rate:5,
+      note: "ハイパーリンク等文字に機能を持たせる場合にこの方法を使うと機能しなくなることがある。機能はrails、表示はcssで書くようにすると上手くいく。",
+      rate:3,
       recommended_rank: 0,
       is_public: true
     )
@@ -61,7 +62,7 @@ Source.create!(
       purpose: "レイアウトでドロップダウンを実装する",
       performance_review: "簡単に実装できました。ドロップダウンを実装すると見栄えが良くなるのでおすすめです。",
       note: "Turbolinksを無効にしないと機能しないことがある。",
-      rate:5,
+      rate:4,
       recommended_rank: 0,
       is_public: true
     )
@@ -103,7 +104,7 @@ Source.create!(
       is_public: true
     )
 Source.create!(
-    　customer_id: 5,
+    customer_id: 5,
       source: "https://www.youtube.com/watch?v=hrryguxWc4U&t=24s",
       purpose: "Bootstrapについて理解する",
       performance_review: "Bootstrapの基本について解説しており分かりやすかった。",
@@ -112,7 +113,7 @@ Source.create!(
       is_public: true
     )
 Source.create!(
-    　customer_id: 5,
+    customer_id: 5,
       source: "https://www.youtube.com/watch?v=kcPBAysgPPg&t=396s",
       purpose: "Bootstrapについて理解する",
       performance_review: "Bootstrapの公式ページの読み方について解説しており分かりやすかった。",
@@ -120,6 +121,57 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+Source.create!(
+    customer_id: 6,
+      source: "https://asalworld.com/rails-keywords-highlight/",
+      purpose: "検索結果の一致部分をハイライトさせる",
+      performance_review: "今までGoogle検索などで検索した際のハイライトするシステムが分かり、なるほどと思った。",
+      rate:4.5,
+      recommended_rank: 1,
+      is_public: true
+    )
+    
+Source.create!(
+    customer_id: 6,
+      source: "https://qiita.com/nekojoker/items/80448944ec9aaae48d0a",
+      purpose: "通知機能の作成",
+      performance_review: "実装するのにかなり時間がかかった。一部slim形式で書かれており、slimに慣れていない自分は大変だった。",
+      rate:3,
+      recommended_rank: 2,
+      is_public: true
+    )
+    
+Source.create!(
+    customer_id: 7,
+      source: "https://qiita.com/y_h_tomo/items/be10099abf93893fee57",
+      purpose: "NGワード登録機能の作成",
+      performance_review: "実装するのにかなり時間がかかった。",
+      note: "ここで紹介しているgemは8年前ぐらいの古いもので、完全一致しかNGワードとして弾いてくれなかったのでイマイチだった。こちらの方がよさげ。https://qiita.com/NishidaRyu416/items/a2642d6a2cb9400ea4da",
+      rate:3,
+      recommended_rank: 1,
+      is_public: true
+    )
+
+Source.create!(
+    customer_id: 7,
+      source: "https://zenn.dev/creationup2u/articles/ccf11532f09a68",
+      purpose: "スプレッドシートで目次を作る",
+      performance_review: "少し時間がかかったが実装できた。目次へジャンプできるリンクも作れると良いと思った。",
+      rate:3,
+      recommended_rank: 1,
+      is_public: true
+  )
+  
+Source.create!(
+    customer_id: 7,
+      source: "https://qiita.com/nagareboshi/items/66aaadf495911493e854",
+      purpose: "ER図からテーブル定義書を自動生成",
+      performance_review: "いつかやってみようと思う。",
+      rate:3,
+      recommended_rank: 0,
+      is_public: false
+  )
+
 
 # タグ
 Tag.create!(
@@ -133,7 +185,27 @@ Tag.create!(
   tagname: "レイアウト"
 )
 
+Tag.create!(
+  tagname: "Bootstrap"
+)
+
+Tag.create!(
+  tagname: "Youtube"
+)
+
+Tag.create!(
+  tagname: "プライムビデオ"
+)
+
+Tag.create!(
+  tagname: "検索"
+)
 # 情報ソースとタグの関係
+SourceTag.create!(
+  source_id: 1,
+  tag_id: 1
+)
+
 SourceTag.create!(
   source_id: 1,
   tag_id: 2
@@ -151,24 +223,76 @@ SourceTag.create!(
 
 SourceTag.create!(
   source_id: 4,
+  tag_id: 1, 
+)
+
+SourceTag.create!(
+  source_id: 4,
   tag_id: 3, 
+)
+
+SourceTag.create!(
+  source_id: 5,
+  tag_id: 1, 
 )
 
 SourceTag.create!(
   source_id: 5,
   tag_id: 3, 
 )
+SourceTag.create!(
+  source_id: 6,
+  tag_id: 1, 
+)
 
 SourceTag.create!(
   source_id: 6,
   tag_id: 3, 
 )
-
 SourceTag.create!(
-  source_id: 6,
-  tag_id: 2, 
+  source_id: 7,
+  tag_id: 1, 
 )
 
+SourceTag.create!(
+  source_id: 8,
+  tag_id: 5, 
+)
+
+SourceTag.create!(
+  source_id: 9,
+  tag_id: 6, 
+)
+
+SourceTag.create!(
+  source_id: 10,
+  tag_id: 4, 
+)
+
+SourceTag.create!(
+  source_id: 11,
+  tag_id: 4, 
+)
+
+SourceTag.create!(
+  source_id: 12,
+  tag_id: 1, 
+)
+
+SourceTag.create!(
+  source_id: 12,
+  tag_id: 4, 
+)
+
+# レビュー
+Comment.create!(
+  customer_id: 4, 
+  source_id: 1,
+  title:"素晴らしい!",
+  comment:"今までこのような機能があることを知らなかった。2倍速で見るようになり、プライムビデオ視聴時間が大幅に削減された。",
+  recommended_rank:2,
+  rate:5
+)
 
 # ジャンル
 genres = ["未分類"]

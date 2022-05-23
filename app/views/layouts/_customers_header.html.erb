@@ -38,8 +38,8 @@
           </li>
           <li>
             <div class="dropdown">
-              <button class="btn text-light dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fas fa-home"></i> マイページ</button>
-              <div class="dropdown-menu">
+              <button class="btn text-light dropdown-toggle" id="hoge"  type="button" data-bs-toggle="dropdown"><i class="fas fa-home"></i> マイページ</button>
+              <div class="dropdown-menu" id="foo">
                 <%=link_to"お気に入り",customer_path(current_customer, sort_like: "true"),class:"dropdown-item" %>
                 <p></p>
                 <%= link_to '投稿済', customer_path(current_customer, sort_post: "true"),class:"dropdown-item" %>

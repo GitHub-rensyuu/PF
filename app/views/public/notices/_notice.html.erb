@@ -1,5 +1,6 @@
 <% sender = Customer.find(notice.send_id) %>
 <% receiver = Customer.find(notice.receive_id) %>
+<% if sender =! receiver %>
 <li>
       <%= link_to customer_path(sender) do %>
         <%= image_tag sender.get_profile_image(50,50) %>
@@ -25,6 +26,7 @@
         <% end %>
 </li>
   <div class="small text-muted text-right"><%= time_ago_in_words(notice.created_at).upcase %>前</div>
+<% end %>
     <%
 =begin %>
         <p class="text-muted mb-0"><%= = Comment.find_by(id: notice.comment_id)&.comment %></p>

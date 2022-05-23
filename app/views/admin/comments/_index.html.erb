@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>投稿者</th>
+          <th>評価</th>
+          <th>コメント</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% comments.each do |comment| %>
+        <tr>
+          <td><%= link_to comment.customer.nickname, admin_customer_path(comment.customer), class: "text-dark" %></td>
+          <td>
+             <span class="mb-4" id="star-rate-<%= comment.id %>"></span><strong>  <%= comment.title %></strong>
+            <script>
+               $('#star-rate-<%= comment.id %>').empty();
+              $('#star-rate-<%= comment.id %>').raty({
+                size: 36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= comment.rate %>",
+                
+              });
+            </script>
+          </td>
+          <td><%= comment.comment %></td>
+          <td><%= link_to "削除", admin_comment_path(comment), method: :delete, "data-confirm" => "本当に削除しますか?", class: "btn btn-danger btn-{themecolor} rounded-pill" %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <%= paginate comments %>
+  </div>
+</div>

@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     resources :notices, only: [:index, :destroy]
     
     resources :sources do
-      
       resources:recommends, only: [:create, :edit, :destroy]
       resource:likes, only: [:create, :destroy]
       resources:comments, only: [:create, :destroy] do
@@ -45,18 +44,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :genres, only: [:index, :create, :edit, :update]
     resources :customers, only: [:index, :show, :edit, :update]
-    get "likes/index"
-    get "news/index"
-    get "news/show"
-    get "news/new"
-    get "news/create"
-    get "news/update"
-    get "news/public_update"
+    resources :comments, only: [:index, :destroy]
+    resources :sources, only: [:index, :show, :destroy]
+    resources :searches, only: [:index]
   end
-
-
-
-
+  
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

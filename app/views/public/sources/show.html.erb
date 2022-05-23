@@ -8,8 +8,6 @@
       <% rescue StandardError %>
         <%= image_tag 'no_image.jpg', :width => '600' %><br><br>
       <% end %>
-       
-      
       参考URL:<%= text_url_to_link(h(@source.source)).html_safe %>
     </div>
     <div class="col-md-5">
@@ -92,7 +90,6 @@
       <div style="display: flex; justify-content: space-between">
         <% if @source.customer_id == current_customer.id %>
     		  <% if @source.is_public == false %>
-            <%#= button_to '情報ソースを公開', source_path(@source.id, {public: true}), {method: :patch , class: 'mr-5 btn btn-sm btn-warning text-white'} %>
             <%= button_to '下書きを編集', edit_source_path(@source.id), {method: :get ,params: {draft: true}, class: "btn btn-sm btn-success"} %>
           <% else %>
             <%= link_to '編集', edit_source_path(@source, {public: true}), class: "btn btn-sm btn-success edit_source_#{@source.id} mr-3" %>

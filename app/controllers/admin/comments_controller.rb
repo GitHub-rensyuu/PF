@@ -1,7 +1,13 @@
 class Admin::CommentsController < ApplicationController
-  def create
+  before_action :authenticate_admin!
+
+  def index
+    @comments = Comment.page(params[:page]).per(10)
   end
 
   def destroy
+    comment = Comment.find(params[:id])
+    comment.destroy
+    redirect_to request.referer
   end
 end

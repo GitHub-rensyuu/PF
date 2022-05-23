@@ -1,2 +1,153 @@
-<h1>Admin::Sources#show</h1>
-<p>Find me in app/views/admin/sources/show.html.erb</p>
+
+<div class="container">
+  <div class="row my-5">
+    <div class="col-md-7 border border-gray">
+      <% begin
+        object = LinkThumbnailer.generate( @source.source ) %>
+        <%= image_tag object.images.first.src.to_s, :width => '600' %><br><br>
+      <% rescue StandardError %>
+        <%= image_tag 'no_image.jpg', :width => '600' %><br><br>
+      <% end %>
+       
+      
+      参考URL:<%= text_url_to_link(h(@source.source)).html_safe %>
+    </div>
+    <div class="col-md-5">
+      <h4 class="mb-2"><strong>目的:<%= @source.purpose %></strong>
+      <p>
+      <% if @source.comments.size == 0 %>
+        (<%= recommended_rank_short(@source.recommended_rank_i18n) %>)
+      <% else %>
+        <% if @source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+          (初)
+        <% elsif @source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+          (上)
+        <% else %>
+          (中)
+        <% end %>
+      <% end %></p></h4>
+        評価:
+      <span id="star-average-<%= @source.id %>" class="d-inline"></span>
+          <% if @source.comments.size == 0 %>
+            <span class="text-red"><%= @source.rate %></span>
+            <script>
+              $('#star-average-<%= @source.id %>').empty();
+                $('#star-average-<%= @source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= @source.rate %>",
+              });
+              
+            </script>
+          <% else %>
+              <span class="text-red"><%= @source.comments.average(:rate).to_f.round(1) %></span>
+              <script>
+               $('#star-average-<%= @source.id %>').empty();
+              $('#star-average-<%= @source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= @source.comments.average(:rate).to_f.round(1) %>",
+              });
+              </script>
+          <% end %>
+        <span>(<%= @source.comments.size %>)</span>
+        <div style="border-bottom: solid 1px #F0F0F0;">閲覧数:<i class="fas fa-solid fa-eye"></i><%= @source.view_counts.size %></div>
+      <div class="mt-3">タグ:
+        <i class="fas fa-search-location"></i>
+                <% if @source_tags.present? %>
+                <% @source_tags.each do |tag| %>
+                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
+                    <span class="btn btn-outline-info">
+                      <%= tag.tagname %><%="(#{tag.sources.count})" %>
+                  <% end %>
+                    </span>
+                <% end %>
+                <% else %>タグはありません。
+                <% end %>
+      </div>
+        いいね:
+        ♥<%= @source.likes.size %><br><br>
+        評価コメント
+      <div class="border border-secondary rounded mb-4">
+        <div class="source-component">
+          <p><%= @source.performance_review %></p>
+        </div>
+      </div>
+      <% if @source.note.present? %>
+      内容が古い、誤りがある場合のメモ
+      <div class="border border-secondary rounded mb-4">
+        <div class="source-component">
+          <p><%= @source.note %></p>
+        </div>
+      </div>
+      <% end %>
+      <div style="display: flex; justify-content: space-between">
+          <%= link_to '削除', @source, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_source_#{@source.id}"%>
+      </div>
+    </div>
+  </div>
+
+
+<div class="row">
+    <div class="col-md-12">
+      <h4 class="mb-4 pt-4", style="border-top: solid 1px #F0F0F0;"><strong>レビュー</strong></h4>
+      <% @source.comments.each do |comment| %>
+        <p><%= image_tag comment.customer.get_profile_image(30,30) %><strong><%= comment.customer.nickname %></strong></p>
+        <span class="mb-4" id="star-rate-<%= comment.id %>"></span><strong>  <%= comment.title %></strong>
+        <script>
+           $('#star-rate-<%= comment.id %>').empty();
+          $('#star-rate-<%= comment.id %>').raty({
+            size: 36,
+            starOff: "<%= asset_path('star-off.png') %>",
+            starOn: "<%= asset_path('star-on.png') %>",
+            starHalf: "<%= asset_path('star-half.png') %>",
+            half: true,
+            readOnly: true,
+            score: "<%= comment.rate %>",
+            
+          });
+        </script>
+        <div class="border-bottom border-secondary">
+          <p><%= comment.created_at.strftime('%Y/%m/%d') %>レビュー済</p>
+          <p><%= comment.comment %></p>
+          <p><%= comment.usefuls.size %>人が役に立ったと答えています</p>
+            <%= link_to "削除", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <%= paginate @comments %>
+    </div>
+  </div>
+  
+  <div class="row my-5">
+    <div class="col-md-12  border border-secondary rounded">
+      <%= link_to customer_path(@customer), class: "text-dark text-decoration-none" do %>
+        <h4 class="my-3">この情報ソースの投稿者</h4>
+      <% end %>
+      <%= link_to customer_path(@customer), class: "text-dark text-decoration-none" do %>
+          <%= image_tag @customer.get_profile_image(100,100), class: "rounded-circle img-thumbnail" %>
+        <h4 class="mb-5"><%= @customer.nickname %></h4>
+        <p><%= @customer.introduction %></p>
+      <% end %>
+    </div>
+  </div>
+  
+</div>
+
+
+
+
+
+
+

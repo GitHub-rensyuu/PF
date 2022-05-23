@@ -1,2 +1,50 @@
-<h1>Admin::Customers#edit</h1>
-<p>Find me in app/views/admin/customers/edit.html.erb</p>
+<div class='container'>
+  <div class='row'>
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+    <h2>登録情報</h2>
+    <%= form_with model:@customer, local:true do |f| %>
+      <%= render 'layouts/errors', obj: @customer %>
+      <div class="form-group">
+        <%= f.label :"ニックネーム" %>
+        <%= f.text_field :nickname, class: "form-control name" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :"メールアドレス" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
+      <div class="form-group">
+        性別：
+        <%= f.collection_radio_buttons :sex,  Customer.sexes_i18n, :first , :last %>
+      <div class="form-group">
+        <%= f.label :"生年月日" %>
+        <%= f.date_select :birthday, use_month_numbers: true,start_year: 1930, end_year: (Time.now.year - 10), default: Date.new(1989, 1, 1) %>
+      </div>
+      <div class="form-group">
+      <%= f.label :"電話番号（ハイフンなし）" %>
+      <%= f.text_field :telephone_number, autofocus: true, autocomplete: "telephone_number" %>
+      </div>
+
+     <div class="form-group">
+        <%= f.label :"プロフィール画像" %>
+        <%= f.file_field :profile_image, class: "form-control-file customer_image", accept: 'image/*' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :"自己紹介文" %>
+        <%= f.text_area :introduction, class: "form-control introduction" %>
+      </div>
+      <div class="form-group">
+        <!--<div class="form-check ml-4">-->
+          <%= f.label :会員ステータス, class: "ml-3" %>
+          <%= f.radio_button :is_deleted, :false %>
+          <%= f.label :is_deleted, "有効会員" %>
+          <%= f.radio_button :is_deleted, :true %>
+          <%= f.label :is_deleted, "退会済" %>
+        <!--</div>-->
+      </div>
+      <div class="form-group">
+        <%= f.submit class: 'btn btn-secondary' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

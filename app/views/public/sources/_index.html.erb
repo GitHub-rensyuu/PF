@@ -1,4 +1,4 @@
-<% if customer_signed_in? && ( controller.controller_name == 'customers' && controller.action_name == 'show')  %>
+<% if customer_signed_in? && controller.controller_name != 'customers' %>
     <div class="search_form  text-center">
     <%=  form_tag(search_path, method: :get) do %>
       <%= select_tag "model", options_for_select({"情報ソース" => "source" }) %>
@@ -29,9 +29,6 @@
   <% sources.each_with_index do |source, i| %>
     <div class="border border-warning col-lg-3 col-md-4 col-sm-6 col-6" style="padding:10px; margin:10px;">
     <%= link_to source_path(source.id) do %>
-      <% if controller.controller_name == 'homes' && controller.action_name == 'top' %>
-        <p><%= i + 1 %>位</p>
-      <% end %>
       
       <% if current_page?(search_path) && params[:keyword].present? %>
         <p><strong><%= emphasize_keyword(source.purpose.truncate(20, omission: '...'), @keyword) %></strong>
@@ -80,9 +77,10 @@
               
               </script>
           <% end %>
-
           (<%= source.comments.size %>)
-        <%= render 'public/likes/likes', source: source %><%= link_to source_path(source.id) do %>
+         <!--♥(<%#= source.likes.size %>)-->
+         <%= render 'public/likes/likes', source: source %>
+         <%= link_to source_path(source.id) do %>
               <i class="fas fa-comment-dots"></i>(<%= source.comments.size %>)
            <% end %>
            <i class="fas fa-solid fa-eye"></i>(<%= source.view_counts.size %>)

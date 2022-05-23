@@ -1,2 +1,58 @@
-<h1>Admin::Customers#show</h1>
-<p>Find me in app/views/admin/customers/show.html.erb</p>
+<div class="cantainer">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h4 class="text-center my-5"><%= @customer.nickname %>さんの会員詳細</h4>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>会員ID</td>
+            <td><%= @customer.id %></td>
+          </tr>
+          <tr>
+            <td>氏名</td>
+            <td><%= @customer.nickname %></td>
+          </tr>
+          <tr>
+            <td>自己紹介文</td>
+            <td><%= @customer.introduction %></td>
+          </tr>
+          <tr>
+            <td>会員ステータス</td>
+            <% if @customer.is_deleted == false %>
+              <td class="text-success">有効</td>
+            <% else %>
+              <td>退会</td>
+            <% end %>
+          </tr>
+          <tr>
+            <td></td>
+            <td><%= link_to "編集する", edit_admin_customer_path(@customer), class: "btn btn-warning btn-{themecolor} rounded-pill" %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="offset-md-3"></div>
+  </div>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active text-secondary" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><strong><%= @customer.nickname %>さんが投稿した情報ソース</strong></a>
+      <a class="nav-item nav-link text-secondary" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><strong><%= @customer.nickname %>さんが投稿したレビュー</strong></a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <% if @sources.present? %>
+        <%= render "public/sources/index", sources: @sources %>
+      <% else %>
+        <p class="text-center mt-5">投稿がありません</p>
+      <% end %>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <% if @comments.present? %>
+        <%= render "admin/comments/index", comments: @comments %>
+      <% else %>
+        <p class="text-center mt-5">投稿がありません</p>
+      <% end %>
+    </div>
+  </div>
+</div>

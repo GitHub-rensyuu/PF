@@ -1,3 +1,43 @@
+<div class="container">
+  <%#= render "layouts/error", object: @genre %>
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2">
+      <h4 class="text-center my-5">ジャンル追加</h4>
+
+      <%= form_with model: @genre, url: admin_genres_path do |f| %>
+        <div class="form-group mb-4">
+          <%= f.text_field :name, autofocus: true, placeholder: "カテゴリー名(20文字以内)", class: "form-control" %>
+        </div>
+
+        <div class="form-group mb-5">
+          <%= f.submit "新規登録", class: "btn btn-warning btn-block btn-{themecolor} rounded-pill" %>
+        </div>
+      <% end %>
+
+      <h4 class="text-center mb-4">ジャンル一覧</h4>
+
+      <% @genres.each do |genre| %>
+        <div class="mb-3" style="display: flex; justify-content: space-between">
+          <p>
+            <strong><%= genre.name %></strong>
+          </p>
+          <p>
+            <%= link_to "編集する", edit_admin_genre_path(genre), class: "btn btn-warning btn-{themecolor} rounded-pill" %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+    <div class="offset-lg-4 offset-md-3 offset-sm-2 offset-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <%= paginate @genres %>
+    </div>
+  </div>
+</div>
+
+<%
+=begin %>
 <div class="container my-5">
   <div class="row">
 <h4>ジャンル一覧・追加</h4>
@@ -25,3 +65,5 @@
     <% end %>
   </tbody>
 </table>
+<%
+=end %>

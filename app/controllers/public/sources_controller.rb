@@ -77,7 +77,7 @@ class Public::SourcesController < ApplicationController
         @sources = Source.all
         render 'new'
       else
-        tag_list=params[:source][:tagname].split(',')
+        tag_list=params[:source][:tagnames].split(',')
         redirect_to source_path(@source.id), notice: "情報ソースの下書き保存しました！"
       end
     end

@@ -1,78 +1,90 @@
-<table class='table table-hover table-inverse'>
+<table class='table table-hover table-inverse table-bordered'>
   <%#= render 'layouts/errors', obj: @source %>
   <thead>
     <tr>
-      <th>順位</th>
+      <th>No.</th>
       <th>投稿者</th>
-      <th>目的</th>
-      <th>参考(URL)</th>
+      <th>目的(難易度)</th>
       <th>評価コメント</th>
-      <th>評価</th>
-      <th>いいね</th>
-      <th>コメント数</th>
-      <th>閲覧数</th>
+      <th>参考(URL)</th>
+      <th>★</th>
+      <th>♥</th>
+      <th><i class="fas fa-comment-dots"></th>
+      <th><i class="fas fa-solid fa-eye"></th>
       <th>投稿日</th>
-      <th>難易度</th>
-      <th>タグ</th>
     </tr>
   </thead>
   <tbody>
     <% sources.each_with_index do |source, i| %>
       <tr>
-        <td><%= i + 1 %></td>
-        <td><%= link_to(source.customer) do %>
+        <td><%= source.id %></td>
+        <td><%= link_to admin_customer_path(source.customer) do %>
           <%= image_tag source.customer.get_profile_image(50,50) %><br>
           <%= source.customer.nickname %>
           <% end %>
         </td>
 
-        <td><%= link_to source.purpose, source_path(source.id) %></td>
+        <td><%= link_to source.purpose, admin_source_path(source.id) %>
+        <% if source.comments.size == 0 %>
+          (<%= recommended_rank_short(source.recommended_rank_i18n) %>)
+        <% else %>
+          <% if source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+            (初)
+          <% elsif source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+            (上)
+          <% else %>
+            (中)
+          <% end %>
+        <% end %>
+        </td>
         
-        <td><%= text_url_to_link(h(source.source)).html_safe %>
         <td><%= source.performance_review %></td>
+        <td><%= text_url_to_link(h(source.source.truncate(24, omission: '~~~'))).html_safe %>
         <!--星評価表示機能-->
         <td>
         <div class="relative-source-average">
-          <span id="star-average-<%= source.id %>"></span>
-          <script>
-            $('#star-average-<%= source.id %>').empty();
-            $('#star-average-<%= source.id %>').raty({
-              size: 36,
-              starOff: "<%= asset_path('star-off.png') %>",
-              starOn: "<%= asset_path('star-on.png') %>",
-              starHalf: "<%= asset_path('star-half.png') %>",
-              half: true,
-              readOnly: true,
-              score: "<%= source.comments.average(:rate).to_f.round(1) %>",
-            });
-          </script>
-          (<%= source.comments.size %>件)
+          <% if source.comments.size == 0 %>
+            <span class="text-red"><%= source.rate %></span>
+            <script>
+            <span class="text-red"><%= source.rate %></span>
+              $('#star-average-<%= source.id %>').empty();
+                $('#star-average-<%= source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= source.rate %>",
+              });
+            </script>
+          <% else %>
+            <span class="text-red"><%= source.comments.average(:rate).to_f.round(1) %></span>
+              <script>
+               $('#star-average-<%= source.id %>').empty();
+              $('#star-average-<%= source.id %>').raty({
+                size:36,
+                starOff: "<%= asset_path('star-off.png') %>",
+                starOn: "<%= asset_path('star-on.png') %>",
+                starHalf: "<%= asset_path('star-half.png') %>",
+                half: true,
+                readOnly: true,
+                score: "<%= source.comments.average(:rate).to_f.round(1) %>",
+              });
+              </script>
+          <% end %>
         </div>
         </td>
-        <!--いいね機能追加-->
-            <%= render 'public/likes/likes', source: source %>
+        <td><%= source.likes.size %></td>
+            
         <td>
         <!--コメント件数表示-->
-          <%= link_to source_path(source.id) do %>
-                <i class="fas fa-comment-dots"></i><%= source.comments.size %>
+          <%= link_to admin_source_path(source.id) do %>
+                <%= source.comments.size %>
           <% end %>
         </td>
-        <td><i class="fas fa-solid fa-eye"></i><%= source.view_counts.count %></td>
+        <td></i><%= source.view_counts.count %></td>
         <td><%= source.created_at.strftime('%Y/%m/%d') %></td>
-        <td><%= source.recommended_rank_i18n %></td>
-        <td>
-          <% if source.tags.present? %>
-                <i class="fas fa-tag"></i>
-                <% source.tags.each do |tag| %>
-                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
-                    <span class="btn btn-outline-info">
-                      <%= tag.tagname %><%="(#{tag.sources.count})" %>
-                  <% end %>
-                    </span>
-                <% end %>
-          <% else %><p>タグはありません。</p>
-          <% end %>
-        </td>
       </tr>
     <% end %>
   </tbody>

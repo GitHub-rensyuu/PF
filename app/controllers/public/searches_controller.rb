@@ -11,11 +11,10 @@ class Public::SearchesController < ApplicationController
     # search_forを@recordsに代入。
     @records = search_for(@model, @keyword, @method)
     
-    
     unless params["sort"].blank?
       case params["sort"]
-      when 'default' && 'new' then
-        @sources =　@records.order(created_at: :desc).page(params[:page])
+      when 'default' || 'new' then
+        @sources =@records.order(created_at: :desc).page(params[:page])
       when 'rate' then
         @sources = @records.order(rate: :desc).page(params[:page])
       when 'like' then
@@ -41,7 +40,7 @@ class Public::SearchesController < ApplicationController
     # unless params[:source].blank?
     #   case params[:source][:sort]
     #   when 'new' then
-    #     @sources =　@records.order(created_at: :desc).page(params[:page])
+    #     @sources =@records.order(created_at: :desc).page(params[:page])
     #   when 'rate' then
     #     @sources = @records.order(rate: :desc).page(params[:page])
     #   when 'like' then
@@ -82,7 +81,7 @@ class Public::SearchesController < ApplicationController
         Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(recommended_rank: 2).page(params[:page])
         
       elsif method == "all"
-        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true)
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).page(params[:page])
       end
     end
   end
@@ -125,7 +124,7 @@ end
 #     # unless params[:source].blank?
 #     #   case params[:source][:sort]
 #     #   when 'new' then
-#     #     @sources =　Source.where(is_public: true).order(created_at: :desc).page(params[:page])
+#     #     @sources =Source.where(is_public: true).order(created_at: :desc).page(params[:page])
 #     #   when 'rate' then
 #     #     @sources = Source.where(is_public: true).order(rate: :desc).page(params[:page])
 #     #   when 'like' then
