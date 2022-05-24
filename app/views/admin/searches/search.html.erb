@@ -1,0 +1,11 @@
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <% if params[:model] == "customer" %>
+          <%= render 'admin/customers/index', customers: @customers %>
+      <% else %>
+          <%= render 'admin/sources/index', sources: @sources %>
+      <% end %>
+    </div>
+  </div>
+</div>

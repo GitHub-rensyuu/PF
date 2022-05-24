@@ -16,7 +16,6 @@ module ApplicationHelper
     
       return text
     end
-    
     def recommended_rank_short(fullname)
       fullname[0]
     end

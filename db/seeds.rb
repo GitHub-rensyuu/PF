@@ -25,7 +25,16 @@ Admin.create!(
     )
 end
 
+# ジャンル
+genres = ["未分類"]
+genres.length.times do |i|
+Genre.create!(
+    name: genres[i]
+  )
+end
+
 # 情報ソース
+# 1
 Source.create!(
       customer_id: 1,
       source: "https://freesworder.net/rails-link-a/",
@@ -36,7 +45,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
-
+# 2
 Source.create!(
       customer_id: 1,
       source: "https://qiita.com/ishidamakot/items/2e74d980b3a338e4c784",
@@ -47,6 +56,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+# 3
 Source.create!(
       customer_id: 2,
       source: "https://qiita.com/mocomou_/items/c3cce91c241e08f9a50b",
@@ -56,6 +66,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+# 4
 Source.create!(
       customer_id: 2,
       source: "https://getbootstrap.jp/docs/5.0/components/dropdowns/",
@@ -66,6 +77,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+# 5
 Source.create!(
       customer_id: 2,
       source: "https://getbootstrap.jp/docs/4.2/components/navs/",
@@ -75,6 +87,7 @@ Source.create!(
       recommended_rank: 1,
       is_public: true
     )
+# 6
 Source.create!(
       customer_id: 3,
       source: "https://qiita.com/pyon_kiti_jp/items/a23660d20e76fffa5dd4",
@@ -84,6 +97,7 @@ Source.create!(
       recommended_rank: 1,
       is_public: true
     )
+# 7
 Source.create!(
       customer_id: 4,
       source: "https://www.youtube.com/watch?v=XCjOHj2po5s",
@@ -93,6 +107,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+# 8
 Source.create!(
       customer_id: 4,
       source: "https://www.naporitansushi.com/nenagara-amazon-prime/",
@@ -103,6 +118,7 @@ Source.create!(
       recommended_rank: 1,
       is_public: true
     )
+# 9
 Source.create!(
     customer_id: 5,
       source: "https://www.youtube.com/watch?v=hrryguxWc4U&t=24s",
@@ -112,6 +128,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+# 10
 Source.create!(
     customer_id: 5,
       source: "https://www.youtube.com/watch?v=kcPBAysgPPg&t=396s",
@@ -121,6 +138,7 @@ Source.create!(
       recommended_rank: 0,
       is_public: true
     )
+# 11
 Source.create!(
     customer_id: 6,
       source: "https://asalworld.com/rails-keywords-highlight/",
@@ -130,7 +148,7 @@ Source.create!(
       recommended_rank: 1,
       is_public: true
     )
-    
+# 12  
 Source.create!(
     customer_id: 6,
       source: "https://qiita.com/nekojoker/items/80448944ec9aaae48d0a",
@@ -140,7 +158,7 @@ Source.create!(
       recommended_rank: 2,
       is_public: true
     )
-    
+# 13  
 Source.create!(
     customer_id: 7,
       source: "https://qiita.com/y_h_tomo/items/be10099abf93893fee57",
@@ -151,7 +169,7 @@ Source.create!(
       recommended_rank: 1,
       is_public: true
     )
-
+# 14
 Source.create!(
     customer_id: 7,
       source: "https://zenn.dev/creationup2u/articles/ccf11532f09a68",
@@ -161,7 +179,7 @@ Source.create!(
       recommended_rank: 1,
       is_public: true
   )
-  
+# 15
 Source.create!(
     customer_id: 7,
       source: "https://qiita.com/nagareboshi/items/66aaadf495911493e854",
@@ -286,19 +304,75 @@ SourceTag.create!(
 
 # レビュー
 Comment.create!(
-  customer_id: 4, 
   source_id: 1,
+  customer_id: 2, 
+  title:"助かりました",
+  comment:"なかなか記事が見つからなかったので、とても助かりました。",
+  recommended_rank:2,
+  rate:4
+)
+
+Comment.create!(
+  source_id: 3,
+  customer_id: 2, 
+  title:"秒でできました",
+  comment:"本当に簡単でした。",
+  recommended_rank:2,
+  rate:4.5
+)
+
+Comment.create!(
+  source_id: 4,
+  customer_id: 3, 
+  title:"微妙でした",
+  comment:"rails6環境です。この機能を使うためにはturbolinksを全て削除するか、js関連をwebpacker読み込みからcdnに変える必要があったので、あまり良くないかもしれません。",
+  recommended_rank:2,
+  rate:1
+)
+
+Comment.create!(
+  source_id: 5,
+  customer_id: 3, 
+  title:"思ったより大変でした",
+  comment:"JavaScript behaviorの近くに書いているのを参考にしてできました。探すのに時間がかかりました。",
+  recommended_rank:1,
+  rate:2
+)
+
+Comment.create!(
+  source_id: 2,
+  customer_id: 3, 
+  title:"CSSで書いた方が良さげ",
+  comment:"レスポンシブ対応もできるため、こちらのやり方よりCSSで書いた方が良さそう。",
+  recommended_rank:2,
+  rate:5
+)
+
+Comment.create!(
+  source_id: 6,
+  customer_id: 5, 
+  title:"便利です",
+  comment:"後からカラムを追加するときにこの方法を使っています。",
+  recommended_rank:2,
+  rate:5
+)
+
+Comment.create!(
+  source_id: 7,
+  customer_id: 5, 
+  title:"これは便利!",
+  comment:"Youtubeの動画を見る際はいつもお世話になっています。",
+  recommended_rank:2,
+  rate:5
+)
+
+Comment.create!(
+  source_id: 8,
+  customer_id: 2, 
   title:"素晴らしい!",
   comment:"今までこのような機能があることを知らなかった。2倍速で見るようになり、プライムビデオ視聴時間が大幅に削減された。",
   recommended_rank:2,
   rate:5
 )
 
-# ジャンル
-genres = ["未分類"]
-genres.length.times do |i|
-Genre.create!(
-    name: genres[i]
-  )
-end
 

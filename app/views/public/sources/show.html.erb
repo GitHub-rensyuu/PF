@@ -4,9 +4,9 @@
     <div class="col-md-7 border border-gray">
       <% begin
         object = LinkThumbnailer.generate( @source.source ) %>
-        <%= image_tag object.images.first.src.to_s, :width => '600' %><br><br>
+        <%= image_tag object.images.first.src.to_s, :width => '100%' %><br><br>
       <% rescue StandardError %>
-        <%= image_tag 'no_image.jpg', :width => '600' %><br><br>
+        <%= image_tag 'no_image.jpg', :width => '100%' %><br><br>
       <% end %>
       参考URL:<%= text_url_to_link(h(@source.source)).html_safe %>
     </div>

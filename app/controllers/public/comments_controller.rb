@@ -7,6 +7,10 @@ class Public::CommentsController < ApplicationController
     if @comment.save
       # ここから
       @source.create_notice_comment!(current_customer, @comment.id)
+      total_rate = @source.comments.average(:rate)
+      total_recommended_rank = @source.comments.average(:recommended_rank).round
+      @source.update(total_rate: total_rate)
+      @source.update(total_recommended_rank: total_recommended_rank)
       redirect_to source_path(@source)
       
       # ここまで
@@ -18,7 +22,14 @@ class Public::CommentsController < ApplicationController
   end
 
   def destroy
-    Comment.find(params[:id]).destroy
+    comment = Comment.find(params[:id])
+    source = comment.source
+    comment.destroy
+    total_rate = source.comments.average(:rate)
+    total_recommended_rank = @source.comments.average(:recommended_rank).round
+    source.update(total_rate: total_rate)
+    source.update(total_recommended_rank: total_recommended_rank)
+    
     redirect_to source_path(params[:source_id])
   end
 

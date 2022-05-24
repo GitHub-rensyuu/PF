@@ -1,3 +1,21 @@
+<div class='col-md-12 text-center'>
+  <div class="search_form">
+    <%=  form_tag(admin_search_path, method: :get) do %>
+      <%= select_tag "model", options_for_select({ "会員" => "customer"}) %>
+      <%= select_tag "sort" , options_for_select([['指定なし', 'default'],['新着順', 'new'],['投稿数が多い順', 'source'],['コメント数が多い順', 'comment'],['フォロワー数が多い順', 'follow'],['通報された数が多い順', 'report'],['いいねを貰った数が多い順', 'like'],['役に立ったを貰った数が多い順', 'useful'] ]) %>
+      <%= text_field_tag "keyword", "", placeholder: "キーワードから探す（会員名）", class:"col-lg-4 ml-10" %>
+      <%= submit_tag "検索", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+<% if params[:keyword].present? %>
+  <h3 class="text-center  mb-4 pt-4" style="border-bottom: solid 2px #F0F0F0; color:blue;">「<%= @keyword %>」の検索結果<%= @records.count %>件中<%= @customers.count %>件表示</h3><%= link_to '戻る', 'javascript:history.back()' %>
+<% else %>
+  <h2 class="text-center mb-4 pt-4", style="border-bottom: solid 2px #F0F0F0;">会員一覧</h2>
+<% end %>
+
+
 <table class='table table-hover table-inverse  table-bordered'>
   <thead>
     <tr>
@@ -25,13 +43,13 @@
         <td><i class="fas fa-book-open"></i><%= customer.sources.count %></td>
         <td><i class="fas fa-comment-dots"></i><%= customer.comments.count %></td>
         <td>
-          <%= link_to  followers_customer_path(customer) do %>
+          <%= link_to  followers_admin_customer_path(customer) do %>
             <i class="fas fa-users"></i>
             <%= customer.follower_customers.count %>
           <% end %>
         </td>
         <td>
-          <%= link_to reporters_customer_path(customer) do %>
+          <%= link_to reporters_admin_customer_path(customer) do %>
           <i class="fas fa-solid fa-bell"></i><%= customer.reporter_customers.count %>
           <% end %>
         </td>

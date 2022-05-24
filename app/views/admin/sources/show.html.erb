@@ -90,7 +90,8 @@
       </div>
       <% end %>
       <div style="display: flex; justify-content: space-between">
-          <%= link_to '削除', @source, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_source_#{@source.id}"%>
+          <!--admin_sources_path-->
+          <%= link_to "削除", admin_source_path(@source), method: :delete, class: "btn btn-sm btn-danger" %>
       </div>
     </div>
   </div>
@@ -119,7 +120,8 @@
           <p><%= comment.created_at.strftime('%Y/%m/%d') %>レビュー済</p>
           <p><%= comment.comment %></p>
           <p><%= comment.usefuls.size %>人が役に立ったと答えています</p>
-            <%= link_to "削除", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %>
+            <%= link_to "削除", admin_comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
+            <%#= link_to "削除", admin_recipe_path(@recipe), method: :delete, "data-confirm" => "本当に削除しますか?", class: "btn btn-danger btn-block btn-{themecolor} rounded-pill" %>
         </div>
       <% end %>
     </div>

@@ -7,7 +7,7 @@ class Public::SourcesController < ApplicationController
 
     @customer = @source.customer
     @comment = Comment.new
-    @comments = @source.comments.page(params[:page]).per(5)
+    @comments = @source.comments.page(params[:page])
     @source_tags = @source.tags
     unless ViewCount.find_by(customer_id: current_customer.id, source_id: @source.id)
       current_customer.view_counts.create(source_id: @source.id)
@@ -22,23 +22,23 @@ class Public::SourcesController < ApplicationController
     @tag_list=Tag.all
     @source_tags = @source.tags
     
-    unless params[:source].blank?
-      case params[:source][:sort]
-      when 'new' then
-        @sources =　Source.where(is_public: true).order(created_at: :desc).page(params[:page])
-       when 'rate' then
-        @sources = Source.where(is_public: true).order(rate: :desc).page(params[:page])
-       when 'like' then
-        @things = Source.where(is_public: true).includes(:likes).sort{|a,b| b.likes.size <=> a.likes.size}
-        @sources = Kaminari.paginate_array(@things).page(params[:page])
-       when 'comment' then
-        @things =  Source.where(is_public: true).includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
-        @sources = Kaminari.paginate_array(@things).page(params[:page])
-       when 'watch' then
-        @things = Source.where(is_public: true).includes(:view_counts).sort {|a,b| b.view_counts.size <=> a.view_counts.size}
-        @sources = Kaminari.paginate_array(@things).page(params[:page])
-      end
-    end
+    # unless params[:source].blank?
+    #   case params[:source][:sort]
+    #   when 'new' then
+    #     @sources =　Source.where(is_public: true).order(created_at: :desc).page(params[:page])
+    #   when 'rate' then
+    #     @sources = Source.where(is_public: true).order(rate: :desc).page(params[:page])
+    #   when 'like' then
+    #     @things = Source.where(is_public: true).includes(:likes).sort{|a,b| b.likes.size <=> a.likes.size}
+    #     @sources = Kaminari.paginate_array(@things).page(params[:page])
+    #   when 'comment' then
+    #     @things =  Source.where(is_public: true).includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
+    #     @sources = Kaminari.paginate_array(@things).page(params[:page])
+    #   when 'watch' then
+    #     @things = Source.where(is_public: true).includes(:view_counts).sort {|a,b| b.view_counts.size <=> a.view_counts.size}
+    #     @sources = Kaminari.paginate_array(@things).page(params[:page])
+    #   end
+    # end
   end
   
   
@@ -48,13 +48,13 @@ class Public::SourcesController < ApplicationController
 
   def create
     @source = Source.new(source_params)
+    
     @source.customer_id = current_customer.id
     # NGワードを定義
     blacklist = "死ね|殺す"
     
     if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
         flash[:alert] = "NGワードが含まれています。"
-        # name:publicをdelete
         @customer = current_customer
         @sources = Source.all
         render 'new'
@@ -66,8 +66,12 @@ class Public::SourcesController < ApplicationController
         render 'new'
       else
         @source.update(is_public: true)
-        tag_list=params[:source][:tagnames].split(',')
+        tag_list = params[:source][:tagnames].split(',')
         @source.save_tag(tag_list)
+        total_rate = @source.rate
+        total_recommended_rank = @source.recommended_rank
+        @source.update(total_rate: total_rate)
+        @source.update(total_recommended_rank: total_recommended_rank)
         redirect_to source_path(@source.id), notice: "情報ソース作成しました!"
       end
     elsif params[:draft]
@@ -117,6 +121,10 @@ class Public::SourcesController < ApplicationController
       @source.attributes = source_params.merge(is_public: true)
       if @source.save(context: :publicize)
         @source.save_tag(tag_list)
+        @source.total_rate = @source.rate
+        @source.total_recommended_rank = @source.recommended_rank
+        @source.update(total_rate: total_rate)
+        @source.update(total_recommended_rank: total_recommended_rank)
         redirect_to source_path(@source.id), notice: "下書きの情報ソースを公開しました！"
       else
         @source.is_public = false
@@ -156,10 +164,6 @@ class Public::SourcesController < ApplicationController
     end
   end
 
-  # def search_source
-  #   @source = Source.new
-  #   @sources = Source.where(is_public: true).search(params[:keyword])
-  # end
   
   def search_source
      @sources = Source.search(params[:keyword]).page(params[:page]).per(5)
@@ -178,12 +182,6 @@ class Public::SourcesController < ApplicationController
     end
   end
   
-  # def search
-  #   selection = params[:keyword]
-  #   @things = Source.where(is_public: true)
-  #   @things.sort(selection)
-  #   @sources = Kaminari.paginate_array(@things).page(params[:page])
-  # end
 
   def save_tag(sent_tags)
     # タグが存在していれば、タグの名前を配列として全て取得
@@ -222,6 +220,6 @@ class Public::SourcesController < ApplicationController
   end
 
   def source_params
-    params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid)
+    params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid,:total_rate,:total_recommended_rank)
   end
 end

@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2022_05_12_051958) do
 
   create_table "sources", force: :cascade do |t|
     t.integer "customer_id"
-    t.integer "genres_id", default: 1
+    t.integer "genre_id", default: 1
     t.text "source"
     t.string "purpose"
     t.text "performance_review"

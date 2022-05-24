@@ -17,7 +17,6 @@
            <%= link_to "あなたの投稿", notice.source, style: "font-weight: bold;" %>
           <% else %>
             <%= link_to source_path(notice.source) do %>
-              <%#= image_tag avatar_url(notice.source.customer).to_s, class: "icon_mini" %>
               <%= image_tag notice.source.customer.get_profile_image(50,50) %>
               <strong><%= notice.source.customer.nickname + 'さんの投稿' %></strong>
             <% end %>

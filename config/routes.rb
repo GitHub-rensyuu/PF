@@ -43,10 +43,14 @@ Rails.application.routes.draw do
   }
   namespace :admin do
     resources :genres, only: [:index, :create, :edit, :update]
-    resources :customers, only: [:index, :show, :edit, :update]
+    resources :customers, only: [:index, :show, :edit, :update] do
+      member do
+          get :follows, :followers, :reporteds, :reporters
+        end
+    end
     resources :comments, only: [:index, :destroy]
     resources :sources, only: [:index, :show, :destroy]
-    resources :searches, only: [:index]
+    get "/search"=> "searches#search"
   end
   
 

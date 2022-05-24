@@ -1,5 +1,5 @@
 <%= form_with model:source,local:true do |f| %>
-  <%#= render 'layouts/errors', model: f.object %>
+  <%= render 'layouts/errors', obj: f.object %>
   <div class="form-group">
     <%= f.label :"目的" %>
     <%= f.text_field :purpose, class: 'form-control source_title' %>
@@ -13,7 +13,6 @@
   <div class="form-group">
     <%= f.label :"評価コメント" %>
     <%= f.text_area :performance_review, class: 'form-control source_body' %>
-    <!--'data-provider': :summernote-->
   </div>
 
   <div class="form-group">
@@ -54,7 +53,6 @@
   
   <div class="form-group">
       <%= f.label :recommended_rank,  "推奨する対象者" %>
-      <%#= f.select :recommended_rank, [['初心者', 0.to_i], ['中級者', 1.to_i],['上級者', 2.to_i]], {}, { id: "source_id", class: "source_class" } %>
       <%= f.select :recommended_rank, Source.recommended_ranks.keys.map {|k| [I18n.t("enums.source.recommended_rank.#{k}"), k]} %>
   </div>
 

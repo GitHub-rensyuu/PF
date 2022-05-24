@@ -1,0 +1,21 @@
+<table class='table table-hover table-inverse'>
+  <thead>
+    <tr>
+      <th>image</th>
+      <th>name</th>
+      <th>フォロー数</th>
+      <th>フォロワー数</th>
+    </tr>
+  </thead>
+  <tbody>
+      <% customers.each do |customer| %>
+    <tr>
+          <td><%= image_tag customer.get_profile_image(30,30) %></td>
+          <td><%= link_to customer.nickname,admin_customer_path(customer) %></td>
+          <td>フォロー数:<%= customer.following_customers.count %></td>
+          <td>フォロワー数:<%= customer.follower_customers.count %></td>
+    </tr>
+      <% end %>
+  </tbody>
+</table>
+<%= paginate @customers %>

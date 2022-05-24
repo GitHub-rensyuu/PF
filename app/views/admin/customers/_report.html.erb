@@ -1,0 +1,21 @@
+<table class='table table-hover table-inverse'>
+  <thead>
+    <tr>
+      <th>プロフィール画像</th>
+      <th>ニックネーム</th>
+      <th>この人が通報している人数</th>
+      <th>この人を通報している人数</th>
+    </tr>
+  </thead>
+  <tbody>
+      <% customers.each do |customer| %>
+    <tr>
+          <td><%= image_tag customer.get_profile_image(30,30) %></td>
+          <td><%= link_to customer.nickname,admin_customer_path(customer) %></td>
+          <td><%= customer.reporting_customers.count %></td>
+          <td><%= customer.reporter_customers.count %></td>
+    </tr>
+      <% end %>
+  </tbody>
+</table>
+<%= paginate @customers %>

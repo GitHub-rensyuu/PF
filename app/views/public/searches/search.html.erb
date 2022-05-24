@@ -1,23 +1,17 @@
 <div class='container px-5 px-sm-0'>
   <div class='row'>
-    <div class='col-md-12'>
-          <%= render 'form' %>
-    </div>
+    <!--<div class='col-md-12'>-->
+    <!--      <%#= render 'form' %>-->
+    <!--</div>-->
+    
+    
             
-        <!--検索対象モデルがCustomerの時 -->
-<%
-=begin %>
-        <% if @model == "customer" %>
-        <h3 class="text-center" style="color:blue;">会員 「<%#= @keyword %>」 の検索結果が<%#= @records.count%>件あります。</h3><%= link_to '戻る', 'javascript:history.back()' %>
-          <%= render 'public/customers/index', customers: @records %>
-        <!--検索対象モデルがSourceの時 -->
-        <% else %>
-      
-<%
-=end %>
     <div class='col-md-12'>
+      <% if params[:model] == "customer" %>
+          <%= render 'public/customers/index', customers: @customers %>
+      <% else %>
           <%= render 'public/sources/index', sources: @sources %>
-        <%# end %>
+      <% end %>
     </div>
   </div>
 </div>

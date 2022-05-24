@@ -5,8 +5,6 @@ class Customer < ApplicationRecord
          :recoverable, :rememberable, :validatable
   validates :nickname, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
-  validates :sex,presence:true
-  validates :birthday,presence:true
 
   has_many :sources, dependent: :destroy
   has_many :likes,dependent: :destroy

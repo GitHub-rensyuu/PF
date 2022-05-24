@@ -1,3 +1,23 @@
+<% if controller.controller_name != 'customers' %>
+    <div class="search_form  text-center">
+    <%=  form_tag(admin_search_path, method: :get) do %>
+      <%= select_tag "model", options_for_select({"情報ソース" => "source" }) %>
+      <%= select_tag "method", options_for_select([["すべて","all"],["初心者","beginner_match"],["中級者","intermediate_match"],["上級者","senior_match"]]) %>
+      <%= select_tag "sort" , options_for_select([ ['指定なし', 'default'],['投稿が新しい順', 'new'],['評価が高い順', 'rate'],['いいねが多い順', 'like'],['コメント数が多い順', 'comment'],['閲覧数が多い順', 'watch']]) %>
+      <%= text_field_tag "keyword", "", placeholder: "キーワードから探す", class:"col-lg-4 ml-10" %>
+      <%= submit_tag "検索", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% end %>
+
+
+<% if params[:keyword].present? %>
+  <h3 class="text-center  mb-4 pt-4" style="border-bottom: solid 2px #F0F0F0; color:blue;">「<%= @keyword %>」の検索結果<%= @records.count %>件中<%= @sources.count %>件表示</h3><%= link_to '戻る', 'javascript:history.back()' %>
+<% else %>
+  <h2 class="text-center mb-4 pt-4", style="border-bottom: solid 2px #F0F0F0;">情報ソース一覧</h2>
+<% end %>
+
+
 <table class='table table-hover table-inverse table-bordered'>
   <%#= render 'layouts/errors', obj: @source %>
   <thead>
@@ -23,8 +43,13 @@
           <%= source.customer.nickname %>
           <% end %>
         </td>
-
-        <td><%= link_to source.purpose, admin_source_path(source.id) %>
+        <td>
+        <%= link_to admin_source_path(source.id) %>
+          <% if current_page?(search_path) && params[:keyword].present? %>
+            <strong><%= emphasize_keyword(source.purpose.truncate(20, omission: '...'), @keyword) %><strong>
+          <% else %>
+            <strong><%= source.purpose.truncate(20, omission: '...') %></strong>
+          <% end %>
         <% if source.comments.size == 0 %>
           (<%= recommended_rank_short(source.recommended_rank_i18n) %>)
         <% else %>

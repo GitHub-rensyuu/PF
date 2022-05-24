@@ -11,7 +11,6 @@
       
       <!--通報登録、解除ボタン-->
       <% if current_customer.reporting?(customer) %>
-        <%= link_to '通報解除', customer_reports_path(customer.id), method: :delete, class: "btn btn-info" %>
       <% else %>
         <%= link_to '通報する', customer_reports_path(customer.id), method: :POST, class:"btn btn-danger" %>
       <% end %>
