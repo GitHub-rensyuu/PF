@@ -1,4 +1,4 @@
-class Public::FollowsController < ApplicationController
+class Admin::FollowsController < ApplicationController
   before_action :authenticate_customer!
   def create
     if current_customer.nickname == "guestuser"
