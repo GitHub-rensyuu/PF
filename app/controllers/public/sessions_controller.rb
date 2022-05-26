@@ -10,17 +10,10 @@ class Public::SessionsController < Devise::SessionsController
   end
 
   def after_sign_in_path_for(resource)
-    customer_path(current_customer)
+    sources_path
   end
   
 
-  # def after_sign_out_path_for(resource)
-  #   # if current_customer.nickname == "guestuser" 
-  #   # 　notice: 'guestcustomerでログアウトしました。'
-  #   #   current_customer.destroy
-  #   # end
-  #   root_path
-  # end
 
   protected
 

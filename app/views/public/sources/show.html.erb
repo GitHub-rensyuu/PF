@@ -72,7 +72,9 @@
                 <% end %>
       </div>
         いいね:
-        <%= render 'public/likes/likes', source: @source %><br><br>
+        <div id="like_buttons_<%= @source.id %>" style="display:inline;">
+          <%= render 'public/likes/likes', source: @source %>
+        </div><br><br>
         評価コメント
       <div class="border border-secondary rounded mb-4">
         <div class="source-component">
@@ -105,6 +107,7 @@
     <div class="col-md-12">
       <h4 class="mb-4"><strong>この情報ソースを評価する</strong></h4>
       <%= form_with model: [@source, @comment] do |f| %>
+        <%= render 'layouts/errors', obj: f.object %>
         <%= f.text_field :title, rows: '5', placeholder: "タイトル" %><br><br>
         <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
         <div class="relative-comment-rate">
@@ -163,7 +166,7 @@
           <% if comment.customer == current_customer %>
             <%= link_to "削除", source_comment_path(comment.source, comment), method: :delete, class: "btn btn-sm btn-danger" %>
           <% else %>
-            <!--役に立った機能追加-->
+            <!--役に立った機能-->
             <% if comment.usefuld_by?(current_customer) %>
               <td>
                 <%= link_to source_comment_useful_path(comment.source, comment), method: :delete, class: "btn btn-light" do %>

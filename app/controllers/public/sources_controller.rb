@@ -3,8 +3,6 @@ class Public::SourcesController < ApplicationController
   def show
     @newsource = Source.new
     @source = Source.find(params[:id])
-    
-
     @customer = @source.customer
     @comment = Comment.new
     @comments = @source.comments.page(params[:page])
