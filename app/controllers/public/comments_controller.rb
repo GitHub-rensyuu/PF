@@ -17,7 +17,9 @@ class Public::CommentsController < ApplicationController
     else
       @newsource = Source.new
       @customer = current_customer
-     redirect_to source_path(@source) #render if error hosii
+      # redirect_to source_path(@source) 
+      render "show"
+     #render if error hosii
     end
   end
 
