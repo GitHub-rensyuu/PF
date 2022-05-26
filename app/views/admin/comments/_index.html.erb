@@ -1,18 +1,26 @@
 <div class="row">
   <div class="col-md-12">
-    <table class="table">
+    <h2 class="text-center mb-4 pt-4", style="border-bottom: solid 2px #F0F0F0;">レビュー一覧</h2>
+    <table class="table table-hover table-inverse table-bordered">
       <thead>
         <tr>
-          <th>投稿者</th>
-          <th>評価</th>
+          <% unless controller.controller_name == 'customers' && controller.action_name == 'show' %>
+            <th>投稿者</th>
+          <% end %>
+          <th>タイトル</th>
           <th>コメント</th>
-          <th></th>
+          <th>評価</th>
+          <th>対象者</th>
         </tr>
       </thead>
       <tbody>
         <% comments.each do |comment| %>
         <tr>
-          <td><%= link_to comment.customer.nickname, admin_customer_path(comment.customer), class: "text-dark" %></td>
+          <% unless controller.controller_name == 'customers' && controller.action_name == 'show' %>
+            <td><%= link_to comment.customer.nickname, admin_customer_path(comment.customer), class: "text-dark" %></td>
+          <% end %>
+          <td><%= comment.title %></td>
+          <td><%= comment.comment %></td>
           <td>
              <span class="mb-4" id="star-rate-<%= comment.id %>"></span><strong>  <%= comment.title %></strong>
             <script>
@@ -29,8 +37,8 @@
               });
             </script>
           </td>
-          <td><%= comment.comment %></td>
-          <td><%= link_to "削除", admin_comment_path(comment), method: :delete, "data-confirm" => "本当に削除しますか?", class: "btn btn-danger btn-{themecolor} rounded-pill" %></td>
+          <td><%= comment.recommended_rank_i18n %></td>
+          <td><%= link_to "削除", admin_comment_path(comment), method: :delete, class: "btn btn-danger" %></td>
         </tr>
         <% end %>
       </tbody>

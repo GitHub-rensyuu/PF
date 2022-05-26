@@ -11,7 +11,6 @@ Admin.create!(
    password: "123456"
 )
 
-
 # 会員
 7.times do |n|
    Customer.create!(
@@ -26,7 +25,7 @@ Admin.create!(
 end
 
 # ジャンル
-genres = ["未分類"]
+genres = ["未分類","プログラミング"]
 genres.length.times do |i|
 Genre.create!(
     name: genres[i]
@@ -42,6 +41,7 @@ Source.create!(
       performance_review: "簡単に実装できました。<a href=""></a>で囲めばハイパーリンク化すると思い、試しても上手くいかなかった時に見つけたのがこの記事です。
       ",
       rate:4,
+      total_rate:4,
       recommended_rank: 0,
       is_public: true
     )
@@ -53,6 +53,7 @@ Source.create!(
       performance_review: "簡単に実装できました。railsにこのようなメソッドがあるとは知らなかった。",
       note: "ハイパーリンク等文字に機能を持たせる場合にこの方法を使うと機能しなくなることがある。機能はrails、表示はcssで書くようにすると上手くいく。",
       rate:3,
+      total_rate:2,
       recommended_rank: 0,
       is_public: true
     )
@@ -63,6 +64,7 @@ Source.create!(
       purpose: "kaminariにbootstrapを実装する",
       performance_review: "すぐ実装できました。ページネーションでkaminariを使っている人におすすめです。",
       rate:4,
+      total_rate:4.5,
       recommended_rank: 0,
       is_public: true
     )
@@ -74,6 +76,7 @@ Source.create!(
       performance_review: "簡単に実装できました。ドロップダウンを実装すると見栄えが良くなるのでおすすめです。",
       note: "Turbolinksを無効にしないと機能しないことがある。",
       rate:4,
+      total_rate:1,
       recommended_rank: 0,
       is_public: true
     )
@@ -84,6 +87,7 @@ Source.create!(
       purpose: "レイアウトでタブの切り替え機能を実装する",
       performance_review: "簡単に実装できた。タブの切り替え機能を実装するとユーザビリティーが良くなるのでおすすめです。",
       rate:5,
+      total_rate:2,
       recommended_rank: 1,
       is_public: true
     )
@@ -94,6 +98,7 @@ Source.create!(
       purpose: "後からmigrateファイルを修正する",
       performance_review: "とても便利な機能だと感じた。これを知るまでは苦労してmigrateファイルを修正していた。",
       rate:5,
+      total_rate:5,
       recommended_rank: 1,
       is_public: true
     )
@@ -104,6 +109,7 @@ Source.create!(
       purpose: "Youtubeの広告をスキップする",
       performance_review: "とても便利な機能だと感じた。Youtube以外の広告もスキップしてくれるのはありがたい。",
       rate:5,
+      total_rate:5,
       recommended_rank: 0,
       is_public: true
     )
@@ -115,6 +121,7 @@ Source.create!(
       performance_review: "プライムビデオ以外の動画も倍速にでき、とても便利な機能だと感じた。",
       note: "スマホのiOSのバージョンによってdeskreen上でプライムビデオを表示されない問題あり。",
       rate:5,
+      total_rate:5,
       recommended_rank: 1,
       is_public: true
     )
@@ -125,6 +132,7 @@ Source.create!(
       purpose: "Bootstrapについて理解する",
       performance_review: "Bootstrapの基本について解説しており分かりやすかった。",
       rate:4.5,
+      total_rate:4.5,
       recommended_rank: 0,
       is_public: true
     )
@@ -135,6 +143,7 @@ Source.create!(
       purpose: "Bootstrapについて理解する",
       performance_review: "Bootstrapの公式ページの読み方について解説しており分かりやすかった。",
       rate:4.5,
+      total_rate:4.5,
       recommended_rank: 0,
       is_public: true
     )
@@ -145,6 +154,7 @@ Source.create!(
       purpose: "検索結果の一致部分をハイライトさせる",
       performance_review: "今までGoogle検索などで検索した際のハイライトするシステムが分かり、なるほどと思った。",
       rate:4.5,
+      total_rate:4.5,
       recommended_rank: 1,
       is_public: true
     )
@@ -155,6 +165,7 @@ Source.create!(
       purpose: "通知機能の作成",
       performance_review: "実装するのにかなり時間がかかった。一部slim形式で書かれており、slimに慣れていない自分は大変だった。",
       rate:3,
+      total_rate:3,
       recommended_rank: 2,
       is_public: true
     )
@@ -166,6 +177,7 @@ Source.create!(
       performance_review: "実装するのにかなり時間がかかった。",
       note: "ここで紹介しているgemは8年前ぐらいの古いもので、完全一致しかNGワードとして弾いてくれなかったのでイマイチだった。こちらの方がよさげ。https://qiita.com/NishidaRyu416/items/a2642d6a2cb9400ea4da",
       rate:3,
+      total_rate:3,
       recommended_rank: 1,
       is_public: true
     )
@@ -176,6 +188,7 @@ Source.create!(
       purpose: "スプレッドシートで目次を作る",
       performance_review: "少し時間がかかったが実装できた。目次へジャンプできるリンクも作れると良いと思った。",
       rate:3,
+      total_rate:3,
       recommended_rank: 1,
       is_public: true
   )
@@ -186,6 +199,7 @@ Source.create!(
       purpose: "ER図からテーブル定義書を自動生成",
       performance_review: "いつかやってみようと思う。",
       rate:3,
+      total_rate:3,
       recommended_rank: 0,
       is_public: false
   )
@@ -313,6 +327,14 @@ Comment.create!(
 )
 
 Comment.create!(
+  source_id: 2,
+  customer_id: 3, 
+  title:"CSSで書いた方が良さげ",
+  comment:"レスポンシブ対応もできるため、こちらのやり方よりCSSで書いた方が良さそう。",
+  recommended_rank:2,
+  rate:2
+)
+Comment.create!(
   source_id: 3,
   customer_id: 2, 
   title:"秒でできました",
@@ -337,15 +359,6 @@ Comment.create!(
   comment:"JavaScript behaviorの近くに書いているのを参考にしてできました。探すのに時間がかかりました。",
   recommended_rank:1,
   rate:2
-)
-
-Comment.create!(
-  source_id: 2,
-  customer_id: 3, 
-  title:"CSSで書いた方が良さげ",
-  comment:"レスポンシブ対応もできるため、こちらのやり方よりCSSで書いた方が良さそう。",
-  recommended_rank:2,
-  rate:5
 )
 
 Comment.create!(
@@ -375,4 +388,20 @@ Comment.create!(
   rate:5
 )
 
+Comment.create!(
+  source_id: 9,
+  customer_id: 6, 
+  title:"Bootstrap初心者におすすめ!",
+  comment:"Bootstrap初心者に私でも理解できる内容でした。",
+  recommended_rank:2,
+  rate:4.5
+)
 
+Comment.create!(
+  source_id: 10,
+  customer_id: 6, 
+  title:"公式サイトの読み方が分かる",
+  comment:"Bootstrapの公式サイトをどのようにして読むかイメージが掴めない人におすすめです。",
+  recommended_rank:2,
+  rate:4.5
+)

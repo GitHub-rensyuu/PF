@@ -46,13 +46,14 @@ class Source < ApplicationRecord
     old_tags = current_tags - sent_tags
     # 送信されてきたタグから現在存在するタグを除いたタグをnewとする
     new_tags = sent_tags - current_tags
-
+    
     # 古いタグを消す
     old_tags.each do |old|
       self.tags.deleteTag.find_by(tagname: old)
     end
 
     # 新しいタグを保存
+    new_tags = new_tags.uniq
     new_tags.each do |new|
       new_source_tag = Tag.find_or_create_by(tagname: new)
       self.tags << new_source_tag

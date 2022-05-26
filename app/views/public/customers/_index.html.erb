@@ -35,8 +35,12 @@
         <td>
           <%= link_to(customer) do %>
             <%= image_tag customer.get_profile_image(50,50) %><br>
-            <%= customer.nickname %>
+            <% if params[:keyword].present? %>
+              <%= emphasize_keyword(customer.nickname, @keyword) %>
+            <% else %>
+              <%= customer.nickname %>
             <% end %>
+          <% end %>
         </td>
         <td><i class="fas fa-book-open"></i><%= customer.sources.count %></td>
         <td><i class="fas fa-comment-dots"></i><%= customer.comments.count %></td>

@@ -19,7 +19,7 @@
 <table class='table table-hover table-inverse  table-bordered'>
   <thead>
     <tr>
-      <th>順位</th>
+      <th>ID</th>
       <th>ニックネーム</th>
       <th>投稿数</th>
       <th>コメント数</th>
@@ -33,12 +33,16 @@
   <tbody>
     <% customers.each_with_index do |customer, i| %>
       <tr>
-        <td><%= i + 1 %></td>
+        <td><%= customer.id %></td>
         <td>
           <%= link_to admin_customer_path(customer) do %>
             <%= image_tag customer.get_profile_image(50,50) %><br>
-            <%= customer.nickname %>
+            <% if params[:keyword].present? %>
+              <%= emphasize_keyword(customer.nickname, @keyword) %>
+            <% else %>
+              <%= customer.nickname %>
             <% end %>
+          <% end %>
         </td>
         <td><i class="fas fa-book-open"></i><%= customer.sources.count %></td>
         <td><i class="fas fa-comment-dots"></i><%= customer.comments.count %></td>

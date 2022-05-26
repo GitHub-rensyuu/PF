@@ -12,18 +12,19 @@
 
 
 <% if params[:keyword].present? %>
-  <h3 class="text-center  mb-4 pt-4" style="border-bottom: solid 2px #F0F0F0; color:blue;">「<%= @keyword %>」の検索結果<%= @records.count %>件中<%= @sources.count %>件表示</h3><%= link_to '戻る', 'javascript:history.back()' %>
+  <h3 class="text-center  mb-4 pt-4" style="border-bottom: solid 2px #F0F0F0; color:blue;">「<%= @keyword %>」の検索結果<%= @records.count %>件中<%= @sources.count %>件表示</h3>
 <% else %>
   <h2 class="text-center mb-4 pt-4", style="border-bottom: solid 2px #F0F0F0;">情報ソース一覧</h2>
 <% end %>
 
 
 <table class='table table-hover table-inverse table-bordered'>
-  <%#= render 'layouts/errors', obj: @source %>
   <thead>
     <tr>
-      <th>No.</th>
-      <th>投稿者</th>
+      <th>ID</th>
+      <% unless controller.controller_name == 'customers' && controller.action_name == 'show' %>
+        <th>投稿者</th>
+      <% end %>
       <th>目的(難易度)</th>
       <th>評価コメント</th>
       <th>参考(URL)</th>
@@ -38,18 +39,21 @@
     <% sources.each_with_index do |source, i| %>
       <tr>
         <td><%= source.id %></td>
-        <td><%= link_to admin_customer_path(source.customer) do %>
-          <%= image_tag source.customer.get_profile_image(50,50) %><br>
-          <%= source.customer.nickname %>
-          <% end %>
-        </td>
+        <% unless controller.controller_name == 'customers' && controller.action_name == 'show' %>
+          <td><%= link_to admin_customer_path(source.customer) do %>
+            <%= image_tag source.customer.get_profile_image(50,50) %><br>
+            <%= source.customer.nickname %>
+            <% end %>
+          </td>
+        <% end %>
         <td>
-        <%= link_to admin_source_path(source.id) %>
-          <% if current_page?(search_path) && params[:keyword].present? %>
-            <strong><%= emphasize_keyword(source.purpose.truncate(20, omission: '...'), @keyword) %><strong>
+        <%= link_to admin_source_path(source) do %>
+          <% if params[:keyword].present? %>
+            <strong><%= emphasize_keyword(source.purpose.truncate(20, omission: '...'), @keyword) %></strong>
           <% else %>
             <strong><%= source.purpose.truncate(20, omission: '...') %></strong>
           <% end %>
+        <% end %>
         <% if source.comments.size == 0 %>
           (<%= recommended_rank_short(source.recommended_rank_i18n) %>)
         <% else %>
@@ -64,40 +68,12 @@
         </td>
         
         <td><%= source.performance_review %></td>
-        <td><%= text_url_to_link(h(source.source.truncate(24, omission: '~~~'))).html_safe %>
+        <td class="test"><%= text_url_to_link(h(source.source)).html_safe %>
         <!--星評価表示機能-->
         <td>
         <div class="relative-source-average">
-          <% if source.comments.size == 0 %>
-            <span class="text-red"><%= source.rate %></span>
-            <script>
-            <span class="text-red"><%= source.rate %></span>
-              $('#star-average-<%= source.id %>').empty();
-                $('#star-average-<%= source.id %>').raty({
-                size:36,
-                starOff: "<%= asset_path('star-off.png') %>",
-                starOn: "<%= asset_path('star-on.png') %>",
-                starHalf: "<%= asset_path('star-half.png') %>",
-                half: true,
-                readOnly: true,
-                score: "<%= source.rate %>",
-              });
-            </script>
-          <% else %>
-            <span class="text-red"><%= source.comments.average(:rate).to_f.round(1) %></span>
-              <script>
-               $('#star-average-<%= source.id %>').empty();
-              $('#star-average-<%= source.id %>').raty({
-                size:36,
-                starOff: "<%= asset_path('star-off.png') %>",
-                starOn: "<%= asset_path('star-on.png') %>",
-                starHalf: "<%= asset_path('star-half.png') %>",
-                half: true,
-                readOnly: true,
-                score: "<%= source.comments.average(:rate).to_f.round(1) %>",
-              });
-              </script>
-          <% end %>
+          <%# if source.comments.size == 0 %>
+            <span class="text-red"><%= source.total_rate %></span>
         </div>
         </td>
         <td><%= source.likes.size %></td>

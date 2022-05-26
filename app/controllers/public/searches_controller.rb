@@ -2,6 +2,9 @@ class Public::SearchesController < ApplicationController
   before_action :authenticate_customer!
   
   def search
+    @customer = current_customer
+    @source = Source.new
+    @sources = Source.where(is_public: true).order('id DESC').page(params[:page])
     @model = params["model"]
     # 選択した検索方法の値を@methodに代入。
     @method = params["method"]

@@ -55,3 +55,10 @@ body{
   padding: 2px 3px;
   font-style: italic;
 }
+
+.test{
+   max-width: 25vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

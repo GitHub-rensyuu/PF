@@ -15,10 +15,13 @@
       <% end %>
       <% if source.comments.size == 0 %>
         (<%= recommended_rank_short(source.recommended_rank_i18n) %>)
+        <%#= recommended_rank_short(source.total_recommended_rank_i18n) %>
       <% else %>
-        <% if source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+        <%# if source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+        <% if source.total_recommended_rank == 0 %>
           (初)
-        <% elsif source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+        <%# elsif source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+        <% elsif source.total_recommended_rank == 2 %>
           (上)
         <% else %>
           (中)
@@ -56,7 +59,6 @@
               </script>
           <% end %>
           (<%= source.comments.size %>)
-         <!--♥(<%#= source.likes.size %>)-->
          
           <div id="like_buttons_<%= source.id %>" style="display:inline;">
            <%= render 'public/likes/likes', source: source %>

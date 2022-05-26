@@ -1,0 +1,8 @@
+<div class='container px-5 px-sm-0'>
+  <div class='row'>
+    <div class='col-md-12'>
+        <h3 class="text-center" style="color:blue;">「<%=@tag.tagname%>」タグの投稿が<%= @tag.sources.count%>件あります。</h3>
+        <%= render 'index', tag_list: @tag_list,sources: @sources %>
+    </div>
+  </div>
+</div>

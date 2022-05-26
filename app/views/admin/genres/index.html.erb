@@ -10,7 +10,7 @@
         </div>
 
         <div class="form-group mb-5">
-          <%= f.submit "新規登録", class: "btn btn-warning btn-block btn-{themecolor} rounded-pill" %>
+          <%= f.submit "新規登録", class: "btn btn-warning btn-block" %>
         </div>
       <% end %>
 
@@ -22,7 +22,7 @@
             <strong><%= genre.name %></strong>
           </p>
           <p>
-            <%= link_to "編集する", edit_admin_genre_path(genre), class: "btn btn-warning btn-{themecolor} rounded-pill" %>
+            <%= link_to "編集する", edit_admin_genre_path(genre), class: "btn btn-warning" %>
           </p>
         </div>
       <% end %>

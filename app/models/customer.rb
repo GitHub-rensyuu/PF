@@ -23,7 +23,7 @@ class Customer < ApplicationRecord
   has_many :reporter_customers, through: :reporteds, source: :reporter # 自分を通報している人
 
   # 下を書くと管理者側で物理削除できなくなる
-  # has_many :notisces, dependent: :destroy
+  # has_many :notices, dependent: :destroy
   has_many :active_notices, class_name: 'Notice', foreign_key: 'send_id', dependent: :destroy
   has_many :passive_notices, class_name: 'Notice', foreign_key: 'receive_id', dependent: :destroy
 
@@ -59,9 +59,9 @@ class Customer < ApplicationRecord
   end
 
   # 退会済ユーザーをブロック
-  # def active_for_authentication?
-  #   super && (is_deleted == false)
-  # end
+  def active_for_authentication?
+    super && (is_deleted == false)
+  end
 
   # ゲストログイン設定
   def self.guest

@@ -1,5 +1,5 @@
 module ApplicationHelper
-    # ual文字ハイパーリンク化
+    # url文字ハイパーリンク化
     require "uri"
 
     def text_url_to_link text

@@ -51,7 +51,7 @@ ja:
       send_paranoid_instructions: メールアドレスが登録済みの場合、本人確認用のメールが数分以内に送信されます。
     failure:
       already_authenticated: すでにログインしています。
-      inactive: アカウントが有効化されていません。メールに記載された手順にしたがって、アカウントを有効化してください。
+      inactive: 退会済みのため、ログインできません。
       invalid: "%{authentication_keys}またはパスワードが違います。"
       last_attempt: もう一回誤るとアカウントがロックされます。
       locked: アカウントはロックされています。
@@ -157,9 +157,7 @@ ja:
         one: エラーが発生したため %{resource} は保存されませんでした。
         other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
       not_saved:
-        #one: "1 error prohibited this %{resource} from being saved:"
         one: "１つのエラーがあります。修正して再度送信して下さい。:"
-        #other: "%{count} errors prohibited this %{resource} from being saved:"
         other: "%{count}のエラーがあります。修正して再度送信して下さい。"
     template:
       body: 次の項目を確認してください

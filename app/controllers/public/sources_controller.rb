@@ -22,23 +22,6 @@ class Public::SourcesController < ApplicationController
     @tag_list=Tag.all
     @source_tags = @source.tags
     
-    # unless params[:source].blank?
-    #   case params[:source][:sort]
-    #   when 'new' then
-    #     @sources =　Source.where(is_public: true).order(created_at: :desc).page(params[:page])
-    #   when 'rate' then
-    #     @sources = Source.where(is_public: true).order(rate: :desc).page(params[:page])
-    #   when 'like' then
-    #     @things = Source.where(is_public: true).includes(:likes).sort{|a,b| b.likes.size <=> a.likes.size}
-    #     @sources = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'comment' then
-    #     @things =  Source.where(is_public: true).includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
-    #     @sources = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'watch' then
-    #     @things = Source.where(is_public: true).includes(:view_counts).sort {|a,b| b.view_counts.size <=> a.view_counts.size}
-    #     @sources = Kaminari.paginate_array(@things).page(params[:page])
-    #   end
-    # end
   end
   
   
@@ -59,6 +42,7 @@ class Public::SourcesController < ApplicationController
         @sources = Source.all
         render 'new'
     elsif params[:public]
+
       if !@source.save(context: :publicize)
         flash[:alert] = "登録できませんでした。"
         @customer = current_customer
@@ -169,18 +153,18 @@ class Public::SourcesController < ApplicationController
      @sources = Source.search(params[:keyword]).page(params[:page]).per(5)
   end
   
-  def search
-    if params[:q].present?
-    # 検索フォームからアクセスした時の処理
-      @search = Source.ransack(search_params)
-      @source = @search.result
-    else
-    # 検索フォーム以外からアクセスした時の処理
-      params[:q] = { sorts: 'id desc' }
-      @search = Source.ransack()
-      @sources = Source.all
-    end
-  end
+  # def search
+  #   if params[:q].present?
+  #   # 検索フォームからアクセスした時の処理
+  #     @search = Source.ransack(search_params)
+  #     @source = @search.result
+  #   else
+  #   # 検索フォーム以外からアクセスした時の処理
+  #     params[:q] = { sorts: 'id desc' }
+  #     @search = Source.ransack()
+  #     @sources = Source.all
+  #   end
+  # end
   
 
   def save_tag(sent_tags)
@@ -214,12 +198,12 @@ class Public::SourcesController < ApplicationController
   
   private
   
-  def search_params
-    params.require(:q).permit(:sorts)
-    # 他のパラメーターもここに入れる
-  end
+  # def search_params
+  #   params.require(:q).permit(:sorts)
+  #   # 他のパラメーターもここに入れる
+  # end
 
   def source_params
-    params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid,:total_rate,:total_recommended_rank)
+    params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid,:total_rate,:total_recommended_rank,:tagnames)
   end
 end

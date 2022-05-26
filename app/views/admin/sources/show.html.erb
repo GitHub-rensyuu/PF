@@ -4,11 +4,10 @@
     <div class="col-md-7 border border-gray">
       <% begin
         object = LinkThumbnailer.generate( @source.source ) %>
-        <%= image_tag object.images.first.src.to_s, :width => '600' %><br><br>
+        <%= image_tag object.images.first.src.to_s, :width => '100%' %><br><br>
       <% rescue StandardError %>
-        <%= image_tag 'no_image.jpg', :width => '600' %><br><br>
+        <%= image_tag 'no_image.jpg', :width => '100%' %><br><br>
       <% end %>
-       
       
       参考URL:<%= text_url_to_link(h(@source.source)).html_safe %>
     </div>
@@ -64,7 +63,7 @@
         <i class="fas fa-search-location"></i>
                 <% if @source_tags.present? %>
                 <% @source_tags.each do |tag| %>
-                  <%= link_to sources_search_tag_path(tag_id: tag.id) do%>
+                  <%= link_to admin_sources_search_tag_path(tag_id: tag.id) do%>
                     <span class="btn btn-outline-info">
                       <%= tag.tagname %><%="(#{tag.sources.count})" %>
                   <% end %>
@@ -90,7 +89,6 @@
       </div>
       <% end %>
       <div style="display: flex; justify-content: space-between">
-          <!--admin_sources_path-->
           <%= link_to "削除", admin_source_path(@source), method: :delete, class: "btn btn-sm btn-danger" %>
       </div>
     </div>
@@ -121,7 +119,6 @@
           <p><%= comment.comment %></p>
           <p><%= comment.usefuls.size %>人が役に立ったと答えています</p>
             <%= link_to "削除", admin_comment_path(comment), method: :delete, class: "btn btn-sm btn-danger" %>
-            <%#= link_to "削除", admin_recipe_path(@recipe), method: :delete, "data-confirm" => "本当に削除しますか?", class: "btn btn-danger btn-block btn-{themecolor} rounded-pill" %>
         </div>
       <% end %>
     </div>
@@ -134,10 +131,10 @@
   
   <div class="row my-5">
     <div class="col-md-12  border border-secondary rounded">
-      <%= link_to customer_path(@customer), class: "text-dark text-decoration-none" do %>
+      <%= link_to admin_customer_path(@customer), class: "text-dark text-decoration-none" do %>
         <h4 class="my-3">この情報ソースの投稿者</h4>
       <% end %>
-      <%= link_to customer_path(@customer), class: "text-dark text-decoration-none" do %>
+      <%= link_to admin_customer_path(@customer), class: "text-dark text-decoration-none" do %>
           <%= image_tag @customer.get_profile_image(100,100), class: "rounded-circle img-thumbnail" %>
         <h4 class="mb-5"><%= @customer.nickname %></h4>
         <p><%= @customer.introduction %></p>

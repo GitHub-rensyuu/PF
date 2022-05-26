@@ -1,1 +1,0 @@
-$('#search_buttons').html("<%= j(render "public/likes/likes", source: @source) %>");
