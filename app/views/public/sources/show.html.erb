@@ -1,5 +1,6 @@
 
 <div class="container">
+  <!--投稿表示-->
   <div class="row my-5">
     <div class="col-md-7 border border-gray">
       <% begin
@@ -98,6 +99,7 @@
     </div>
   </div>
 
+<!--レビュー入力フォーム-->
 <% if @customer != current_customer %>
   <div class="row mb-5">
     <div class="col-md-12">
@@ -136,6 +138,7 @@
   </div>
 <% end %>
 
+<!--レビュー表示-->
 <div class="row">
     <div class="col-md-12">
       <h4 class="mb-4 pt-4", style="border-top: solid 1px #F0F0F0;"><strong>レビュー</strong></h4>
@@ -187,6 +190,7 @@
     </div>
   </div>
   
+　<!--投稿者表示-->
   <div class="row my-5">
     <div class="col-md-12  border border-secondary rounded">
       <%= link_to customer_path(@customer), class: "text-dark text-decoration-none" do %>

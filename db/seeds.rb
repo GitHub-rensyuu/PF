@@ -215,29 +215,31 @@ Source.create!(
   )
 
 # タグ
+# 1
 Tag.create!(
   tagname: "rails"
 )
+# 2
 Tag.create!(
   tagname: "ハイパーリンク"
 )
-
+# 3
 Tag.create!(
   tagname: "レイアウト"
 )
-
+# 4
 Tag.create!(
   tagname: "Bootstrap"
 )
-
+# 5
 Tag.create!(
   tagname: "Youtube"
 )
-
+# 6
 Tag.create!(
   tagname: "プライムビデオ"
 )
-
+# 7
 Tag.create!(
   tagname: "検索"
 )
@@ -297,12 +299,12 @@ SourceTag.create!(
 
 SourceTag.create!(
   source_id: 8,
-  tag_id: 5, 
+  tag_id: 6, 
 )
 
 SourceTag.create!(
   source_id: 9,
-  tag_id: 6, 
+  tag_id: 4, 
 )
 
 SourceTag.create!(
@@ -312,7 +314,7 @@ SourceTag.create!(
 
 SourceTag.create!(
   source_id: 11,
-  tag_id: 4, 
+  tag_id: 7, 
 )
 
 SourceTag.create!(

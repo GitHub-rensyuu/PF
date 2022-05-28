@@ -37,7 +37,15 @@
               });
             </script>
           </td>
-          <td><%= comment.recommended_rank_i18n %></td>
+          <td>
+          <% if comment.recommended_rank == 0 %>
+            (初)
+          <% elsif comment.recommended_rank == 1 %>
+            (中)
+          <% elsif comment.recommended_rank == 2 %>
+            (上)
+          <% end %>
+          </td>
           <td><%= link_to "削除", admin_comment_path(comment), method: :delete, class: "btn btn-danger" %></td>
         </tr>
         <% end %>
