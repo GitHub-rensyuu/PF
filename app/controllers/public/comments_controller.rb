@@ -25,7 +25,7 @@ class Public::CommentsController < ApplicationController
     source = comment.source
     comment.destroy
     total_rate = source.comments.average(:rate)
-    total_recommended_rank = @source.comments.average(:recommended_rank).round
+    total_recommended_rank = source.comments.average(:recommended_rank).round
     source.update(total_rate: total_rate)
     source.update(total_recommended_rank: total_recommended_rank)
     
