@@ -168,37 +168,6 @@ ja:
 
   # enumステータス設定
   enums:
-    genre:
-      is_public:
-        public: "公開"
-        private: "非公開"
-    new:
-      is_public:
-        public: "公開"
-        private: "非公開"
-    comment:
-      is_valid:
-         valid: "有効"
-         invalid: "無効"
-      recommended_rank:
-         beginner: "初心者"
-         intermediate: "中級者"
-         advanced: "上級者"
-    source:
-      is_public:
-        public: "公開"
-        private: "非公開"
-      is_valid:
-         valid: "有効"
-         invalid: "無効"
-      recommended_rank:
-         beginner: "初心者"
-         intermediate: "中級者"
-         advanced: "上級者"
-    notice:
-      is_confirmed:
-        confirmed: "確認済"
-        unconfirmed: "未確認"
     customer:
       sex:
         man: "男"

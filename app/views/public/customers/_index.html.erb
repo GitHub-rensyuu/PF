@@ -1,10 +1,10 @@
 <div class='col-md-12 text-center'>
   <div class="search_form">
-    <%=  form_tag(search_path, method: :get) do %>
-      <%= select_tag "model", options_for_select({ "会員" => "customer"}) %>
-      <%= select_tag "sort" , options_for_select([['指定なし', 'default'],['投稿数が多い順', 'source'],['コメント数が多い順', 'comment'],['フォロワー数が多い順', 'follow'],['通報された数が多い順', 'report'],['いいねを貰った数が多い順', 'like'],['役に立ったを貰った数が多い順', 'useful'] ]) %>
-      <%= text_field_tag "keyword", "", placeholder: "キーワードから探す（会員名）", class:"col-lg-4 ml-10" %>
-      <%= submit_tag "検索", class: "btn btn-primary" %>
+    <%= form_with url: search_path, remote: true, method: :get do |f| %>
+      <%= f.select :model, options_for_select({ "会員" => "customer"}) %>
+      <%= f.select :sort, options_for_select([['指定なし', 'default'],['投稿数が多い順', 'source'],['コメント数が多い順', 'comment'],['フォロワー数が多い順', 'follow'],['通報された数が多い順', 'report'],['いいねを貰った数が多い順', 'like'],['役に立ったを貰った数が多い順', 'useful'] ]) %>
+      <%= f.text_field :keyword, placeholder: "キーワードから探す（会員名）", class:"col-lg-4 ml-10" %>
+      <%= f.submit "検索", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>

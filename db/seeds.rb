@@ -43,6 +43,7 @@ Source.create!(
       rate:4,
       total_rate:4,
       recommended_rank: 0,
+      total_recommended_rank: 1,
       is_public: true
     )
 # 2
@@ -55,6 +56,7 @@ Source.create!(
       rate:3,
       total_rate:2,
       recommended_rank: 0,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 3
@@ -66,6 +68,7 @@ Source.create!(
       rate:4,
       total_rate:4.5,
       recommended_rank: 0,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 4
@@ -78,6 +81,7 @@ Source.create!(
       rate:4,
       total_rate:1,
       recommended_rank: 0,
+      total_recommended_rank: 1,
       is_public: true
     )
 # 5
@@ -89,6 +93,7 @@ Source.create!(
       rate:5,
       total_rate:2,
       recommended_rank: 1,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 6
@@ -100,6 +105,7 @@ Source.create!(
       rate:5,
       total_rate:5,
       recommended_rank: 1,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 7
@@ -111,6 +117,7 @@ Source.create!(
       rate:5,
       total_rate:5,
       recommended_rank: 0,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 8
@@ -123,6 +130,7 @@ Source.create!(
       rate:5,
       total_rate:5,
       recommended_rank: 1,
+      total_recommended_rank: 1,
       is_public: true
     )
 # 9
@@ -134,6 +142,7 @@ Source.create!(
       rate:4.5,
       total_rate:4.5,
       recommended_rank: 0,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 10
@@ -145,6 +154,7 @@ Source.create!(
       rate:4.5,
       total_rate:4.5,
       recommended_rank: 0,
+      total_recommended_rank: 0,
       is_public: true
     )
 # 11
@@ -203,7 +213,6 @@ Source.create!(
       recommended_rank: 0,
       is_public: false
   )
-
 
 # タグ
 Tag.create!(
@@ -322,7 +331,7 @@ Comment.create!(
   customer_id: 2, 
   title:"助かりました",
   comment:"なかなか記事が見つからなかったので、とても助かりました。",
-  recommended_rank:2,
+  recommended_rank:1,
   rate:4
 )
 
@@ -331,7 +340,7 @@ Comment.create!(
   customer_id: 3, 
   title:"CSSで書いた方が良さげ",
   comment:"レスポンシブ対応もできるため、こちらのやり方よりCSSで書いた方が良さそう。",
-  recommended_rank:2,
+  recommended_rank:0,
   rate:2
 )
 Comment.create!(
@@ -339,7 +348,7 @@ Comment.create!(
   customer_id: 2, 
   title:"秒でできました",
   comment:"本当に簡単でした。",
-  recommended_rank:2,
+  recommended_rank:0,
   rate:4.5
 )
 
@@ -348,7 +357,7 @@ Comment.create!(
   customer_id: 3, 
   title:"微妙でした",
   comment:"rails6環境です。この機能を使うためにはturbolinksを全て削除するか、js関連をwebpacker読み込みからcdnに変える必要があったので、あまり良くないかもしれません。",
-  recommended_rank:2,
+  recommended_rank:1,
   rate:1
 )
 
@@ -366,7 +375,7 @@ Comment.create!(
   customer_id: 5, 
   title:"便利です",
   comment:"後からカラムを追加するときにこの方法を使っています。",
-  recommended_rank:2,
+  recommended_rank:0,
   rate:5
 )
 
@@ -375,7 +384,7 @@ Comment.create!(
   customer_id: 5, 
   title:"これは便利!",
   comment:"Youtubeの動画を見る際はいつもお世話になっています。",
-  recommended_rank:2,
+  recommended_rank:0,
   rate:5
 )
 
@@ -384,7 +393,7 @@ Comment.create!(
   customer_id: 2, 
   title:"素晴らしい!",
   comment:"今までこのような機能があることを知らなかった。2倍速で見るようになり、プライムビデオ視聴時間が大幅に削減された。",
-  recommended_rank:2,
+  recommended_rank:1,
   rate:5
 )
 
@@ -393,7 +402,7 @@ Comment.create!(
   customer_id: 6, 
   title:"Bootstrap初心者におすすめ!",
   comment:"Bootstrap初心者に私でも理解できる内容でした。",
-  recommended_rank:2,
+  recommended_rank:0,
   rate:4.5
 )
 
@@ -402,6 +411,6 @@ Comment.create!(
   customer_id: 6, 
   title:"公式サイトの読み方が分かる",
   comment:"Bootstrapの公式サイトをどのようにして読むかイメージが掴めない人におすすめです。",
-  recommended_rank:2,
+  recommended_rank:0,
   rate:4.5
 )

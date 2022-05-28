@@ -4,29 +4,21 @@
   <h2 class="text-center mb-4 pt-4", style="border-bottom: solid 2px #F0F0F0;">情報ソース一覧</h2>
 <% end %>
 <div class="row">
-  <% sources.each_with_index do |source, i| %>
+  <% sources.each do |source| %>
     <div class="border border-warning col-lg-3 col-md-4 col-sm-6 col-6" style="padding:10px; margin:10px;">
     <%= link_to source_path(source.id) do %>
-      
       <% if current_page?(search_path) && params[:keyword].present? %>
         <p><strong><%= emphasize_keyword(source.purpose.truncate(20, omission: '...'), @keyword) %></strong>
       <% else %>
         <p><strong><%= source.purpose.truncate(20, omission: '...') %></strong>
       <% end %>
-      <% if source.comments.size == 0 %>
-        (<%= recommended_rank_short(source.recommended_rank_i18n) %>)
-        <%#= recommended_rank_short(source.total_recommended_rank_i18n) %>
-      <% else %>
-        <%# if source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
         <% if source.total_recommended_rank == 0 %>
           (初)
-        <%# elsif source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
+        <% elsif source.total_recommended_rank == 1 %>
+          (中)
         <% elsif source.total_recommended_rank == 2 %>
           (上)
-        <% else %>
-          (中)
-        <% end %>
-      <% end %></p>
+        <% end %></p>
         <div class="relative-source-average" style="border-bottom: solid 1px #F0F0F0; border-top: solid 1px #F0F0F0;">
             <span id="star-average-<%= source.id %>" class="raty-star"></span>
           <% if source.comments.size == 0 %>

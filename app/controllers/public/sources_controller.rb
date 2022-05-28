@@ -13,15 +13,12 @@ class Public::SourcesController < ApplicationController
   end
   
   def index
-    
     @customer = current_customer
     @source = Source.new
     @sources = Source.where(is_public: true).order('id DESC').page(params[:page])
     @tag_list=Tag.all
     @source_tags = @source.tags
-    
   end
-  
   
   def new
     @source = Source.new
@@ -29,18 +26,15 @@ class Public::SourcesController < ApplicationController
 
   def create
     @source = Source.new(source_params)
-    
     @source.customer_id = current_customer.id
     # NGワードを定義
     blacklist = "死ね|殺す"
-    
     if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
         flash[:alert] = "NGワードが含まれています。"
         @customer = current_customer
         @sources = Source.all
         render 'new'
     elsif params[:public]
-
       if !@source.save(context: :publicize)
         flash[:alert] = "登録できませんでした。"
         @customer = current_customer
@@ -83,9 +77,7 @@ class Public::SourcesController < ApplicationController
     @source = Source.find(params[:id])
     @source.customer_id = current_customer.id
     blacklist = "死ね|殺す"
-    
     @source.purpose = source_params[:purpose]
-    
     # NGワードがあった場合
     if @source.purpose.match?(/(.*)#{blacklist}(.*)/)
         @source.is_public = false
@@ -93,7 +85,6 @@ class Public::SourcesController < ApplicationController
         @customer = current_customer
         @sources = Source.all
         render 'edit'
-    
     # ①下書き更新（公開）の場合
     elsif @source.is_public == false && params[:public]
       # 情報ソース公開時にバリデーションを実施
@@ -146,25 +137,10 @@ class Public::SourcesController < ApplicationController
     end
   end
 
-  
   def search_source
-     @sources = Source.search(params[:keyword]).page(params[:page]).per(5)
+     @sources = Source.search(params[:keyword]).page(params[:page])
   end
   
-  # def search
-  #   if params[:q].present?
-  #   # 検索フォームからアクセスした時の処理
-  #     @search = Source.ransack(search_params)
-  #     @source = @search.result
-  #   else
-  #   # 検索フォーム以外からアクセスした時の処理
-  #     params[:q] = { sorts: 'id desc' }
-  #     @search = Source.ransack()
-  #     @sources = Source.all
-  #   end
-  # end
-  
-
   def save_tag(sent_tags)
     # タグが存在していれば、タグの名前を配列として全て取得
       current_tags = self.tags.pluck(:tagname) unless self.tags.nil?
@@ -172,12 +148,10 @@ class Public::SourcesController < ApplicationController
       old_tags = current_tags - sent_tags
       # 送信されてきたタグから現在存在するタグを除いたタグをnewとする
       new_tags = sent_tags - current_tags
-  
       # 古いタグを消す
       old_tags.each do |old|
         self.tags.deleteTag.find_by(tagname: old)
       end
-  
       # 新しいタグを保存
       new_tags.each do |new|
         new_source_tag = Tag.find_or_create_by(tagname: new)
@@ -196,11 +170,6 @@ class Public::SourcesController < ApplicationController
   
   private
   
-  # def search_params
-  #   params.require(:q).permit(:sorts)
-  #   # 他のパラメーターもここに入れる
-  # end
-
   def source_params
     params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid,:total_rate,:total_recommended_rank,:tagnames)
   end

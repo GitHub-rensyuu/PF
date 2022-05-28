@@ -6,24 +6,20 @@
         object = LinkThumbnailer.generate( @source.source ) %>
         <%= image_tag object.images.first.src.to_s, :width => '100%' %><br><br>
       <% rescue StandardError %>
-        <%= image_tag 'no_image.jpg', :width => '100%' %><br><br>
+        <%= image_tag 'thumbnail_no_image.jpg', :width => '100%' %><br><br>
       <% end %>
       参考URL:<%= text_url_to_link(h(@source.source)).html_safe %>
     </div>
     <div class="col-md-5">
       <h4 class="mb-2"><strong>目的:<%= @source.purpose %></strong>
       <p>
-      <% if @source.comments.size == 0 %>
-        (<%= recommended_rank_short(@source.recommended_rank_i18n) %>)
-      <% else %>
-        <% if @source.comments.average(:recommended_rank).to_f.round(1) <= 0.6 %>
+        <% if @source.total_recommended_rank == 0 %>
           (初)
-        <% elsif @source.comments.average(:recommended_rank).to_f.round(1) >= 1.6 %>
-          (上)
-        <% else %>
+        <% elsif @source.total_recommended_rank == 1 %>
           (中)
-        <% end %>
-      <% end %></p></h4>
+        <% elsif @source.total_recommended_rank == 2 %>
+          (上)
+        <% end %></p></h4>
         評価:
       <span id="star-average-<%= @source.id %>" class="d-inline"></span>
           <% if @source.comments.size == 0 %>
@@ -129,7 +125,7 @@
         </div>
         <div class="form-group">
           <%= f.label :recommended_rank,  "おすすめの対象者" %>
-          <%= f.select :recommended_rank, Source.recommended_ranks_i18n.invert %>
+          <%= f.select :recommended_rank, [["初心者", 0], ["中級者", 1], ["上級者", 2]], include_blank: "選択して下さい" %>
         </div>
 
         <div class="form-group">

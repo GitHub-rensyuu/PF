@@ -20,7 +20,7 @@ class Public::SearchesController < ApplicationController
         when 'default','new' then
           @sources = @records.order(created_at: :desc).page(params[:page])
         when 'rate' then
-          @sources = @records.order(rate: :desc).page(params[:page])
+          @sources = @records.order(total_rate: :desc).page(params[:page])
         when 'like' then
           @things = @records.includes(:likes).sort{|a,b| b.likes.size <=> a.likes.size}
           @sources = Kaminari.paginate_array(@things).page(params[:page])

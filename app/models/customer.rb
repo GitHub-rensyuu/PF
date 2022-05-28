@@ -5,6 +5,7 @@ class Customer < ApplicationRecord
          :recoverable, :rememberable, :validatable
   validates :nickname, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
+  enum sex: { man: 0, woman: 1 }
 
   has_many :sources, dependent: :destroy
   has_many :likes,dependent: :destroy
@@ -92,8 +93,5 @@ class Customer < ApplicationRecord
     end
     profile_image.variant(resize_to_limit: [width, height]).processed
   end
-
-
-  enum sex: { man: 0, woman: 1 }
 
 end

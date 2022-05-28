@@ -31,6 +31,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # 追加分
   gem 'pry-byebug'
 end
 
@@ -68,10 +69,6 @@ gem "enum_help"
 gem 'jquery-rails'
 gem 'kaminari','~> 1.2.1'
 gem 'simple_form'
-# gem 'summernote-rails', '~> 0.8.10.0'
-# gem "refile", require: "refile/rails", github: 'manfe/refile'
-# gem "refile-mini_magick"
-# gem 'pry-rails'
 gem 'bootstrap5-kaminari-views', '~> 0.0.1'
 # URLサムネイル化用
 gem 'link_thumbnailer'
