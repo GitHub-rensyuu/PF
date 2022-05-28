@@ -261,7 +261,7 @@ SourceTag.create!(
 
 SourceTag.create!(
   source_id: 3,
-  tag_id: 1, 
+  tag_id: 4, 
 )
 
 SourceTag.create!(
@@ -288,13 +288,9 @@ SourceTag.create!(
   tag_id: 1, 
 )
 
-SourceTag.create!(
-  source_id: 6,
-  tag_id: 3, 
-)
 SourceTag.create!(
   source_id: 7,
-  tag_id: 1, 
+  tag_id: 5, 
 )
 
 SourceTag.create!(
@@ -310,6 +306,11 @@ SourceTag.create!(
 SourceTag.create!(
   source_id: 10,
   tag_id: 4, 
+)
+
+SourceTag.create!(
+  source_id: 11,
+  tag_id: 1, 
 )
 
 SourceTag.create!(
