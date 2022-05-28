@@ -1,4 +1,5 @@
 class Comment < ApplicationRecord
+  validates :title,presence:true
   validates :comment,presence:true
   validates :rate,presence:true
   validates :recommended_rank,presence:true

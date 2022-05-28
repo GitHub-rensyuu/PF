@@ -19,7 +19,7 @@ ja:
         last_sign_in_at: 最終ログイン時刻
         last_sign_in_ip: 最終ログインIPアドレス
         locked_at: ロック時刻
-        password: パスワード
+        password: パスワード（６文字以上）
         password_confirmation: パスワード（確認用）
         remember_created_at: ログイン記憶時刻
         remember_me: ログインを記憶する
@@ -30,16 +30,16 @@ ja:
         unlock_token: ロック解除用トークン
         updated_at: 更新日
       source:
-        source: URL
+        source: 参考にした情報ソース(URL)
         purpose: 目的
         performance_review: 評価コメント
         rate: ★評価
-        recommended_rank: 推奨レベル
+        recommended_rank: 推奨する対象者
       comment:
         title: タイトル
         comment: コメント
         rate: ★評価
-        recommended_rank: 推奨レベル
+        recommended_rank: 推奨する対象者
     models:
       customer: ユーザー
   devise:
@@ -158,7 +158,7 @@ ja:
         other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
       not_saved:
         one: "１つのエラーがあります。修正して再度送信して下さい。:"
-        other: "%{count}のエラーがあります。修正して再度送信して下さい。"
+        other: "%{count}つのエラーがあります。修正して再度送信して下さい。"
     template:
       body: 次の項目を確認してください
       header:

@@ -106,8 +106,8 @@
       <h4 class="mb-4"><strong>この情報ソースを評価する</strong></h4>
       <%= form_with model: [@source, @comment] do |f| %>
         <%= render 'layouts/errors', obj: f.object %>
-        <%= f.text_field :title, rows: '5', placeholder: "タイトル" %><br><br>
-        <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+        <%= f.text_field :title, class:"form-control", rows: '5', placeholder: "タイトル" %><br><br>
+        <%= f.text_area :comment, class: "form-control", rows: '5', placeholder: "コメントをここに" %>
         <div class="relative-comment-rate">
           <%= f.label :rate,  "★評価 (※必須)" ,id: "e"%>  
           <div class="form-group" id="star-rate">

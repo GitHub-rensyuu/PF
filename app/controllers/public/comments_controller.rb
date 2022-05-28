@@ -10,13 +10,14 @@ class Public::CommentsController < ApplicationController
       total_recommended_rank = @source.comments.average(:recommended_rank).round
       @source.update(total_rate: total_rate)
       @source.update(total_recommended_rank: total_recommended_rank)
-      redirect_to source_path(@source)
+      redirect_to source_path(@source), notice: "レビューを投稿しました"
       
     else
       @newsource = Source.new
       @customer = @source.customer
       @comments = @source.comments.page(params[:page])
-      render "public/sources/show"
+      redirect_to request.referer
+      # render "public/sources/show"
     end
   end
 

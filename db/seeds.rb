@@ -323,10 +323,6 @@ SourceTag.create!(
   tag_id: 1, 
 )
 
-SourceTag.create!(
-  source_id: 12,
-  tag_id: 4, 
-)
 
 # レビュー
 Comment.create!(
