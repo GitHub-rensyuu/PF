@@ -3,7 +3,7 @@ class Customer < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  validates :nickname, length: { minimum: 2, maximum: 20 }, uniqueness: true
+  validates :nickname, length: { minimum: 2, maximum: 20 }
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
   enum sex: { man: 0, woman: 1 }
 

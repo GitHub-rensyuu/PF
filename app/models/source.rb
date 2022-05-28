@@ -9,10 +9,10 @@ class Source < ApplicationRecord
   has_many :notices, dependent: :destroy
   attr_accessor :tagnames
   
-  ransacker :likes_count do
-    query = '(SELECT COUNT(likes.source_id) FROM likes where likes.source_id = sources.id GROUP BY likes.source_id)'
-    Arel.sql(query)
-  end
+  # ransacker :likes_count do
+  #   query = '(SELECT COUNT(likes.source_id) FROM likes where likes.source_id = sources.id GROUP BY likes.source_id)'
+  #   Arel.sql(query)
+  # end
   
   # NGワードを定義する
   NGWORD_REGEX = /(.)\1{4,}/.freeze
@@ -61,6 +61,9 @@ class Source < ApplicationRecord
   
   # いいね通知機能
   def create_notice_like!(current_customer)
+    # 自分自身に対しての場合は処理終了
+    return if customer == current_customer
+    
     # すでに「いいね」されているか検索
     temp = Notice.where(["send_id = ? and receive_id = ? and source_id = ? and action = ? ", current_customer.id, customer_id, id, 'like'])
     # いいねされていない場合のみ、通知レコードを作成
