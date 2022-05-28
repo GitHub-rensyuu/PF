@@ -12,4 +12,4 @@ class Batch::DataReset
     end
   end
 
-ends
+end
