@@ -22,6 +22,6 @@ env :PATH, ENV['PATH']
 set :output, 'log/cron.log'
 set :environment, :production
 
-every 5.minutes do
+every 1.days do
   runner "Batch::DataReset.data_reset"
 end
