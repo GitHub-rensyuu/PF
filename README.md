@@ -43,4 +43,5 @@
 - IDE：Cloud9
 
 ## 使用素材
-- gem:Devise,raty
+- [ユーザー／アカウント／人型](https://kotonohaworks.com/free-icons/user/)
+- [ノーイメージアイコンピクト編](https://www.shoshinsha-design.com/2020/05/%E3%83%8E%E3%83%BC%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%83%94%E3%82%AF%E3%83%88%E7%B7%A8-no-image-icon/.html)
