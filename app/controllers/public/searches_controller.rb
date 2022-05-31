@@ -68,11 +68,11 @@ class Public::SearchesController < ApplicationController
     # 選択したモデルsourceだったら
     elsif model == 'source'
       if method == 'beginner_match'
-        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(recommended_rank: 0)
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(total_recommended_rank: 0)
       elsif method == "intermediate_match"
-        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(recommended_rank: 1)
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(total_recommended_rank: 1)
       elsif method == "senior_match"
-        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(recommended_rank: 2)
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(total_recommended_rank: 2)
         
       elsif method == "all"
         Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true)

@@ -166,6 +166,7 @@ Source.create!(
       rate:4.5,
       total_rate:4.5,
       recommended_rank: 1,
+      total_recommended_rank: 1,
       is_public: true
     )
 # 12  
@@ -177,6 +178,7 @@ Source.create!(
       rate:3,
       total_rate:3,
       recommended_rank: 2,
+      total_recommended_rank: 2,
       is_public: true
     )
 # 13  
@@ -189,6 +191,7 @@ Source.create!(
       rate:3,
       total_rate:3,
       recommended_rank: 1,
+      total_recommended_rank: 1,
       is_public: true
     )
 # 14
@@ -200,6 +203,7 @@ Source.create!(
       rate:3,
       total_rate:3,
       recommended_rank: 1,
+      total_recommended_rank: 1,
       is_public: true
   )
 # 15
@@ -211,6 +215,7 @@ Source.create!(
       rate:3,
       total_rate:3,
       recommended_rank: 0,
+      total_recommended_rank: 0,
       is_public: false
   )
 
