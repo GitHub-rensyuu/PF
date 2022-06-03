@@ -2,11 +2,12 @@ class Customer < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [ :google_oauth2]
   validates :nickname, length: { minimum: 2, maximum: 20 }
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
   enum sex: { man: 0, woman: 1 }
 
+  has_many :sns
   has_many :sources, dependent: :destroy
   has_many :likes,dependent: :destroy
   has_many :comments,dependent: :destroy
