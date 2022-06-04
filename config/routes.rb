@@ -20,6 +20,10 @@ Rails.application.routes.draw do
 
     devise_for :customers, skip: [:passwords], controllers: {registrations: "public/registrations", sessions: "public/sessions"} 
     
+    # devise_for :customers, controllers: {
+    #   omniauth_callbacks: 'customers/omniauth_callbacks',
+    #   registrations: 'customers/registrations'
+    
     devise_scope :customer do
       post 'customers/guest_sign_in', to: 'sessions#guest_sign_in'
     end
