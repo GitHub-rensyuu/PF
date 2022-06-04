@@ -1,4 +1,5 @@
 class Public::CommentsController < ApplicationController
+  before_action :ensure_customer, only: [:destroy]
   
   def create
     @comment = current_customer.comments.new(comment_params)
@@ -38,6 +39,13 @@ class Public::CommentsController < ApplicationController
   end
 
   private
+  
+  def ensure_customer
+    @customer = Customer.find(params[:id])
+    unless @customer == current_customer
+      redirect_to customer_path(current_customer)
+    end
+  end
 
   def comment_params
     params.require(:comment).permit(:title, :comment,:recommended_rank,:rate)

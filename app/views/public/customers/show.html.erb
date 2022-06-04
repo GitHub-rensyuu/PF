@@ -13,9 +13,11 @@
       <li class="nav-item">
         <h2 class="nav-link active"><%= link_to '投稿済', customer_path(sort_post: "true") %></h2>
       </li>
+      <% if @customer == current_customer %>
       <li class="nav-item">
         <h2 class="nav-link"><%= link_to '下書き', customer_path(sort_draft: "true") %></h2>
       </li>
+      <% end %>
     </ul>
       
       

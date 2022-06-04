@@ -1,33 +1,11 @@
 class Public::CustomersController < ApplicationController
   before_action :authenticate_customer!, except: [:guest_sign_in]
   before_action :ensure_guest_customer, only: [:edit,:withdraw_confirm]
-  before_action :ensure_customer, only: [:edit, :update]
+  before_action :ensure_customer, only: [:edit, :update, :withdraw]
 
   def index
     @customers = Customer.all.page(params[:page])
     @customer = Customer.new
-    # unless params[:customer].blank?
-    #   case params[:customer][:keyword]
-    #   when 'source' then
-    #     @things =  Customer.includes(:sources).sort {|a,b| b.sources.size <=> a.sources.size}
-    #     @customers = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'comment' then
-    #     @things =  Customer.includes(:comments).sort {|a,b| b.comments.size <=> a.comments.size}
-    #     @customers = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'follow' then
-    #     @things =  Customer.includes(:followers).sort {|a,b| b.follower_customers.size <=> a.follower_customers.size}
-    #     @customers = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'report' then
-    #     @things = Customer.includes(:reporters).sort {|a,b| b.reporter_customers.size <=> a.reporter_customers.size}
-    #     @customers = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'like' then
-    #     @things = Customer.includes(:likes).sort {|a,b| Like.where(source_id: b.sources.pluck(:id)).size <=> Like.where(source_id: a.sources.pluck(:id)).size } 
-    #     @customers = Kaminari.paginate_array(@things).page(params[:page])
-    #   when 'useful' then
-    #     @things = Customer.includes(:usefuls).sort {|a,b| Useful.where(comment_id: b.comments.pluck(:id)).size <=> Useful.where(comment_id: a.comments.pluck(:id)).size } 
-    #     @customers = Kaminari.paginate_array(@things).page(params[:page])
-    #   end
-    # end
   end
 
   def show
@@ -40,7 +18,11 @@ class Public::CustomersController < ApplicationController
     @reporter_customers = @customer.reporter_customers
     
     if params[:sort_draft]
-      @sources = Source.where(is_public: false).where(customer_id: @customer.id).page(params[:page])
+      unless @customer == current_customer
+        redirect_to customer_path(current_customer)
+      else
+        @sources = Source.where(is_public: false).where(customer_id: @customer.id).page(params[:page])
+      end
     elsif params[:sort_post]
       @sources = Source.where(is_public: true).where(customer_id: @customer.id).page(params[:page])
     elsif params[:sort_like]
