@@ -9,14 +9,9 @@ class Source < ApplicationRecord
   has_many :notices, dependent: :destroy
   attr_accessor :tagnames
   
-  # ransacker :likes_count do
-  #   query = '(SELECT COUNT(likes.source_id) FROM likes where likes.source_id = sources.id GROUP BY likes.source_id)'
-  #   Arel.sql(query)
-  # end
   
   # NGワードを定義する
   NGWORD_REGEX = /(.)\1{4,}/.freeze
-  # blacklist = "死ね|殺す"
   with_options presence: true, on: :publicize do
     with_options format: { without: NGWORD_REGEX, alert: 'は5文字以上の繰り返しは禁止です' } do
       validates :purpose, length: { maximum: 200 }
@@ -28,7 +23,7 @@ class Source < ApplicationRecord
   validates :performance_review,presence:true,length: { maximum: 200 }, on: :publicize
   validates :rate,presence:true
   validates :recommended_rank,presence:true
-
+  
   def liked_by?(customer)
     likes.where(customer_id: customer.id).exists?
   end

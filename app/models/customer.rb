@@ -5,6 +5,9 @@ class Customer < ApplicationRecord
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [ :google_oauth2]
   validates :nickname, length: { minimum: 2, maximum: 20 }
   validates :introduction, length: { maximum: 50 }# 「50文字以内」
+  VALID_PHONE_REGEX = /\A\d{10}$|^\d{11}\z/
+  validates :telephone_number, format: { with: VALID_PHONE_REGEX }
+
   enum sex: { man: 0, woman: 1 }
 
   has_many :sns
