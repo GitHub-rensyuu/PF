@@ -32,7 +32,7 @@ class Admin::SearchesController < ApplicationController
       case params["sort"]
       when 'default','new' then
         @customers = @records.order(created_at: :desc).page(params[:page])
-       when 'source' then
+      when 'source' then
         @things =  @records.includes(:sources).sort {|a,b| b.sources.size <=> a.sources.size}
         @customers = Kaminari.paginate_array(@things).page(params[:page])
       when 'comment' then
@@ -64,14 +64,14 @@ class Admin::SearchesController < ApplicationController
     
     # 選択したモデルsourceだったら
     elsif model == 'source'
-      if method == 'beginner_match'
+      if method == "all"
+        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true)
+      elsif method == 'beginner_match'
         Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(total_recommended_rank: 0)
       elsif method == "intermediate_match"
         Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(total_recommended_rank: 1)
       elsif method == "senior_match"
         Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true).where(total_recommended_rank: 2)
-      elsif method == "all"
-        Source.where(is_public: true).where('purpose LIKE ?', "%#{keyword}%").where(is_public: true)
       end
     end
   end
