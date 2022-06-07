@@ -7,13 +7,13 @@
 
 ### テーマを選んだ理由
 情報ソースレビューサイトがあれば、目的・取り組む難易度に対してのミスマッチが減り、情報を探しやすくなると思ったため。
-[会社員が「調べもの」に費やす時間は毎日1.6時間(オウケイウェイヴ総研)。](https://it.impress.co.jp/articles/-/17720){:target="_blank"}
+[会社員が「調べもの」に費やす時間は毎日1.6時間(オウケイウェイヴ総研)。](https://it.impress.co.jp/articles/-/17720){:target="_blank" rel="noopener"}
 
 また新しいことに挑戦する時、どこから情報を得るかも分からないところからスタートすると思いますが、ネットから情報を得ることが多いと思います。
 [2020年でネットから情報収集をする人は90.7%(ビデオリサーチ)。](https://news.mynavi.jp/article/20210311-1796912/#:~:text=%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%8D%E3%83%83%E3%83%88%E3%81%A7%E6%83%85%E5%A0%B1%E5%8F%8E%E9%9B%86%E3%82%92,90.7%25%E3%81%A8%E3%81%AA%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82)
 ![ネット利用調査](https://user-images.githubusercontent.com/98869960/166462776-e644ba93-d0b6-454e-a2c8-7f47e7d02cdc.png)  
 新しいことに挑戦する人の道しるべとなることを目指して情報ソースレビューサイトを作りました。
-[新しいことや困難なことへの挑戦に対し、心理的ハードルを感じる人は84.0％(Unipos)。](https://b2b-ch.infomart.co.jp/news/detail.page?IMNEWS1=1477405){:target="_blank"}
+[新しいことや困難なことへの挑戦に対し、心理的ハードルを感じる人は84.0％(Unipos)。](https://b2b-ch.infomart.co.jp/news/detail.page?IMNEWS1=1477405){:target="_blank" rel="noopener"}
 
 
 ### ターゲットユーザ
@@ -33,7 +33,7 @@
 - 検索並び替え（いいねの多い順、評価が高い順、コメントが多い順、新着順等）
 
 ## 設計書
-- [ER図、ワイヤーフレーム](https://app.diagrams.net/#G1OIfJLX5pATRCu_9R1gSc7iiXNCooW_-a)
+- [ER図、ワイヤーフレーム](https://app.diagrams.net/#G1OIfJLX5pATRCu_9R1gSc7iiXNCooW_-a){:target="_blank" rel="noopener"}
 
 
 ## 開発環境
@@ -44,8 +44,8 @@
 - IDE：Cloud9
 
 ## 使用素材
-- [ユーザー／アカウント／人型](https://kotonohaworks.com/free-icons/user/)
-- [ノーイメージアイコンピクト編](https://www.shoshinsha-design.com/2020/05/%E3%83%8E%E3%83%BC%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%83%94%E3%82%AF%E3%83%88%E7%B7%A8-no-image-icon/.html)
+- [ユーザー／アカウント／人型](https://kotonohaworks.com/free-icons/user/){:target="_blank" rel="noopener"}
+- [ノーイメージアイコンピクト編](https://www.shoshinsha-design.com/2020/05/%E3%83%8E%E3%83%BC%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%83%94%E3%82%AF%E3%83%88%E7%B7%A8-no-image-icon/.html){:target="_blank" rel="noopener"}
 
 ##テスト仕様書
-- [スプレッドシート](https://docs.google.com/spreadsheets/d/1i3M7Ms6Sr0mfBhXV86w6c1s3K1wCwsKh/edit?usp=sharing&ouid=102603506775414694205&rtpof=true&sd=true)
+- [スプレッドシート](https://docs.google.com/spreadsheets/d/1i3M7Ms6Sr0mfBhXV86w6c1s3K1wCwsKh/edit?usp=sharing&ouid=102603506775414694205&rtpof=true&sd=true){:target="_blank" rel="noopener"}
