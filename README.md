@@ -1,4 +1,4 @@
-# SourceReview 閲覧数![Visitor Count](https://profile-counter.glitch.me/{GitHub-rensyuu}/count.svg)
+# SourceReview   　![Visitor Count](https://profile-counter.glitch.me/{GitHub-rensyuu}/count.svg)
 
 ## サイト概要
 
