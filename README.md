@@ -1,5 +1,7 @@
 # SourceReview
 
+![Visitor Count](https://profile-counter.glitch.me/{GitHub-rensyuu}/count.svg)
+
 ## サイト概要
 
 ### サイトテーマ
