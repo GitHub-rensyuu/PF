@@ -35,7 +35,6 @@
 ## 設計書
 - [ER図、ワイヤーフレーム](https://app.diagrams.net/#G1OIfJLX5pATRCu_9R1gSc7iiXNCooW_-a)
 
-
 ## 開発環境
 - OS：Linux(CentOS)
 - 言語：HTML,CSS,JavaScript,Ruby,SQL
