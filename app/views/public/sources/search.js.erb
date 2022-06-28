@@ -1,1 +1,33 @@
-$('#search_buttons').html("<%= j(render "public/sources/child_index", source: @source) %>");
+<!--$('#search_buttons').html("<%#= j(render "public/sources/child_index", source: @source) %>");-->
+
+// ターボリンクの個別無効化
+$(document).on('turbolinks:load', function(){
+// このアプリ（document)で、searc_inputで入力されるごとに、eという引数受け取る
+  $(document).on('keyup', '.search_input_sources', function(e){
+// キャンセル可能なイベントをキャンセル
+    e.preventDefault();
+// 入力された言葉を取得し、前後の余白をtrimで取り除き、inputに代入する
+    var input = $.trim($(this).val());
+
+// 非同期通信・行う場所・メソッド等、jsonで渡す
+    $.ajax({
+      url: '/sources/searches',
+      type: 'GET',
+// コントローラーに渡す値を入力された値にする
+      data: ('sources_keyword=' + input),
+      processData: false,
+      contentType: false,
+      dataType: 'json'
+    })
+// 通信が成功した時の処理が以下
+    .done(function(data){
+// idがresultの子要素liを削除する
+    $('#result_sources').find('li').remove();
+// dateをuserという変数に代入し以下を繰り返し処理する
+    $(data).each(function(i,source) {
+    $('#result_sources').append(`<li class="source"><a href="/sources/${source.id}">${source.purpose}</a></li>`)
+
+});
+    })
+  });
+});

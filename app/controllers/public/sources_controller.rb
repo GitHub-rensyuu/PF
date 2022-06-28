@@ -15,11 +15,18 @@ class Public::SourcesController < ApplicationController
   end
   
   def index
+    sources = Source.search(params[:sources_keyword])
     @customer = current_customer
     @source = Source.new
     @sources = Source.where(is_public: true).order('id DESC').page(params[:page])
-    @tag_list=Tag.all
+    @tag_list = Tag.all
     @source_tags = @source.tags
+    
+    respond_to do |format|
+      format.json { render 'sources/index', json: @sources }
+      format.html
+    end
+    
   end
   
   def new

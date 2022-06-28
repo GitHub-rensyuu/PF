@@ -101,4 +101,10 @@ class Source < ApplicationRecord
     end
     notice.save if notice.valid?
   end
+  
+  # 検索サジェスト機能
+  def self.search(search)
+    return Source.all unless search
+    Source.where('purpose LIKE(?)', "%#{search}%")
+  end
 end
