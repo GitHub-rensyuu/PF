@@ -103,8 +103,13 @@ class Source < ApplicationRecord
   end
   
   # 検索サジェスト機能
-  def self.search(search)
-    return Source.all unless search
-    Source.where('purpose LIKE(?)', "%#{search}%")
+  
+  def self.search(keyword)
+    if keyword == ''
+      sources = Source.all
+    else
+      sources = Source.where('purpose LIKE(?)', "%#{keyword}%")
+    end
   end
+  
 end

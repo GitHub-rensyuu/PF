@@ -4,13 +4,10 @@
       <%= f.select :model, options_for_select({"情報ソース" => "source" }) %>
       <%= f.select :method, options_for_select([["すべて","all"],["初心者","beginner_match"],["中級者","intermediate_match"],["上級者","senior_match"]]) %>
       <%= f.select :sort , options_for_select([ ['指定なし', 'default'],['投稿が新しい順', 'new'],['評価が高い順', 'rate'],['いいねが多い順', 'like'],['コメント数が多い順', 'comment'],['閲覧数が多い順', 'watch']]) %>
-      <%= f.text_field :keyword , placeholder: "キーワードから探す", class:"col-lg-4 ml-10" %>
+      <%= f.text_field :keyword , placeholder: "キーワードから探す", class:"col-lg-4 ml-10 search__word" %>
       <%= f.submit "検索", class: "btn btn-primary" %>
     <% end %>
     
-    <!--検索サジェスト表示-->
-    <ul id="result_sources"></ul>
-  </div>
 <% end %>
 
 <div id="search_buttons" >

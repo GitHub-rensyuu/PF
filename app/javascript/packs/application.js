@@ -15,7 +15,8 @@ import "../stylesheets/application"
 import '@fortawesome/fontawesome-free/js/all'
 window.$ = window.jQuery = require('jquery');
 require('packs/raty')
-require('packs/customer')
+require('packs/dropdown')
+require('packs/search')
 
 
 Rails.start();

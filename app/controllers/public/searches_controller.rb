@@ -4,6 +4,7 @@ class Public::SearchesController < ApplicationController
   def search
     @customer = current_customer
     @source = Source.new
+    
     @sources = Source.where(is_public: true).order('id DESC').page(params[:page])
     @model = params["model"]
     # 選択した検索方法の値を@methodに代入。
@@ -13,6 +14,7 @@ class Public::SearchesController < ApplicationController
     # @model, @keyword, @methodを代入した、
     # search_forを@recordsに代入。
     @records = search_for(@model, @keyword, @method)
+    
 
     if @model == 'source'
       unless params["sort"].blank?
