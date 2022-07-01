@@ -12,7 +12,6 @@ $(document).on('turbolinks:load', function() {
     $.ajax({
       type: 'GET',
       url: '/search',
-      // data: {keyword: keyword},{method: method},{model: model},
       data: {keyword: keyword, method: method, model: model},
       dataType: 'json'
     })
