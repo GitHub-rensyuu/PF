@@ -1,9 +1,5 @@
 <% if params[:keyword].present? %>
-<%
-=begin %>
   <h3 class="text-center  mb-4 pt-4" style="border-bottom: solid 2px #F0F0F0; color:blue;">「<%= @keyword %>」の検索結果<%= @records.count %>件中<%= @sources.count %>件表示</h3>
-<%
-=end %>
 <% else %>
   <h2 class="text-center mb-4 pt-4", style="border-bottom: solid 2px #F0F0F0;">情報ソース一覧</h2>
 <% end %>
