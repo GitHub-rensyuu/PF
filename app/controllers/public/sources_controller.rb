@@ -1,6 +1,5 @@
 class Public::SourcesController < ApplicationController
   before_action :authenticate_customer!
-  before_action :ensure_customer, only: [:edit, :update,:destroy]
   
   def show
     @newsource = Source.new
@@ -172,13 +171,6 @@ class Public::SourcesController < ApplicationController
   end
   
   private
-  
-  def ensure_customer
-    @customer = Customer.find(params[:id])
-    unless @customer == current_customer
-      redirect_to customer_path(current_customer)
-    end
-  end
   
   def source_params
     params.require(:source).permit(:source, :purpose, :performance_review, :note, :rate, :recommended_rank,:is_public, :is_valid,:total_rate,:total_recommended_rank,:tagnames)
